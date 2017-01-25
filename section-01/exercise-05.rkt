@@ -47,10 +47,13 @@
 
 ;; start simple tree image
 (define tree-trunk-width (/ scene-x 10))
-(define tree-trunk-height (/ scene-y 2))
+(define tree-trunk-height (/ scene-y 3))
 (define tree-trunk (rectangle tree-trunk-width tree-trunk-height "solid" "brown"))
 (define tree-trunk-posn center-posn)
 
+(define tree-foliage (circle (* 1.5 tree-trunk-width) "solid" "green"))
+(define tree-foliage-posn (make-posn (posn-x center-posn) (- (posn-y center-posn) (/ tree-trunk-height 2) (/ (image-width tree-foliage) 2))))
 
-(scale 1 (place-images (list tree-trunk) (list tree-trunk-posn) scene))
+(scale 1 (place-images (list tree-foliage tree-trunk) (list tree-foliage-posn tree-trunk-posn) scene))
+
 
