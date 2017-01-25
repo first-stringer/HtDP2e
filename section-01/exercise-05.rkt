@@ -18,8 +18,10 @@
 (define body (rectangle (/ scene-x 2) (/ scene-y 4) "solid" "blue"))
 (define body-posn center-posn)
 
-(define wheel1 (circle (/ (if (< scene-x scene-y) scene-x scene-y) 15) "solid" "black"))
-(define wheel1-posn (make-posn (- x-center (+ (/ (image-width body) 2) 2)) (+ y-center (+ (/ (image-height body) 2) 2))))
+(define wheels-diameter (/ (image-width body) 8)) 
+(define wheel1 (circle wheels-diameter "solid" "black"))
+;(define wheel1-posn (make-posn (- (posn-x body-posn) (+ (/ (image-width body) 2) (/ (image-width body) 8))) (+ y-center (+ (/ (image-height body) 2) 2))))
+(define wheel1-posn (make-posn (- (posn-x body-posn) (/ (image-width body) 4)) (+ y-center (+ (/ (image-height body) 2) 2))))
 
 (define scene (empty-scene scene-x scene-y))
 
