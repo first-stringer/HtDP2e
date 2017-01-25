@@ -15,14 +15,23 @@
 (define my-images '())
 (define posns '())
 
-(define body (rectangle (/ scene-x 2) (/ scene-y 4) "solid" "blue"))
+(define body (rectangle (/ scene-x 2) (/ scene-y 6) "solid" "blue"))
 (define body-posn center-posn)
 
+(define cab (rectangle (/ (image-width body) 2) (image-height body) "solid" "blue"))
+(define cab-posn (make-posn (posn-x body-posn) (- (posn-y body-posn) (/ (image-height body) 2) (/ (image-height cab) 2))))
+
+
 (define wheels-diameter (/ (image-width body) 8)) 
+
 (define wheel1 (circle wheels-diameter "solid" "black"))
-;(define wheel1-posn (make-posn (- (posn-x body-posn) (+ (/ (image-width body) 2) (/ (image-width body) 8))) (+ y-center (+ (/ (image-height body) 2) 2))))
-(define wheel1-posn (make-posn (- (posn-x body-posn) (/ (image-width body) 4)) (+ y-center (+ (/ (image-height body) 2) 2))))
+(define wheel1-posn (make-posn (- (posn-x body-posn) (/ (image-width body) 4)) (+ (posn-y body-posn) (/ (image-height body) 2))))
+
+(define wheel2 (circle wheels-diameter "solid" "black"))
+(define wheel2-posn (make-posn (+ (posn-x body-posn) (/ (image-width body) 4)) (+ (posn-y body-posn) (/ (image-height body) 2))))
+
+
 
 (define scene (empty-scene scene-x scene-y))
 
-(place-images (list wheel1 body) (list wheel1-posn body-posn) scene)
+(place-images (list wheel2 wheel1 cab body) (list wheel2-posn wheel1-posn cab-posn body-posn) scene)
