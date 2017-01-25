@@ -5,8 +5,9 @@
 
 ;; http://www.ccs.neu.edu/home/matthias/HtDP2e/part_one.html#%28part._sec~3aarith-images%29
 
-(define scene-x 100)
-(define scene-y 100)
+(define my-scale 1)
+(define scene-x (* 100 my-scale))
+(define scene-y (* 100 my-scale))
 
 (define x-center (/ scene-x 2))
 (define y-center (/ scene-y 2))
@@ -29,8 +30,6 @@
 
 (define wheel2 (circle wheels-diameter "solid" "black"))
 (define wheel2-posn (make-posn (+ (posn-x body-posn) (/ (image-width body) 4)) (+ (posn-y body-posn) (/ (image-height body) 2))))
-
-
 
 (define scene (empty-scene scene-x scene-y))
 
