@@ -5,21 +5,21 @@
 
 ;; http://www.ccs.neu.edu/home/matthias/HtDP2e/part_one.html#%28part._sec~3acomposing%29
 
-(define starting-ticket-price 5.0)
-(define starting-ticket-price-attendance 120)
-(define ticket-price-delta 0.1)
-(define ticket-price-delta-attendance 15)
-(define fixed-overhead-per-show 0)
-(define variable-overhead-per-show 1.50)
+(define STARTING-TICKET-PRICE 5.0)
+(define STARTING-TICKET-PRICE-ATTENDANCE 120)
+(define TICKET-PRICE-DELTA 0.1)
+(define TICKET-PRICE-DELTA-ATTENDANCE 15)
+(define FIXED-OVERHEAD-PER-SHOW 0)
+(define VARIABLE-OVERHEAD-PER-SHOW 1.50)
 
 (define (attendees ticket-price)
-  (- starting-ticket-price-attendance (* (- ticket-price starting-ticket-price) (/ ticket-price-delta-attendance ticket-price-delta))))
+  (- STARTING-TICKET-PRICE-ATTENDANCE (* (- ticket-price STARTING-TICKET-PRICE) (/ TICKET-PRICE-DELTA-ATTENDANCE TICKET-PRICE-DELTA))))
 
 (define (revenue ticket-price)
   (* ticket-price (attendees ticket-price)))
 
 (define (cost ticket-price)
-  (+ fixed-overhead-per-show (* variable-overhead-per-show (attendees ticket-price))))
+  (+ FIXED-OVERHEAD-PER-SHOW (* VARIABLE-OVERHEAD-PER-SHOW (attendees ticket-price))))
 
 (define (profit ticket-price)
   (- (revenue ticket-price)
