@@ -8,11 +8,11 @@
 ;; Begin provided code.
 (define (letter fst lst signature-name)
   (string-append
-    (opening fst)
-    "\n\n"
-    (body fst lst)
-    "\n\n"
-    (closing signature-name)))
+   (opening fst)
+   "\n\n"
+   (body fst lst)
+   "\n\n"
+   (closing signature-name)))
  
 (define (opening fst)
   (string-append "Dear " fst ","))
@@ -36,4 +36,12 @@
 (write-file 'stdout (letter "Matt" "Fiser" "Feisen"))
 (write-file 'stdout (letter "Jay" "Springer" "Fiddletop"))
 (write-file 'stdout (letter "Milo" "Dee" "Fudpucker"))
+
+(define (main in-fst in-lst in-signature out)
+  (write-file out
+              (letter (read-file in-fst)
+                      (read-file in-lst)
+                      (read-file in-signature))))
+
+(main "first_name.dat" "last_name.dat" "signature.dat" "letter.dat")
 
