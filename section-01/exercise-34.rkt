@@ -8,9 +8,9 @@
 ;; 2b. PURPOSE STATMENT: Extracts the first 1String from a non-empty string.
 ;; 2c. HEADER:
 ;; (define (string-first str)
-;;   "a")
+;;   "x")
 ;; 3. FUNCTIONAL EXAMPLES:
-;; Given: "test", Expect #\s.
+;; Given: "abc", Expect #\a.
 ;; 4. TEMPLATE:
 ;; (define (string-first str)
 ;;  (... str ...)) 
