@@ -14,9 +14,14 @@
 
 (define WHEEL (circle WHEEL-RADIUS "solid" "black"))
 
-(define CAR-BODY-HEIGHT (* WHEEL-RADIUS 2))
-(define CAR-BODY-LENGTH (* WHEEL-RADIUS 7))
+(define AUTO-BODY-HEIGHT (* WHEEL-RADIUS 2))
+(define AUTO-BODY-LENGTH (* WHEEL-RADIUS 7))
+(define AUTO-BODY (rectangle AUTO-BODY-LENGTH AUTO-BODY-HEIGHT "solid" "red"))
 
-(define CAR-BODY (rectangle CAR-BODY-LENGTH CAR-BODY-HEIGHT "solid" "red"))
+(define AUTO-CAB-HEIGHT (/ AUTO-BODY-HEIGHT 2))
+(define AUTO-CAB-LENGTH (/ AUTO-BODY-LENGTH 2))
+(define AUTO-CAB (rectangle AUTO-CAB-LENGTH AUTO-CAB-HEIGHT "solid" "red"))
 
-(place-image  CAR-BODY (/ WIDTH-OF-WORLD 2) (/ HEIGHT-OF-WORLD 2) (empty-scene WIDTH-OF-WORLD HEIGHT-OF-WORLD))
+(define AUTO (overlay/offset AUTO-BODY 0 (- 0 (+ (/ AUTO-BODY-HEIGHT 2) (/ AUTO-CAB-HEIGHT 2))) AUTO-CAB))
+
+(place-image AUTO (/ WIDTH-OF-WORLD 2) (/ HEIGHT-OF-WORLD 2) (empty-scene WIDTH-OF-WORLD HEIGHT-OF-WORLD))
