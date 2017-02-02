@@ -5,15 +5,15 @@
 
 ;; 1. DATA DEFINITIONS: 1String represents a string of length one.
 ;; 2a. FUNCTION SIGNATURE: String -> 1String
-;; 2b. PURPOSE STATEMENT: Extracts the last character from a non-empty string.
+;; 2b. PURPOSE STATMENT: Extracts the first 1String from a non-empty string.
 ;; 2c. HEADER:
-;; (define (string-last str)
-;;  "x")
+;; (define (string-first str)
+;;   "a")
 ;; 3. FUNCTIONAL EXAMPLES:
-;; Given: "abc", Expect \#c.
+;; Given: "test", Expect #\s.
 ;; 4. TEMPLATE:
-;; (define (string-last str)
-;;   (... str ...))
+;; (define (string-first str)
+;;  (... str ...)) 
 ;; 5. CODE:
-(define (string-last str)
-   (string-ref str (sub1 (string-length str))))
+(define (string-first str)
+ (string-ref str 0)) 

@@ -5,7 +5,7 @@
 
 ;; 1. DATA DEFINITIONS: NA
 ;; 2a. FUNCTION SIGNATURE: String -> String
-;; 2b. PURPOSE STATMENT: Produces a string like the given one with the last character removed.
+;; 2b. PURPOSE STATEMENT: Produces a string like the given one with the last character removed.
 ;; 2c. HEADER:
 ;; (define (string-remove-last str)
 ;;   "")

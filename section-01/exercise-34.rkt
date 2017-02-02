@@ -5,7 +5,7 @@
 
 ;; 1. DATA DEFINITIONS: 1String represents a string of length one.
 ;; 2a. FUNCTION SIGNATURE: String -> 1String
-;; 2b. PURPOSE STATMENT: Extracts the first 1String from a non-empty string.
+;; 2b. PURPOSE STATEMENT: Extracts the first 1String from a non-empty string.
 ;; 2c. HEADER:
 ;; (define (string-first str)
 ;;   "x")

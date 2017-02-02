@@ -7,7 +7,7 @@
 
 ;; 1. DATA DEFINITIONS: We use numbers to represent pixels.
 ;; 2a. FUNCTION SIGNATURE: Image -> Number
-;; 2b. PURPOSE STATMENT: Counts the number of pixels in a given image.
+;; 2b. PURPOSE STATEMENT: Counts the number of pixels in a given image.
 ;; 2c. HEADER:
 ;; (define (image-area img)
 ;;  0 )
