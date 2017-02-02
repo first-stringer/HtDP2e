@@ -8,7 +8,8 @@
 
 (define WIDTH-OF-WORLD 200)
 (define HEIGHT-OF-WORLD 50)
-(define BACKGROUND (empty-scene WIDTH-OF-WORLD HEIGHT-OF-WORLD))
+(define TREE (underlay/xy (circle 10 "solid" "green") 9 15 (rectangle 2 20 "solid" "brown")))
+(define BACKGROUND (overlay TREE (empty-scene WIDTH-OF-WORLD HEIGHT-OF-WORLD)))
   
 (define WHEEL-RADIUS 5)
 (define WHEEL-DISTANCE (* WHEEL-RADIUS 5))
@@ -75,7 +76,9 @@
 
 ;; 1. DATA DEFINITIONS: A WorldState is a Number.
 ;; 2a. FUNCTION SIGNATURE: WorldState -> Boolean
-;; 2b. PURPOSE STATEMENT: When needed, big-bang evaluates (end? cw) to determine whether the program should stop.
+;; 2b. PURPOSE STATEMENT: When needed, big-bang evaluates (end? cw) to
+;; determine whether the program should stop.  This program stops when
+;; the car has disappeared on the right.
 ;; 2c. HEADER:
 ;; (define (end? cw)
 ;;  #t)
@@ -83,15 +86,15 @@
 ;; Given: >= WIDTH-OF-WORLD + CAR width / 2, Expect: true
 ;; Given: < WIDTH-OF-WORLD + CAR width / 2, Expect: false
 ;; 3b. TESTS:
-(check-expect (end? (- WIDTH-OF-WORLD (/ (image-width CAR) 2))) #t)
-(check-expect (end? (+ 1 (- WIDTH-OF-WORLD (/ (image-width CAR) 2)))) #t)
-(check-expect (end? (- (- WIDTH-OF-WORLD (/ (image-width CAR) 2)) 1)) #f)
+(check-expect (end? (+ 1 (+ WIDTH-OF-WORLD (/ (image-width CAR) 2)))) #t)
+(check-expect (end? (+ WIDTH-OF-WORLD (/ (image-width CAR) 2))) #f)
+(check-expect (end? (- (+ WIDTH-OF-WORLD (/ (image-width CAR) 2)) 1)) #f)
 ;; 4. TEMPLATE:
 ;; (define (end? cw)
 ;;  (... cw ... WIDTH-OF-WORLD))
 ;; 5. CODE:
 (define (end? cw)
-  (if (< cw (- WIDTH-OF-WORLD (/ (image-width CAR) 2))) false true))
+  (if (> cw (+ WIDTH-OF-WORLD (/ (image-width CAR) 2))) true false))
 
 ;; 1. DATA DEFINITIONS: A WorldState is a Number.
 ;; 2a. FUNCTION SIGNATURE: WorldState -> WorldState
@@ -106,9 +109,9 @@
 ;;  (... ws ... big-bang ...))
 ;; 5. CODE:
 (define (main ws)
-   (big-bang ws
-     [on-tick tock]
-     [to-draw render]
-     [stop-when end?]))
+  (big-bang ws
+            [on-tick tock]
+            [to-draw render]
+            [stop-when end?]))
 
 (main 13)
