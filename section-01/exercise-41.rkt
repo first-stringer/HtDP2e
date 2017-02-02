@@ -18,15 +18,15 @@
 (define SPACE (rectangle (* WHEEL-RADIUS 3) WHEEL-RADIUS "solid" "white"))
 (define BOTH-WHEELS (beside WHEEL SPACE WHEEL))
 
-(define AUTO-BODY-HEIGHT (* WHEEL-RADIUS 2))
-(define AUTO-BODY-LENGTH (* WHEEL-RADIUS 8))
-(define AUTO-BODY (rectangle AUTO-BODY-LENGTH AUTO-BODY-HEIGHT "solid" "red"))
+(define CAR-BODY-HEIGHT (* WHEEL-RADIUS 2))
+(define CAR-BODY-LENGTH (* WHEEL-RADIUS 8))
+(define CAR-BODY (rectangle CAR-BODY-LENGTH CAR-BODY-HEIGHT "solid" "red"))
 
-(define AUTO-CAB-HEIGHT (/ AUTO-BODY-HEIGHT 2))
-(define AUTO-CAB-LENGTH (/ AUTO-BODY-LENGTH 2))
-(define AUTO-CAB (rectangle AUTO-CAB-LENGTH AUTO-CAB-HEIGHT "solid" "red"))
+(define CAR-CAB-HEIGHT (/ CAR-BODY-HEIGHT 2))
+(define CAR-CAB-LENGTH (/ CAR-BODY-LENGTH 2))
+(define CAR-CAB (rectangle CAR-CAB-LENGTH CAR-CAB-HEIGHT "solid" "red"))
 
-(define AUTO (overlay/offset BOTH-WHEELS 0 (- 0 AUTO-BODY-HEIGHT) (overlay/offset AUTO-BODY 0 (- 0 (+ (/ AUTO-BODY-HEIGHT 2) (/ AUTO-CAB-HEIGHT 2))) AUTO-CAB)))
+(define CAR (overlay/offset BOTH-WHEELS 0 (- 0 CAR-BODY-HEIGHT) (overlay/offset CAR-BODY 0 (- 0 (+ (/ CAR-BODY-HEIGHT 2) (/ CAR-CAB-HEIGHT 2))) CAR-CAB)))
 
 (define Y-CAR (/ HEIGHT-OF-WORLD 2))
 
@@ -61,14 +61,54 @@
 ;; Given: 150, Expect: (place-image CAR 150 Y-CAR BACKGROUND) 
 ;; Given: 200, Expect: (place-image CAR 200 Y-CAR BACKGROUND)
 ;; 3b. TESTS:
-(check-expect (render 50) (place-image AUTO 50 Y-CAR BACKGROUND))
-(check-expect (render 100) (place-image AUTO 100 Y-CAR BACKGROUND))
-(check-expect (render 150) (place-image AUTO 150 Y-CAR BACKGROUND))
-(check-expect (render 200) (place-image AUTO 200 Y-CAR BACKGROUND))
+(check-expect (render 50) (place-image CAR 50 Y-CAR BACKGROUND))
+(check-expect (render 100) (place-image CAR 100 Y-CAR BACKGROUND))
+(check-expect (render 150) (place-image CAR 150 Y-CAR BACKGROUND))
+(check-expect (render 200) (place-image CAR 200 Y-CAR BACKGROUND))
 ;; 4. TEMPLATE:
 ;; (define (render ws)
 ;;  (... ws ... ))
 ;; 5. CODE:
 (define (render ws)
-  (place-image AUTO ws Y-CAR BACKGROUND)
+  (place-image CAR ws Y-CAR BACKGROUND)
   )
+
+;; 1. DATA DEFINITIONS: A WorldState is a Number.
+;; 2a. FUNCTION SIGNATURE: WorldState -> Boolean
+;; 2b. PURPOSE STATEMENT: When needed, big-bang evaluates (end? cw) to determine whether the program should stop.
+;; 2c. HEADER:
+;; (define (end? cw)
+;;  #t)
+;; 3a. FUNCTIONAL EXAMPLES:
+;; Given: >= WIDTH-OF-WORLD, Expect: true
+;; Given: < WIDTH-OF-WORLD, Expect: false
+;; 3b. TESTS:
+(check-expect (end? WIDTH-OF-WORLD) #t)
+(check-expect (end? (+ WIDTH-OF-WORLD 1)) #t)
+(check-expect (end? (- WIDTH-OF-WORLD 1)) #f)
+;; 4. TEMPLATE:
+;; (define (end? cw)
+;;  (... cw ... WIDTH-OF-WORLD))
+;; 5. CODE:
+(define (end? cw)
+  (if (< cw WIDTH-OF-WORLD) false true))
+
+;; 1. DATA DEFINITIONS: A WorldState is a Number.
+;; 2a. FUNCTION SIGNATURE: WorldState -> WorldState
+;; 2b. PURPOSE STATEMENT: Launches the program from some initial state.
+;; 2c. HEADER:
+;; (define (main ws)
+;;  ws)
+;; 3a. FUNCTIONAL EXAMPLES: NA
+;; 3b. TESTS: NA
+;; 4. TEMPLATE:
+;; (define (main ws)
+;;  (... ws ... big-bang ...))
+;; 5. CODE:
+(define (main ws)
+   (big-bang ws
+     [on-tick tock]
+     [to-draw render]
+     [stop-when end?]))
+
+(main 13)
