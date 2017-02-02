@@ -17,14 +17,14 @@
 (define SPACE (rectangle (* WHEEL-RADIUS 3) WHEEL-RADIUS "solid" "white"))
 (define BOTH-WHEELS (beside WHEEL SPACE WHEEL))
 
-(define AUTO-BODY-HEIGHT (* WHEEL-RADIUS 2))
-(define AUTO-BODY-LENGTH (* WHEEL-RADIUS 8))
-(define AUTO-BODY (rectangle AUTO-BODY-LENGTH AUTO-BODY-HEIGHT "solid" "red"))
+(define CAR-BODY-HEIGHT (* WHEEL-RADIUS 2))
+(define CAR-BODY-LENGTH (* WHEEL-RADIUS 8))
+(define CAR-BODY (rectangle CAR-BODY-LENGTH CAR-BODY-HEIGHT "solid" "red"))
 
-(define AUTO-CAB-HEIGHT (/ AUTO-BODY-HEIGHT 2))
-(define AUTO-CAB-LENGTH (/ AUTO-BODY-LENGTH 2))
-(define AUTO-CAB (rectangle AUTO-CAB-LENGTH AUTO-CAB-HEIGHT "solid" "red"))
+(define CAR-CAB-HEIGHT (/ CAR-BODY-HEIGHT 2))
+(define CAR-CAB-LENGTH (/ CAR-BODY-LENGTH 2))
+(define CAR-CAB (rectangle CAR-CAB-LENGTH CAR-CAB-HEIGHT "solid" "red"))
 
-(define AUTO (overlay/offset BOTH-WHEELS 0 (- 0 AUTO-BODY-HEIGHT) (overlay/offset AUTO-BODY 0 (- 0 (+ (/ AUTO-BODY-HEIGHT 2) (/ AUTO-CAB-HEIGHT 2))) AUTO-CAB)))
+(define CAR (overlay/offset BOTH-WHEELS 0 (- 0 CAR-BODY-HEIGHT) (overlay/offset CAR-BODY 0 (- 0 (+ (/ CAR-BODY-HEIGHT 2) (/ CAR-CAB-HEIGHT 2))) CAR-CAB)))
 
-(place-image AUTO (/ WIDTH-OF-WORLD 2) (/ HEIGHT-OF-WORLD 2) (empty-scene WIDTH-OF-WORLD HEIGHT-OF-WORLD))
+(place-image CAR (/ WIDTH-OF-WORLD 2) (/ HEIGHT-OF-WORLD 2) (empty-scene WIDTH-OF-WORLD HEIGHT-OF-WORLD))
