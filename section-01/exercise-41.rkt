@@ -80,18 +80,18 @@
 ;; (define (end? cw)
 ;;  #t)
 ;; 3a. FUNCTIONAL EXAMPLES:
-;; Given: >= WIDTH-OF-WORLD, Expect: true
-;; Given: < WIDTH-OF-WORLD, Expect: false
+;; Given: >= WIDTH-OF-WORLD + CAR width / 2, Expect: true
+;; Given: < WIDTH-OF-WORLD + CAR width / 2, Expect: false
 ;; 3b. TESTS:
-(check-expect (end? WIDTH-OF-WORLD) #t)
-(check-expect (end? (+ WIDTH-OF-WORLD 1)) #t)
-(check-expect (end? (- WIDTH-OF-WORLD 1)) #f)
+(check-expect (end? (- WIDTH-OF-WORLD (/ (image-width CAR) 2))) #t)
+(check-expect (end? (+ 1 (- WIDTH-OF-WORLD (/ (image-width CAR) 2)))) #t)
+(check-expect (end? (- (- WIDTH-OF-WORLD (/ (image-width CAR) 2)) 1)) #f)
 ;; 4. TEMPLATE:
 ;; (define (end? cw)
 ;;  (... cw ... WIDTH-OF-WORLD))
 ;; 5. CODE:
 (define (end? cw)
-  (if (< cw WIDTH-OF-WORLD) false true))
+  (if (< cw (- WIDTH-OF-WORLD (/ (image-width CAR) 2))) false true))
 
 ;; 1. DATA DEFINITIONS: A WorldState is a Number.
 ;; 2a. FUNCTION SIGNATURE: WorldState -> WorldState
