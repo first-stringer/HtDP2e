@@ -37,8 +37,8 @@
 
 (define Y-CAR (/ HEIGHT-OF-WORLD 2))
 
-;; 2a. FUNCTION SIGNATURE: AnimationState -> x-car
-;; 2b. PURPOSE STATEMENT: Takes the animation state and returns the x coordinate
+;; 2a. FUNCTION SIGNATURE: AnimationState -> Number (x-coordinate of car)
+;; 2b. PURPOSE STATEMENT: Takes the animation state and returns the x-coordinate
 ;; for the center of the car.
 ;; 2c. HEADER:
 ;; (define (x-car as)
@@ -48,15 +48,38 @@
 ;; Given: 10, Expect: 30
 ;; Given: 15, Expect: 45
 ;; 3b. TESTS:
-(check-expect (x-car 1) 3)
-(check-expect (x-car 10) 30)
-(check-expect (x-car 15) 45)
+(check-expect (x-car 1) (* SPEED 1))
+(check-expect (x-car 10) (* SPEED 10))
+(check-expect (x-car 15) (* SPEED 15))
 ;; 4. TEMPLATE:
 ;; (define (x-car as)
 ;;  (... as ... SPEED))
 ;; 5. CODE:
 (define (x-car as)
   (* as SPEED))
+
+;; 2a. FUNCTION SIGNATURE: AnimationState -> Number (y-coordinate of car)
+;; 2b. PURPOSE STATEMENT: Takes the animation state and returns the y-coordinate
+;; for the center of the car.
+;; 2c. HEADER:
+;; (define (y-car as)
+;;   0)
+;; 3a. FUNCTIONAL EXAMPLES:
+;; Given: 0, Expect: Y-CAR + sine 0
+;; Given: 1, Expect: Y-CAR + sine 1
+;; Given: 10, Expect: Y-CAR + sine 10
+;; Given: 100, Expect: Y-CAR + sine 100
+;; 3b. TESTS:
+(check-within (y-car 0) (+ Y-CAR (floor (* 10 (sin 0)))) 0.0001)
+(check-within (y-car 1) (+ Y-CAR (floor (* 10 (sin 1)))) 0.0001)
+(check-within (y-car 10) (+ Y-CAR (floor (* 10 (sin 10)))) 0.0001)
+(check-within (y-car 100) (+ Y-CAR (floor (* 10 (sin 100)))) 0.0001)
+;; 4. TEMPLATE:
+;; (define (y-car as)
+;;  (... as ... Y_CAR))
+;; 5. CODE:
+(define (y-car as)
+  (+ Y-CAR (floor (* 10 (sin as)))))
 
 ;; 2a. FUNCTION SIGNATURE: AnimationState -> AnimationState
 ;; 2b. PURPOSE STATEMENT: Advances the state of the world by one every clock tick.
@@ -88,16 +111,16 @@
 ;; Given: 15, Expect: (place-image CAR 45 Y-CAR BACKGROUND) 
 ;; Given: 20, Expect: (place-image CAR 60 Y-CAR BACKGROUND)
 ;; 3b. TESTS:
-(check-expect (render 5) (place-image CAR 15 Y-CAR BACKGROUND))
-(check-expect (render 10) (place-image CAR 30 Y-CAR BACKGROUND))
-(check-expect (render 15) (place-image CAR 45 Y-CAR BACKGROUND))
-(check-expect (render 20) (place-image CAR 60 Y-CAR BACKGROUND))
+(check-expect (render 5) (place-image CAR 15 (y-car 5) BACKGROUND))
+(check-expect (render 10) (place-image CAR 30 (y-car 10) BACKGROUND))
+(check-expect (render 15) (place-image CAR 45 (y-car 15) BACKGROUND))
+(check-expect (render 20) (place-image CAR 60 (y-car 20) BACKGROUND))
 ;; 4. TEMPLATE:
 ;; (define (render as)
 ;;  (... as ... ))
 ;; 5. CODE:
 (define (render as)
-  (place-image CAR (x-car as) Y-CAR BACKGROUND)
+  (place-image CAR (x-car as) (y-car as) BACKGROUND)
   )
 
 ;; 2a. FUNCTION SIGNATURE: AnimationState -> Boolean
