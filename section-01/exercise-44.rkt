@@ -136,4 +136,4 @@
             [to-draw render]
             [stop-when end?]))
 
-(main (image-width CAR))
+(main 1)
