@@ -24,8 +24,7 @@
                                   (place-image (text TEXT_3 FONT_SIZE FONT_COLOR) (floor (/ WIDTH 2)) (- HEIGHT (ceiling (/ FONT_SIZE 2)) 2) MTSCN)))
 
 ; returns the last picture to display when the program is finished.
-(define (last-picture ws)
-  LAST_PICTURE)
+(define (last-picture ws) LAST_PICTURE)
  
 ; WorldState -> WorldState
 (define (main y0)
@@ -33,7 +32,6 @@
             [on-tick nxt]
             [to-draw render]
             [stop-when stop? last-picture]))
-
 
 ; WorldState -> WorldState
 ; determines when to stop the program, in this case whene the UFO has landed
@@ -52,7 +50,10 @@
 ; place UFO at given height into the center of MTSCN
 ;;(check-expect (render 11) (place-image UFO (floor (/ WIDTH 2)) 11 MTSCN))
 (define (render y)
-  (place-image UFO (floor (/ WIDTH 2)) y (place-image (text (cond  [(<= y (floor (* 2 (/ HEIGHT 3)))) TEXT_1]  [(< y (- HEIGHT (ceiling (/ (image-height UFO) 2)) FONT_SIZE)) TEXT_2]  [else TEXT_3]  ) FONT_SIZE FONT_COLOR) (floor (/ WIDTH 2)) (- HEIGHT (ceiling (/ FONT_SIZE 2)) 2) MTSCN)))
+  (place-image UFO (floor (/ WIDTH 2)) y (place-image (text (cond
+                                                              [(<= y (floor (* 2 (/ HEIGHT 3)))) TEXT_1]
+                                                              [else TEXT_2]
+                                                              ) FONT_SIZE FONT_COLOR) (floor (/ WIDTH 2)) (- HEIGHT (ceiling (/ FONT_SIZE 2)) 2) MTSCN)))
 
 (main 10)
 
