@@ -1,6 +1,6 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
-#reader(lib "htdp-beginner-reader.ss" "lang")((modname section-4.4-sample-problem-01) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+#reader(lib "htdp-beginner-reader.ss" "lang")((modname section-4.4-sample-problem-02) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 (require 2htdp/universe)
 (require 2htdp/image)
 
@@ -35,10 +35,10 @@
 
 ; WorldState -> WorldState
 ; determines when to stop the program, in this case whene the UFO has landed
-(check-expect (stop? (- (- HEIGHT (ceiling (/ (image-height UFO) 2))) FONT_SIZE)) #t)
-(check-expect (stop? (- (- HEIGHT (+ 1 (ceiling (/ (image-height UFO) 2)))) FONT_SIZE)) #f)
+(check-expect (stop? (- HEIGHT (ceiling (/ (image-height UFO) 2)) FONT_SIZE)) #t)
+(check-expect (stop? (- HEIGHT (+ 1 (ceiling (/ (image-height UFO) 2))) FONT_SIZE)) #f)
 (define (stop? ws)
-  (if (>= ws (- (- HEIGHT (ceiling (/ (image-height UFO) 2))) FONT_SIZE)) #t #f))
+  (if (>= ws (- HEIGHT (ceiling (/ (image-height UFO) 2)) FONT_SIZE)) #t #f))
 
 ; WorldState -> WorldState
 ; computes next location of UFO 
