@@ -3,7 +3,10 @@
 #reader(lib "htdp-beginner-reader.ss" "lang")((modname exercise-54) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 ;; http://www.ccs.neu.edu/home/matthias/HtDP2e/part_one.html#%28part._itemization._sec~3aitemization%29
 
-;; It ignores the scenario where x is greater than HEIGHT. This would lead to
-;; the rocket being displayed partially or completely below ground.
+;; First, you must check if x is a string before checking if it equals
+;; "resting".  Otherwise an error will occur if you try to compare a Number to
+;; the string "resting". Second, it ignores the scenario where x is greater than
+;; HEIGHT (and therefore outside the bounds of the scene). This would lead to
+;; the rocket being displayed partially or completely below ground.  
 
-(or (string=? "resting" x) (> x HEIGHT))
+(or (and (string? x) (string=? "resting" x)) (> x HEIGHT))
