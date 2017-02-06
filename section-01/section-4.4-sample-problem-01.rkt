@@ -15,30 +15,19 @@
 (define MTSCN (empty-scene WIDTH HEIGHT))
 (define UFO (overlay (circle 10 "solid" "green") (circle 12 "solid" "red")))
 
-(define FONT_SIZE 12)
-(define FONT_COLOR "red")
-(define TEXT_1 "descending")
-(define TEXT_2 "closing in")
-(define TEXT_3 "landed")
-(define LAST_PICTURE (place-image UFO (floor (/ WIDTH 2)) (- HEIGHT (ceiling (/ (image-height UFO) 2)) FONT_SIZE)
-                                  (place-image (text TEXT_3 FONT_SIZE FONT_COLOR) (floor (/ WIDTH 2)) (- HEIGHT (ceiling (/ FONT_SIZE 2)) 2) MTSCN)))
-
-; returns the last picture to display when the program is finished.
-(define (last-picture ws) LAST_PICTURE)
- 
 ; WorldState -> WorldState
 (define (main y0)
   (big-bang y0
             [on-tick nxt]
             [to-draw render]
-            [stop-when stop? last-picture]))
+            [stop-when stop?]))
 
 ; WorldState -> WorldState
 ; determines when to stop the program, in this case whene the UFO has landed
-(check-expect (stop? (- (- HEIGHT (ceiling (/ (image-height UFO) 2))) FONT_SIZE)) #t)
-(check-expect (stop? (- (- HEIGHT (+ 1 (ceiling (/ (image-height UFO) 2)))) FONT_SIZE)) #f)
+(check-expect (stop? (- HEIGHT (ceiling (/ (image-height UFO) 2)))) #t)
+(check-expect (stop? (- HEIGHT (+ 1 (ceiling (/ (image-height UFO) 2))))) #f)
 (define (stop? ws)
-  (if (>= ws (- (- HEIGHT (ceiling (/ (image-height UFO) 2))) FONT_SIZE)) #t #f))
+  (if (>= ws (- HEIGHT (ceiling (/ (image-height UFO) 2)))) #t #f))
 
 ; WorldState -> WorldState
 ; computes next location of UFO 
@@ -50,10 +39,7 @@
 ; place UFO at given height into the center of MTSCN
 ;;(check-expect (render 11) (place-image UFO (floor (/ WIDTH 2)) 11 MTSCN))
 (define (render y)
-  (place-image UFO (floor (/ WIDTH 2)) y (place-image (text (cond
-                                                              [(<= y (floor (* 2 (/ HEIGHT 3)))) TEXT_1]
-                                                              [else TEXT_2]
-                                                              ) FONT_SIZE FONT_COLOR) (floor (/ WIDTH 2)) (- HEIGHT (ceiling (/ FONT_SIZE 2)) 2) MTSCN)))
+  (place-image UFO (floor (/ WIDTH 2)) y MTSCN))
 
 (main 10)
 
