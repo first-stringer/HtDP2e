@@ -91,12 +91,30 @@
                                                    (place-image (circle (/ SCENE_HEIGHT 4) "outline" "green") (- SCENE_WIDTH (/ SCENE_WIDTH 4)) (/ SCENE_HEIGHT 2)
                                                                 EMPTY_TL)))]
     [(string=? cs "yellow") (place-image (circle (/ SCENE_HEIGHT 4) "outline" "red") (/ SCENE_WIDTH 4) (/ SCENE_HEIGHT 2)
-                           (place-image (circle (/ SCENE_HEIGHT 4) "solid" "yellow") (/ SCENE_WIDTH 2) (/ SCENE_HEIGHT 2)
-                                        (place-image (circle (/ SCENE_HEIGHT 4) "outline" "green") (- SCENE_WIDTH (/ SCENE_WIDTH 4)) (/ SCENE_HEIGHT 2)
-                                                     EMPTY_TL)))]
+                                         (place-image (circle (/ SCENE_HEIGHT 4) "solid" "yellow") (/ SCENE_WIDTH 2) (/ SCENE_HEIGHT 2)
+                                                      (place-image (circle (/ SCENE_HEIGHT 4) "outline" "green") (- SCENE_WIDTH (/ SCENE_WIDTH 4)) (/ SCENE_HEIGHT 2)
+                                                                   EMPTY_TL)))]
     [(string=? cs "green") (place-image (circle (/ SCENE_HEIGHT 4) "outline" "red") (/ SCENE_WIDTH 4) (/ SCENE_HEIGHT 2)
-                           (place-image (circle (/ SCENE_HEIGHT 4) "outline" "yellow") (/ SCENE_WIDTH 2) (/ SCENE_HEIGHT 2)
-                                        (place-image (circle (/ SCENE_HEIGHT 4) "solid" "green") (- SCENE_WIDTH (/ SCENE_WIDTH 4)) (/ SCENE_HEIGHT 2)
-                                                     EMPTY_TL)))]
+                                        (place-image (circle (/ SCENE_HEIGHT 4) "outline" "yellow") (/ SCENE_WIDTH 2) (/ SCENE_HEIGHT 2)
+                                                     (place-image (circle (/ SCENE_HEIGHT 4) "solid" "green") (- SCENE_WIDTH (/ SCENE_WIDTH 4)) (/ SCENE_HEIGHT 2)
+                                                                  EMPTY_TL)))]
     )
   )
+
+;; 2a. FUNCTION SIGNATURE: TrafficLight -> TrafficLight
+;; 2b. PURPOSE STATEMENT: Simulates a clock-based American traffic light (tl).
+;; 2c. HEADER:
+;; (define (traffic-light-simulation initial-state)
+;;  initial-state)
+;; 3a. FUNCTIONAL EXAMPLES: NA
+;; 3b. TESTS: NA
+;; 4. TEMPLATE:
+;; (define (traffic-light-simulation initial-state)
+;;  (... initial-state ...))
+;; 5. CODE:
+(define (traffic-light-simulation initial-state)
+  (big-bang initial-state
+            [to-draw tl-render]
+            [on-tick tl-next 1]))
+
+(traffic-light-simulation "red")
