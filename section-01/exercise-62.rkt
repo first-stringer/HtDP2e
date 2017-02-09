@@ -49,14 +49,40 @@
     )
   )
 
-;; 2a. FUNCTION SIGNATURE:
-;; 2b. PURPOSE STATEMENT:
+;; 2a. FUNCTION SIGNATURE: DoorState KeyEvent -> DoorState
+;; 2b. PURPOSE STATEMENT: Turn key event ke into an action on state ds.
 ;; 2c. HEADER:
+;; (define (door-actions ds ke) ds)
 ;; 3a. FUNCTIONAL EXAMPLES:
-;; Given: , Expect:
+;; Given: LOCKED "u", Expect: CLOSED
+;; Given: CLOSED "l", Expect: LOCKED
+;; Given: CLOSED " ", Expect: OPEN
+;; Given: OPEN ---, Expect: OPEN
 ;; 3b. TESTS:
+(check-expect (door-actions LOCKED "u") CLOSED)
+(check-expect (door-actions CLOSED "l") LOCKED)
+(check-expect (door-actions CLOSED " ") OPEN)
+(check-expect (door-actions OPEN "X") OPEN)
+(check-expect (door-actions CLOSED "X") CLOSED)
+(check-expect (door-actions LOCKED "X") LOCKED)
 ;; 4. TEMPLATE:
+;; (define (door-actions ds ke)
+;;  (cond
+;;    [(and (equal? ds LOCKED) (equal? ke "u")) ...]
+;;    [(and (equal? ds CLOSED) (equal? ke "l")) ...]
+;;    [(and (equal? ds CLOSED) (equal? ke " ")) ...]
+;;    [else ...]
+;;    )
+;;  )
 ;; 5. CODE:
+(define (door-actions ds ke)
+  (cond
+    [(and (equal? ds LOCKED) (equal? ke "u")) CLOSED]
+    [(and (equal? ds CLOSED) (equal? ke "l")) LOCKED]
+    [(and (equal? ds CLOSED) (equal? ke " ")) OPEN] 
+    [else ds]
+    )
+  )
 
 ;; 2a. FUNCTION SIGNATURE:
 ;; 2b. PURPOSE STATEMENT:
