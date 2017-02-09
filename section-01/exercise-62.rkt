@@ -84,11 +84,37 @@
     )
   )
 
-;; 2a. FUNCTION SIGNATURE:
-;; 2b. PURPOSE STATEMENT:
+;; 2a. FUNCTION SIGNATURE: DoorState -> Image
+;; 2b. PURPOSE STATEMENT: Translates the state ds into a large text image.
 ;; 2c. HEADER:
+;; (define (door-render ds) ds)
 ;; 3a. FUNCTIONAL EXAMPLES:
 ;; Given: , Expect:
 ;; 3b. TESTS:
+(check-expect (door-render LOCKED) (text LOCKED 40 "red"))
+(check-expect (door-render CLOSED) (text CLOSED 40 "red"))
+(check-expect (door-render OPEN) (text OPEN 40 "red"))
 ;; 4. TEMPLATE:
+;; (define (door-render ds)
+;;  (... ds ...))
 ;; 5. CODE:
+(define (door-render s)
+  (text s 40 "red"))
+
+;; 2a. FUNCTION SIGNATURE: DoorState -> DoorState
+;; 2b. PURPOSE STATEMENT: Simulates a door with an automatic door closer.
+;; 2c. HEADER:
+;; (define (door-simulation ds) ds)
+;; 3a. FUNCTIONAL EXAMPLES: NA
+;; 3b. TESTS: NA
+;; 4. TEMPLATE:
+;; (define (door-simulation ds)
+;;  (... ds ...))
+;; 5. CODE:
+(define (door-simulation initial-state)
+  (big-bang initial-state
+    [on-tick door-closer]
+    [on-key door-actions]
+    [to-draw door-render]))
+
+(door-simulation LOCKED)
