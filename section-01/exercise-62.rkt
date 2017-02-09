@@ -113,7 +113,7 @@
 ;; 5. CODE:
 (define (door-simulation initial-state)
   (big-bang initial-state
-    [on-tick door-closer]
+    [on-tick door-closer 3]
     [on-key door-actions]
     [to-draw door-render]))
 
