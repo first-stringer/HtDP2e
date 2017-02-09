@@ -8,6 +8,7 @@
 (movie-title my-movie)
 (movie-producer my-movie)
 (movie-year my-movie)
+(movie? my-movie)
 
 (define-struct person [name hair eyes phone])
 (define my-person (make-person "Jim" "Brown" "Brown" "555-555-5555"))
@@ -15,20 +16,24 @@
 (person-hair my-person)
 (person-eyes my-person)
 (person-phone my-person)
+(person? my-person)
 
 (define-struct pet [name number])
 (define my-pet (make-pet "Fifi" 1))
 (pet-name my-pet)
 (pet-number my-pet)
+(pet? my-pet)
 
 (define-struct CD [artist title price])
 (define my-CD (make-CD "Prince" "Purple Rain" 16.99))
 (CD-artist my-CD)
 (CD-title my-CD)
 (CD-price my-CD)
+(CD? my-CD)
 
 (define-struct sweater [material size producer])
 (define my-sweater (make-sweater "Cotton" 10 "China"))
 (sweater-material my-sweater)
 (sweater-size my-sweater)
 (sweater-producer my-sweater)
+(sweater? my-sweater)
