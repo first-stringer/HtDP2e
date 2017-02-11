@@ -4,11 +4,11 @@
 ;; http://www.ccs.neu.edu/home/matthias/HtDP2e/part_one.html#%28part._sec~3aprogstructs%29
 
 (define-struct phone [area number])
-; A Phone is a structure:
-; (make-phone Number String)
-; interpretation an area code and the number with local switch prefix
+;; A Phone is a structure:
+;; (make-phone Number String)
+;; interpretation an area code and the number with local switch prefix
 
 (define-struct phone# [area switch num])
-; A Phone# is a structure:
-; (make-phone Number Number Number)
-; interpretation an area code (000...999), a local switch prefix (000...999), and the number (0000...9999)
+;; A Phone# is a structure:
+;; (make-phone Number Number Number)
+;; interpretation an area code (000...999), a local switch prefix (000...999), and the number (0000...9999)
