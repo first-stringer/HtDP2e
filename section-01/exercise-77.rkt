@@ -7,4 +7,4 @@
 ;; hours is an integer from 0 to 23,
 ;; minutes is an integer from 0 to 59, and
 ;; seconds is an integer from 0 to 59.
-(define time-point-since-midnight [hours minutes seconds])
+(define-struct time-point-since-midnight [hours minutes seconds])
