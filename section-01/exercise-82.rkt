@@ -29,3 +29,43 @@
 ;; 5. CODE:
 (define (check-chars c1 c2)
   (if (equal? c1 c2) c1 #false))
+
+;; 2a. FUNCTION SIGNATURE: 3-letter-word -> 3-letter-word
+;; 2b. PURPOSE STATEMENT: Produces a word that indicates where the given ones
+;; agree and disagree. The function retains the content of the structure fields
+;; if the two agree; otherwise it places #false in the field of the resulting
+;; word. 
+;; 2c. HEADER:
+;; (define (check-3l-words w1 w2)
+;;   (make-3-letter-word #false #false #false))
+;; 3a. FUNCTIONAL EXAMPLES:
+;; Given: "a" "a" "a" & "a" "a" "a", Expect: "a" "a" "a"
+;; Given: "b" "b" "b" & "c" "c" "c", Expect: #false #false #false
+;; Given: "a" "b" "c" & "a" "e" "c", Expect: "a" #false "c" 
+;; Given: "a" #false "c" & "a" "e" "c", Expect: "a" #false "c" 
+;; Given: "a" #false "c" & "a" #false "c", Expect: "a" #false "c" 
+;; 3b. TESTS:
+(check-expect (check-3l-words (make-3-letter-word "a" "a" "a") (make-3-letter-word "a" "a" "a")) (make-3-letter-word "a" "a" "a"))
+(check-expect (check-3l-words (make-3-letter-word "b" "b" "b") (make-3-letter-word "c" "c" "c")) (make-3-letter-word #false #false #false))
+(check-expect (check-3l-words (make-3-letter-word "a" "b" "c") (make-3-letter-word "a" "e" "c")) (make-3-letter-word "a" #false "c"))
+(check-expect (check-3l-words (make-3-letter-word "a" #false "c") (make-3-letter-word "a" "e" "c")) (make-3-letter-word "a" #false "c"))
+(check-expect (check-3l-words (make-3-letter-word "a" #false "c") (make-3-letter-word "a" #false "c")) (make-3-letter-word "a" #false "c"))
+;; 4. TEMPLATE:
+;; (define (check-3l-words w1 w2)
+;;   (
+;;    ... (3-letter-word-first-letter w1) ... (3-letter-word-first-letter w2) ...
+;;    ... (3-letter-word-second-letter w1) ... (3-letter-word-second-letter w2) ...
+;;    ... (3-letter-word-third-letter w1) ... (3-letter-word-third-letter w2) ...
+;;        )
+;;   )
+;; 5. CODE:
+(define (check-3l-words w1 w2)
+  (make-3-letter-word 
+   (check-chars (3-letter-word-first-letter w1) (3-letter-word-first-letter w2))
+   (check-chars (3-letter-word-second-letter w1) (3-letter-word-second-letter w2))
+   (check-chars (3-letter-word-third-letter w1) (3-letter-word-third-letter w2))
+   )
+  )
+
+
+
