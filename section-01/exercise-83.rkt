@@ -23,7 +23,7 @@
 ;; 2a. FUNCTION SIGNATURE: Editor -> Image
 ;; 2b. PURPOSE STATEMENT: Which consumes an Editor (e) and produces an image.
 ;; 2c. HEADER:
-(define (render e) EMPTY_SCENE)
+;; (define (render e) EMPTY_SCENE)
 ;; 3a. FUNCTIONAL EXAMPLES:
 ;; Given: "hello" "world", Expect: image with CURSOR between the words hello and world
 ;; Given: "hello" "", Expect: image with CURSOR after the word hello
@@ -47,4 +47,10 @@
                              (beside (text "" TEXT_SIZE TEXT_COLOR) CURSOR (text "" TEXT_SIZE TEXT_COLOR))
                              EMPTY_SCENE))
 ;; 4. TEMPLATE:
+;; (define (render e)
+;;   (... (editor-pre e) ... (editor-post e) ...))
 ;; 5. CODE:
+(define (render e) 
+  (overlay/align "left" "center"
+                 (beside (text (editor-pre e) TEXT_SIZE TEXT_COLOR) CURSOR (text (editor-post e) TEXT_SIZE TEXT_COLOR))
+                 EMPTY_SCENE))
