@@ -146,14 +146,42 @@
 ;; Given: "" "" "\b", Expect: "" ""
 ;; Given: "hello" "world" "left", Expect: "hell" "oworld"
 ;; Given: "hello" "" "left", Expect: "hell" "o"
-;; Given: "" "world" "left", Expect: "w" "orld"
+;; Given: "" "world" "left", Expect: "" "world"
 ;; Given: "" "" "left", Expect: "" ""
 ;; Given: "hello" "world" "right", Expect: "hellow" "orld"
 ;; Given: "hello" "" "right", Expect: "hello" ""
 ;; Given: "" "world" "right", Expect: "w" "orld"
 ;; Given: "" "" "right", Expect: "" ""
+;; Given: "hello" "world" *, Expect: "hello*" "world" ; * = any single character string not covered above
+;; Given: "hello" "" *, Expect: "hello*" "" ; * = any single character string not covered above
+;; Given: "" "world" *, Expect: "*" "world" ; * = any single character string not covered above
+;; Given: "" "" *, Expect: "*" "" ; * = any single character string not covered above
 ;; Given: "hello" "world" *', Expect: "hello" "world" ; *' = any key event not covered above
 ;; 3b. TESTS
+(check-expect (edit (make-editor "hello" "world") "\t") (make-editor "hello" "world"))
+(check-expect (edit (make-editor "hello" "") "\t") (make-editor "hello" ""))
+(check-expect (edit (make-editor "" "world") "\t") (make-editor "" "world"))
+(check-expect (edit (make-editor "" "") "\t") (make-editor "" ""))
+(check-expect (edit (make-editor "hello" "world") "\r") (make-editor "hello" "world"))
+(check-expect (edit (make-editor "hello" "") "\r") (make-editor "hello" ""))
+(check-expect (edit (make-editor "" "world") "\r") (make-editor "" "world"))
+(check-expect (edit (make-editor "" "") "\r") (make-editor "" ""))
+(check-expect (edit (make-editor "hello" "world") "\b") (make-editor "hell" "world"))
+(check-expect (edit (make-editor "hello" "") "\b") (make-editor "hell" ""))
+(check-expect (edit (make-editor "" "world") "\b") (make-editor "" "world"))
+(check-expect (edit (make-editor "" "") "\b") (make-editor "" ""))
+(check-expect (edit (make-editor "hello" "world") "left") (make-editor "hell" "oworld"))
+(check-expect (edit (make-editor "hello" "") "left") (make-editor "hell" "o"))
+(check-expect (edit (make-editor "" "world") "left") (make-editor "" "world"))
+(check-expect (edit (make-editor "" "") "left") (make-editor "" ""))
+(check-expect (edit (make-editor "hello" "world") "right") (make-editor "hellow" "orld"))
+(check-expect (edit (make-editor "hello" "") "right") (make-editor "hello" ""))
+(check-expect (edit (make-editor "" "world") "right") (make-editor "w" "orld"))
+(check-expect (edit (make-editor "" "") "right") (make-editor "" ""))
+(check-expect (edit (make-editor "hello" "world") " ") (make-editor "hello " "world"))
+(check-expect (edit (make-editor "hello" "") " ") (make-editor "hello " ""))
+(check-expect (edit (make-editor "" "world") " ") (make-editor " " "world"))
+(check-expect (edit (make-editor "" "") " ") (make-editor " " ""))
 ;; 4. TEMPLATE
 ;; (define (edit e ke)
 ;;   (... (editor-pre e) ... (editor-post e) ... ke ...))
