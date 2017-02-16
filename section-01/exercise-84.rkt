@@ -79,6 +79,31 @@
                  EMPTY_SCENE))
 
 
+;; 2a. FUNCTION SIGNATURE: Editor -> Editor
+;; 2b. PURPOSE STATEMENT: Consumes an editor and removes the last character of
+;; pre.
+;; 2c. HEADER
+;; (define (remove-char e) e)
+;; 3a. FUNCTIONAL EXAMPLES
+;; Given: "hello" "world", Expect: "hell" "world"
+;; Given: "" "world", Expect: "" "world"
+;; Given: "hello" "", Expect: "hell" ""
+;; 3b. TESTS
+(check-expect (remove-char (make-editor "hello" "world")) (make-editor "hell" "world"))
+(check-expect (remove-char (make-editor "" "world")) (make-editor "" "world"))
+(check-expect (remove-char (make-editor "hello" "")) (make-editor "hell" ""))
+;; 4. TEMPLATE
+;; (define (remove-char e)
+;;   (... (editor-pre e) ... (editor-post e) ... ))
+;; 5. CODE
+(define (remove-char e)
+  (cond
+    [(= (string-length (editor-pre e)) 0) e]
+    [else (make-editor (substring (editor-pre e) 0 (- (string-length (editor-pre e)) 1)) (editor-post e))]
+    )
+  )
+  
+
 ;; 2a. FUNCTION SIGNATURE: Editor KeyEvent -> Editor 
 ;; 2b. PURPOSE STATEMENT: Consumes two inputs, an Editor (e) and a KeyEvent (ke), and it produces another editor.
 ;; 2c. HEADER
@@ -109,7 +134,7 @@
   (cond
     [(string=? "\r" ke) e]
     [(string=? "\t" ke) e]
-    ;[(string=? "\b" ke) (remove-char e)]
+    [(string=? "\b" ke) (remove-char e)]
     ;[(string=? "left" ke) (move-last-pre-to-first-post e)]
     ;[(string=? "right" ke) (move-first-post-to-last-pre e)]
     ;[(= (string-length ke) 1) (insert-char e ke)]
