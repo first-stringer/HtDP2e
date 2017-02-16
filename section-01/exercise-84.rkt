@@ -92,6 +92,7 @@
 (check-expect (remove-char (make-editor "hello" "world")) (make-editor "hell" "world"))
 (check-expect (remove-char (make-editor "" "world")) (make-editor "" "world"))
 (check-expect (remove-char (make-editor "hello" "")) (make-editor "hell" ""))
+(check-expect (remove-char (make-editor "" "")) (make-editor "" ""))
 ;; 4. TEMPLATE
 ;; (define (remove-char e)
 ;;   (... (editor-pre e) ... (editor-post e) ... ))
@@ -102,7 +103,29 @@
     [else (make-editor (substring (editor-pre e) 0 (- (string-length (editor-pre e)) 1)) (editor-post e))]
     )
   )
-  
+
+
+;; 2a. FUNCTION SIGNATURE: Editor 1String -> Editor
+;; 2b. PURPOSE STATEMENT: Consumes an editor and a 1String; the 1String is
+;; appended to pre.
+;; 2c. HEADER
+;; (define (insert-char e 1s) e)
+;; 3a. FUNCTIONAL EXAMPLES
+;; Given: {"hello" "world"} " ", Expect: {"hello " "world"}
+;; Given: {"" "world"} " ", Expect: {" " "world"}
+;; Given: {"hello" ""} " ", Expect: {"hello " ""}
+;; 3b. TESTS
+(check-expect (insert-char (make-editor "hello" "world") " ") (make-editor "hello " "world"))
+(check-expect (insert-char (make-editor "" "world") " ") (make-editor " " "world"))
+(check-expect (insert-char (make-editor "hello" "") " ") (make-editor "hello " ""))
+(check-expect (insert-char (make-editor "" "") " ") (make-editor " " ""))
+;; 4. TEMPLATE
+;; (define (insert-char e 1s)
+;;   (... (editor-pre e) ... (editor-post e) ... 1s ...))
+;; 5. CODE
+(define (insert-char e 1s)
+  (make-editor (string-append (editor-pre e) 1s) (editor-post e)))
+
 
 ;; 2a. FUNCTION SIGNATURE: Editor KeyEvent -> Editor 
 ;; 2b. PURPOSE STATEMENT: Consumes two inputs, an Editor (e) and a KeyEvent (ke), and it produces another editor.
@@ -112,18 +135,23 @@
 ;; Given: "hello" "world" "\t", Expect: "hello" "world"
 ;; Given: "hello" "" "\t", Expect: "hello" ""
 ;; Given: "" "world" "\t", Expect: "" "world"
+;; Given: "" "" "\t", Expect: "" ""
 ;; Given: "hello" "world" "\r", Expect: "hello" "world"
 ;; Given: "hello" "" "\r", Expect: "hello" ""
 ;; Given: "" "world" "\r", Expect: "" "world"
+;; Given: "" "" "\r", Expect: "" ""
 ;; Given: "hello" "world" "\b", Expect: "hell" "world"
 ;; Given: "" "world" "\b", Expect: "" "world"
 ;; Given: "hello" "" "\b", Expect: "hell" ""
+;; Given: "" "" "\b", Expect: "" ""
 ;; Given: "hello" "world" "left", Expect: "hell" "oworld"
 ;; Given: "hello" "" "left", Expect: "hell" "o"
 ;; Given: "" "world" "left", Expect: "w" "orld"
+;; Given: "" "" "left", Expect: "" ""
 ;; Given: "hello" "world" "right", Expect: "hellow" "orld"
 ;; Given: "hello" "" "right", Expect: "hello" ""
 ;; Given: "" "world" "right", Expect: "w" "orld"
+;; Given: "" "" "right", Expect: "" ""
 ;; Given: "hello" "world" *', Expect: "hello" "world" ; *' = any key event not covered above
 ;; 3b. TESTS
 ;; 4. TEMPLATE
@@ -137,7 +165,8 @@
     [(string=? "\b" ke) (remove-char e)]
     ;[(string=? "left" ke) (move-last-pre-to-first-post e)]
     ;[(string=? "right" ke) (move-first-post-to-last-pre e)]
-    ;[(= (string-length ke) 1) (insert-char e ke)]
+    [(= (string-length ke) 1) (insert-char e ke)]
     [else e]
     )
   )
+
