@@ -21,6 +21,7 @@
 (define TEXT_SIZE 16)
 (define TEXT_COLOR "black")
 (define CURSOR (rectangle 1 20 "solid" "red"))
+(define MAX_TEXT_LENGTH 21)
 
 
 ;; 1c. FUNCTION WISH LIST
@@ -253,7 +254,7 @@
     [(string=? "\b" ke) (remove-char e)]
     [(string=? "left" ke) (move-last-pre-to-first-post e)]
     [(string=? "right" ke) (move-first-post-to-last-pre e)]
-    [(= (string-length ke) 1) (insert-char e ke)]
+    [(and (= (string-length ke) 1) (<= (+ (string-length (editor-pre e)) (string-length (editor-post e))) MAX_TEXT_LENGTH)) (insert-char e ke)]
     [else e]
     )
   )
@@ -277,5 +278,6 @@
             )
   )
 
-(run "hello")
+
+(run "12345678901234567890")
 
