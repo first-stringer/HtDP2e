@@ -156,6 +156,7 @@
     )
   )
 
+
 ;; 2a. FUNCTION SIGNATURE: Editor -> Editor
 ;; 2b. PURPOSE STATEMENT: Consumes an editor and removes the first character of
 ;; post and adds it to the last position of pre, unless post is empty in which
@@ -233,10 +234,10 @@
 (check-expect (edit (make-editor "hello" "") "left") (make-editor "hell" "o"))
 (check-expect (edit (make-editor "" "world") "left") (make-editor "" "world"))
 (check-expect (edit (make-editor "" "") "left") (make-editor "" ""))
-;(check-expect (edit (make-editor "hello" "world") "right") (make-editor "hellow" "orld"))
-;(check-expect (edit (make-editor "hello" "") "right") (make-editor "hello" ""))
-;(check-expect (edit (make-editor "" "world") "right") (make-editor "w" "orld"))
-;(check-expect (edit (make-editor "" "") "right") (make-editor "" ""))
+(check-expect (edit (make-editor "hello" "world") "right") (make-editor "hellow" "orld"))
+(check-expect (edit (make-editor "hello" "") "right") (make-editor "hello" ""))
+(check-expect (edit (make-editor "" "world") "right") (make-editor "w" "orld"))
+(check-expect (edit (make-editor "" "") "right") (make-editor "" ""))
 (check-expect (edit (make-editor "hello" "world") " ") (make-editor "hello " "world"))
 (check-expect (edit (make-editor "hello" "") " ") (make-editor "hello " ""))
 (check-expect (edit (make-editor "" "world") " ") (make-editor " " "world"))
@@ -251,7 +252,7 @@
     [(string=? "\t" ke) e]
     [(string=? "\b" ke) (remove-char e)]
     [(string=? "left" ke) (move-last-pre-to-first-post e)]
-    ;[(string=? "right" ke) (move-first-post-to-last-pre e)]
+    [(string=? "right" ke) (move-first-post-to-last-pre e)]
     [(= (string-length ke) 1) (insert-char e ke)]
     [else e]
     )
