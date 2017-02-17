@@ -17,11 +17,13 @@
 
 
 ;; 1b. CONSTANT DEFINITIONS
-(define EMPTY_SCENE (empty-scene 200 20))
+(define SCENE_WIDTH 200)
+(define SCENE_HEIGHT 20)
+(define EMPTY_SCENE (empty-scene SCENE_WIDTH SCENE_HEIGHT))
 (define TEXT_SIZE 16)
 (define TEXT_COLOR "black")
 (define CURSOR (rectangle 1 20 "solid" "red"))
-(define MAX_TEXT_LENGTH 21)
+(define MAX_EDITOR_TEXT_IMAGE_LENGTH SCENE_WIDTH)
 
 
 ;; 1c. FUNCTION WISH LIST
@@ -42,6 +44,30 @@
 ;; NAME: remove-char
 ;; SIGNATURE: Editor -> Editor
 ;; PURPOSE STATEMENT: Consumes an editor and removes the last character of pre.
+;; NAME: compute-new-editor-image-length
+;; SIGNATURE: Editor 1String -> Number 
+;; PURPOSE STATEMENT: Consumes an editor and a string of length one and returns
+;; the length of the editor after the string is inserted in the editor.
+
+
+;; 2a. FUNCTION SIGNATURE: Editor 1String -> Number 
+;; 2b. PURPOSE STATEMENT: Consumes an editor and a string of length one and
+;; returns the length of the editor after the string is inserted in the editor.
+;; 2c. HEADER
+;; (define (compute-new-editor-image-length e 1s) 0)
+;; 3a. FUNCTIONAL EXAMPLES
+;; Given: {"" ""} "a", Expect: (image-width (text "a" TEXT_SIZE TEXT_COLOR))
+;; 3b. TESTS
+(check-expect (compute-new-editor-image-length (make-editor "" "") "a") (image-width (text "a" TEXT_SIZE TEXT_COLOR)))
+(check-expect (compute-new-editor-image-length (make-editor "a" "a") "a")  (+ (image-width (text "a" TEXT_SIZE TEXT_COLOR))
+                                                                              (image-width (text "a" TEXT_SIZE TEXT_COLOR))
+                                                                              (image-width (text "a" TEXT_SIZE TEXT_COLOR))))
+;; 4. TEMPLATE
+;; (define (compute-new-editor-image-length e 1s)
+;;   (... (editor-pre e) ... (editor-post e) ... 1s ...))
+;; 5. CODE
+(define (compute-new-editor-image-length e 1s)
+  (+ (image-width (text (editor-pre e) TEXT_SIZE TEXT_COLOR)) (image-width (text (editor-post e) TEXT_SIZE TEXT_COLOR)) (image-width (text 1s TEXT_SIZE TEXT_COLOR))))
 
 
 ;; 2a. FUNCTION SIGNATURE: Editor -> Image
@@ -243,6 +269,12 @@
 (check-expect (edit (make-editor "hello" "") " ") (make-editor "hello " ""))
 (check-expect (edit (make-editor "" "world") " ") (make-editor " " "world"))
 (check-expect (edit (make-editor "" "") " ") (make-editor " " ""))
+(check-expect (edit (make-editor "WWWWWWWWWWWWW" "") "X") (make-editor "WWWWWWWWWWWWW" ""))
+(check-expect (edit (make-editor "" "WWWWWWWWWWWWW") "X") (make-editor "" "WWWWWWWWWWWWW"))
+(check-expect (edit (make-editor "WWW" "WWWWWWWWWW") "X") (make-editor "WWW" "WWWWWWWWWW"))
+(check-expect (edit (make-editor "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii" "") "X") (make-editor "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii" ""))
+(check-expect (edit (make-editor "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii" "") "X") (make-editor "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii" ""))
+(check-expect (edit (make-editor "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii" "") "i") (make-editor "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii" ""))
 ;; 4. TEMPLATE
 ;; (define (edit e ke)
 ;;   (... (editor-pre e) ... (editor-post e) ... ke ...))
@@ -254,7 +286,7 @@
     [(string=? "\b" ke) (remove-char e)]
     [(string=? "left" ke) (move-last-pre-to-first-post e)]
     [(string=? "right" ke) (move-first-post-to-last-pre e)]
-    [(and (= (string-length ke) 1) (<= (+ (string-length (editor-pre e)) (string-length (editor-post e))) MAX_TEXT_LENGTH)) (insert-char e ke)]
+    [(and (= (string-length ke) 1) (<= (compute-new-editor-image-length e ke) MAX_EDITOR_TEXT_IMAGE_LENGTH)) (insert-char e ke)]
     [else e]
     )
   )
