@@ -127,6 +127,56 @@
   (make-editor (string-append (editor-pre e) 1s) (editor-post e)))
 
 
+;; 2a. FUNCTION SIGNATURE: Editor -> Editor
+;; 2b. PURPOSE STATEMENT: Consumes an editor and removes the last character of
+;; pre and adds it to the first position of post, unless pre is empty in which
+;; case editor is returned unchanged.
+;; 2c. HEADER
+;; (define (move-last-pre-to-first-post e) e)
+;; 3a. FUNCTIONAL EXAMPLES
+;; Given: "hello" "world" "left", Expect: "hell" "oworld"
+;; Given: "hello" "" "left", Expect: "hell" "o"
+;; Given: "" "world" "left", Expect: "" "world"
+;; Given: "" "" "left", Expect: "" ""
+;; 3b. TESTS
+(check-expect (move-last-pre-to-first-post (make-editor "hello" "world")) (make-editor "hell" "oworld"))
+(check-expect (move-last-pre-to-first-post (make-editor "hello" "")) (make-editor "hell" "o"))
+(check-expect (move-last-pre-to-first-post (make-editor "" "world")) (make-editor "" "world"))
+(check-expect (move-last-pre-to-first-post (make-editor "" "")) (make-editor "" ""))
+;; 4. TEMPLATE
+;; (define (move-last-pre-to-first-post e)
+;;   (... (editor-pre e) ... (editor-post e) ...))
+;; 5. CODE
+(define (move-last-pre-to-first-post e)
+  (cond
+    [(= (string-length (editor-pre e)) 0) e]
+    [else (make-editor
+           (substring (editor-pre e) 0 (- (string-length (editor-pre e)) 1))
+           (string-append (substring (editor-pre e) (- (string-length (editor-pre e)) 1) (string-length (editor-pre e))) (editor-post e)))]
+    )
+  )
+
+;; 2a. FUNCTION SIGNATURE: Editor -> Editor
+;; 2b. PURPOSE STATEMENT: Consumes an editor and removes the first character of
+;; post and adds it to the last position of pre, unless post is empty in which
+;; case editor is returned unchanged.
+;; 2c. HEADER
+;; (define (move-first-post-to-last-pre e) e)
+;; 3a. FUNCTIONAL EXAMPLES
+;; Given: "hello" "world" "right", Expect: "hellow" "orld"
+;; Given: "hello" "" "right", Expect: "hello" ""
+;; Given: "" "world" "right", Expect: "w" "orld"
+;; Given: "" "" "right", Expect: "" ""
+;; 3b. TESTS
+;(check-expect (move-first-post-to-last-pre (make-editor "hello" "world")) (make-editor "hellow" "orld"))
+;(check-expect (move-first-post-to-last-pre (make-editor "hello" "")) (make-editor "hello" ""))
+;(check-expect (move-first-post-to-last-pre (make-editor "" "world")) (make-editor "w" "orld"))
+;(check-expect (move-first-post-to-last-pre (make-editor "" "") ) (make-editor "" ""))
+;; 4. TEMPLATE
+;; (define (move-first-post-to-last-pre e)
+;;   (... (editor-pre e) ... (editor-post e) ...))
+;; 5. CODE
+
 ;; 2a. FUNCTION SIGNATURE: Editor KeyEvent -> Editor 
 ;; 2b. PURPOSE STATEMENT: Consumes two inputs, an Editor (e) and a KeyEvent (ke), and it produces another editor.
 ;; 2c. HEADER
@@ -174,10 +224,10 @@
 (check-expect (edit (make-editor "hello" "") "left") (make-editor "hell" "o"))
 (check-expect (edit (make-editor "" "world") "left") (make-editor "" "world"))
 (check-expect (edit (make-editor "" "") "left") (make-editor "" ""))
-(check-expect (edit (make-editor "hello" "world") "right") (make-editor "hellow" "orld"))
-(check-expect (edit (make-editor "hello" "") "right") (make-editor "hello" ""))
-(check-expect (edit (make-editor "" "world") "right") (make-editor "w" "orld"))
-(check-expect (edit (make-editor "" "") "right") (make-editor "" ""))
+;(check-expect (edit (make-editor "hello" "world") "right") (make-editor "hellow" "orld"))
+;(check-expect (edit (make-editor "hello" "") "right") (make-editor "hello" ""))
+;(check-expect (edit (make-editor "" "world") "right") (make-editor "w" "orld"))
+;(check-expect (edit (make-editor "" "") "right") (make-editor "" ""))
 (check-expect (edit (make-editor "hello" "world") " ") (make-editor "hello " "world"))
 (check-expect (edit (make-editor "hello" "") " ") (make-editor "hello " ""))
 (check-expect (edit (make-editor "" "world") " ") (make-editor " " "world"))
@@ -191,7 +241,7 @@
     [(string=? "\r" ke) e]
     [(string=? "\t" ke) e]
     [(string=? "\b" ke) (remove-char e)]
-    ;[(string=? "left" ke) (move-last-pre-to-first-post e)]
+    [(string=? "left" ke) (move-last-pre-to-first-post e)]
     ;[(string=? "right" ke) (move-first-post-to-last-pre e)]
     [(= (string-length ke) 1) (insert-char e ke)]
     [else e]
