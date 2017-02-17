@@ -258,3 +258,24 @@
     )
   )
 
+
+;; 2a. FUNCTION SIGNATURE: String -> Editor
+;; 2b. PURPOSE STATEMENT: Consumes a string, the pre field of an editor, and
+;; launches an interactive editor, using render and edit.
+;; 2c. HEADER
+;; (define (run s) (make-editor s ""))
+;; 3a. FUNCTIONAL EXAMPLES: NA
+;; 3b. TESTS: NA
+;; 4. TEMPLATE
+;; (define (run s)
+;;   (... s ...))
+;; 5. CODE
+(define (run s)
+  (big-bang (make-editor s "")
+            [to-draw render]
+            [on-key edit]
+            )
+  )
+
+(run "hello")
+
