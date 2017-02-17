@@ -168,14 +168,23 @@
 ;; Given: "" "world" "right", Expect: "w" "orld"
 ;; Given: "" "" "right", Expect: "" ""
 ;; 3b. TESTS
-;(check-expect (move-first-post-to-last-pre (make-editor "hello" "world")) (make-editor "hellow" "orld"))
-;(check-expect (move-first-post-to-last-pre (make-editor "hello" "")) (make-editor "hello" ""))
-;(check-expect (move-first-post-to-last-pre (make-editor "" "world")) (make-editor "w" "orld"))
-;(check-expect (move-first-post-to-last-pre (make-editor "" "") ) (make-editor "" ""))
+(check-expect (move-first-post-to-last-pre (make-editor "hello" "world")) (make-editor "hellow" "orld"))
+(check-expect (move-first-post-to-last-pre (make-editor "hello" "")) (make-editor "hello" ""))
+(check-expect (move-first-post-to-last-pre (make-editor "" "world")) (make-editor "w" "orld"))
+(check-expect (move-first-post-to-last-pre (make-editor "" "") ) (make-editor "" ""))
 ;; 4. TEMPLATE
 ;; (define (move-first-post-to-last-pre e)
 ;;   (... (editor-pre e) ... (editor-post e) ...))
 ;; 5. CODE
+(define (move-first-post-to-last-pre e)
+  (cond
+    [(= (string-length (editor-post e)) 0) e]
+    [else (make-editor
+           (string-append (editor-pre e) (substring (editor-post e) 0 1))
+           (substring (editor-post e) 1 (string-length (editor-post e))))]
+    )
+  )
+
 
 ;; 2a. FUNCTION SIGNATURE: Editor KeyEvent -> Editor 
 ;; 2b. PURPOSE STATEMENT: Consumes two inputs, an Editor (e) and a KeyEvent (ke), and it produces another editor.
