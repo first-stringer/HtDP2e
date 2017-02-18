@@ -43,8 +43,8 @@
 
 
 ;; 2a. FUNCTION SIGNATURE: Editor -> String
-;; 2b. PURPOSE STATEMENT: Consumes an editor and returns the portion of the string
-;; before the cursor.
+;; 2b. PURPOSE STATEMENT: Consumes an editor and returns the portion of the
+;; string before the cursor.
 ;; 2c. HEADER
 ;; (define (before-string e) "")
 ;; 3a. FUNCTIONAL EXAMPLES
@@ -73,8 +73,8 @@
 
 
 ;; 2a. FUNCTION SIGNATURE: Editor -> String
-;; 2b. PURPOSE STATEMENT: Consumes an editor and returns the portion of the string
-;; after the cursor.
+;; 2b. PURPOSE STATEMENT: Consumes an editor and returns the portion of the
+;; string after the cursor.
 ;; 2c. HEADER
 ;; (define (after-string e) "")
 ;; 3a. FUNCTIONAL EXAMPLES
@@ -97,7 +97,11 @@
   (cond
     [(<= (editor-index e) 0) (editor-text e)]
     [(>= (editor-index e) (string-length (editor-text e))) ""]
-    [else (substring (editor-text e) (editor-index e) (string-length (editor-text e)))]
+    [else
+     (substring
+      (editor-text e)
+      (editor-index e)
+      (string-length (editor-text e)))]
     )
   )
 
@@ -112,27 +116,37 @@
 ;; Given: {"helloworld" 10}, Expect: image with CURSOR after d
 ;; Given: {"helloworld" >10}, Expect: image with CURSOR after d
 ;; 3b. TESTS
-;(check-expect (render (make-editor "helloworld" 5))
-;              (overlay/align "left" "center"
-;                             (beside (text "hello" TEXT_SIZE TEXT_COLOR) CURSOR (text "world" TEXT_SIZE TEXT_COLOR))
-;                             EMPTY_SCENE))
-;(check-expect (render (make-editor "helloworld" 0))
-;              (overlay/align "left" "center"
-;                             (beside CURSOR (text "helloworld" TEXT_SIZE TEXT_COLOR))
-;                             EMPTY_SCENE))
-;(check-expect (render (make-editor "helloworld" 10))
-;              (overlay/align "left" "center"
-;                             (beside (text "helloworld" TEXT_SIZE TEXT_COLOR) CENTER)
-;                             EMPTY_SCENE))
-;(check-expect (render (make-editor "helloworld" 100))
-;              (overlay/align "left" "center"
-;                             (beside (text "helloworld" TEXT_SIZE TEXT_COLOR) CENTER)
-;                             EMPTY_SCENE))
+(check-expect (render (make-editor "helloworld" 5))
+              (overlay/align "left" "center"
+                             (beside (text "hello" TEXT_SIZE TEXT_COLOR)
+                                     CURSOR
+                                     (text "world" TEXT_SIZE TEXT_COLOR))
+                             EMPTY_SCENE))
+(check-expect (render (make-editor "helloworld" 0))
+              (overlay/align "left" "center"
+                             (beside CURSOR
+                                     (text "helloworld" TEXT_SIZE TEXT_COLOR))
+                             EMPTY_SCENE))
+(check-expect (render (make-editor "helloworld" 10))
+              (overlay/align "left" "center"
+                             (beside
+                              (text "helloworld" TEXT_SIZE TEXT_COLOR) CENTER)
+                             EMPTY_SCENE))
+(check-expect (render (make-editor "helloworld" 100))
+              (overlay/align "left" "center"
+                             (beside
+                              (text "helloworld" TEXT_SIZE TEXT_COLOR) CENTER)
+                             EMPTY_SCENE))
 ;; 4. TEMPLATE
 ;; (define (render e)
 ;;   (... (editor-pre e) ... (editor-post e) ...))
 ;; 5. CODE
-;;(define (render e)  (overlay/align "left" "center"  (beside (text (editor-pre e) TEXT_SIZE TEXT_COLOR) CURSOR (text (editor-post e) TEXT_SIZE TEXT_COLOR))  EMPTY_SCENE))
+(define (render e)
+  (overlay/align "left" "center"
+                 (beside (text (before-string e) TEXT_SIZE TEXT_COLOR)
+                         CURSOR
+                         (text (after-string e) TEXT_SIZE TEXT_COLOR))
+                 EMPTY_SCENE))
 
 
 
