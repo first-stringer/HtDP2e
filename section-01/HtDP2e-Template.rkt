@@ -8,7 +8,8 @@
 ;; 2b. PURPOSE STATEMENT:
 ;; 2c. HEADER
 ;; 3a. FUNCTIONAL EXAMPLES
-;; Given: , Expect:
+;; #1: Given: , Expect:
 ;; 3b. TESTS
+#;1 
 ;; 4. TEMPLATE
 ;; 5. CODE
