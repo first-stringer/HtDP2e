@@ -55,10 +55,35 @@
 ;; SIGNATURE: Editor 1String -> Editor
 ;; PURPOSE STATEMENT: Consumes an editor and a 1String and returns and editor
 ;; with the 1String inserted at the index and the index incremented.
-;string-first
-;string-rest
-;string-last
-;string-remove-last
+;; NAME: compute-new-editor-image-length
+;; SIGNATURE: Editor 1String -> Number 
+;; PURPOSE STATEMENT: Consumes an editor and a string of length one and returns
+;; the length of the editor after the string is inserted in the editor.
+
+
+;; 2a. FUNCTION SIGNATURE: Editor 1String -> Number 
+;; 2b. PURPOSE STATEMENT: Consumes an editor and a string of length one and
+;; returns the length of the editor after the string is inserted in the editor.
+;; 2c. HEADER
+;; (define (compute-new-editor-image-length e 1s) 0)
+;; 3a. FUNCTIONAL EXAMPLES
+;; Given: {"" ""} "a", Expect: (image-width (text "a" TEXT_SIZE TEXT_COLOR))
+;; 3b. TESTS
+(check-expect
+ (compute-new-editor-image-length (make-editor "" 0) "a")
+ (image-width (text "a" TEXT_SIZE TEXT_COLOR)))
+(check-expect
+ (compute-new-editor-image-length (make-editor "aa" 2) "a")
+ (* 3 (image-width (text "a" TEXT_SIZE TEXT_COLOR))))
+;; 4. TEMPLATE
+;; (define (compute-new-editor-image-length e 1s)
+;;   (... (editor-pre e) ... (editor-post e) ... 1s ...))
+;; 5. CODE
+(define (compute-new-editor-image-length e 1s)
+  (+
+   (image-width (text (before-string e) TEXT_SIZE TEXT_COLOR))
+   (image-width (text (after-string e) TEXT_SIZE TEXT_COLOR))
+   (image-width (text 1s TEXT_SIZE TEXT_COLOR))))
 
 
 ;; 2a. FUNCTION SIGNATURE: Editor 1String -> Editor
@@ -359,24 +384,6 @@
 ;; #17: Given: {"helloworld" 0} "left", Expect: {"helloworld" 0}
 ;; #18: Given: {"helloworld" 10} "left", Expect: {"helloworld" 9}
 ;; #18: Given: {"helloworld" 100} "left", Expect: {"helloworld" 9}
-;; Given: "hello" "world" "left", Expect: "hell" "oworld"
-;; Given: "hello" "" "left", Expect: "hell" "o"
-;; Given: "" "world" "left", Expect: "" "world"
-;; Given: "" "" "left", Expect: "" ""
-;; Given: "hello" "world" "right", Expect: "hellow" "orld"
-;; Given: "hello" "" "right", Expect: "hello" ""
-;; Given: "" "world" "right", Expect: "w" "orld"
-;; Given: "" "" "right", Expect: "" ""
-;; Given: "hello" "world" *, Expect: "hello*" "world"
-;; * = any single character string not covered above
-;; Given: "hello" "" *, Expect: "hello*" ""
-;; * = any single character string not covered above
-;; Given: "" "world" *, Expect: "*" "world"
-;; * = any single character string not covered above
-;; Given: "" "" *, Expect: "*" ""
-;; * = any single character string not covered above
-;; Given: "hello" "world" *', Expect: "hello" "world"
-;; *' = any key event not covered above
 ;; 3b. TESTS
 #;1 (check-expect (edit (make-editor "helloworld" 5) "\t")
                   (make-editor "helloworld" 5))
@@ -440,6 +447,12 @@
                    (make-editor " helloworld" 1))
 #;31 (check-expect (edit (make-editor "helloworld" -1) " ")
                    (make-editor " helloworld" 1))
+#;32 (check-expect (edit (make-editor "WWWWWWWWWWWWW" 0) "X")
+                   (make-editor "WWWWWWWWWWWWW" 0))
+#;33
+(check-expect
+ (edit (make-editor "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii" 0) "X")
+ (make-editor "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii" 0))
 ;; 4. TEMPLATE
 ;; (define (edit e ke)
 ;;   (... (editor-text e) ... (editor-index e) ... ke ...))
@@ -451,12 +464,33 @@
     [(string=? "\b" ke) (backspace e)]
     [(string=? "left" ke) (move-cursor-left e)]
     [(string=? "right" ke) (move-cursor-right e)]
-    [(= (string-length ke) 1) (insert e ke)]
-    #;[(and
-        (= (string-length ke) 1)
-        (<= (compute-new-editor-image-length e ke) MAX_EDITOR_TEXT_IMAGE_LENGTH))
-       (insert-char e ke)]
+    [(and
+      (= (string-length ke) 1)
+      (<= (compute-new-editor-image-length e ke) MAX_EDITOR_TEXT_IMAGE_LENGTH))
+     (insert e ke)]
     [else e]
     )
   )
+
+
+;; 2a. FUNCTION SIGNATURE: String -> Editor
+;; 2b. PURPOSE STATEMENT: Consumes a string, the pre field of an editor, and
+;; launches an interactive editor, using render and edit.
+;; 2c. HEADER
+;; (define (run s) (make-editor s ""))
+;; 3a. FUNCTIONAL EXAMPLES: NA
+;; 3b. TESTS: NA
+;; 4. TEMPLATE
+;; (define (run s)
+;;   (... s ...))
+;; 5. CODE
+(define (run s)
+  (big-bang (make-editor s (string-length s))
+            [to-draw render]
+            [on-key edit]
+            )
+  )
+
+
+(run "12345678901234567890")
 
