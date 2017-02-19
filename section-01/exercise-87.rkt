@@ -58,7 +58,7 @@
 ;; be one less than the current cursor position.  If the current position is
 ;; greater that the length of the editor's text, then the cursor position is set to
 ;; one less than the length of text.
-(define (move-cursor-left e) e)
+;; (define (move-cursor-left e) e)
 ;; 3a. FUNCTIONAL EXAMPLES
 ;; #1: Given: {"helloworld" 5}, Expect: {"helloworld" 4}
 ;; #2: Given: {"helloworld" 10}, Expect: {"helloworld" 9}
@@ -83,9 +83,14 @@
 ;; (define (move-cursor-left e)
 ;;   (... (editor-text e) ... (editor-index e) ...))
 ;; 5. CODE
-;;(define (move-cursor-left e)
-
-
+(define (move-cursor-left e)
+  (cond
+    [(<= (editor-index e) 0) (make-editor (editor-text e) 0)]
+    [(>= (editor-index e) (string-length (editor-text e)))
+     (make-editor (editor-text e) (- (string-length (editor-text e)) 1))]
+    [else (make-editor (editor-text e) (- (editor-index e) 1))]
+    )
+  )
 
 
 ;; 2a. FUNCTION SIGNATURE: Editor -> String
