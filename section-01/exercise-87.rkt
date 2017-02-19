@@ -47,11 +47,58 @@
 ;; PURPOSE STATEMENT: Consumes an editor and updates the cursor position to be
 ;; one more than the current cursor position or the length of text, which ever is
 ;; less.
+;; NAME: backspace
+;; SIGNATURE: Editor -> Editor
+;; PURPOSE STATEMENT: Consumes an editor and removes the character at the cursor
+;; position and decrements index.
 ;string-first
 ;string-rest
 ;string-last
 ;string-remove-last
 
+
+;; 2a. FUNCTION SIGNATURE: Editor -> Editor
+;; 2b. PURPOSE STATEMENT: Consumes an editor and removes the character at the
+;; cursor position and decrements index.
+;; 2c. HEADER
+;; (define (backspace e) e)
+;; 3a. FUNCTIONAL EXAMPLES
+;; #1: Given: {"helloworld" 5}, Expect: {"hellworld" 4}
+;; #2: Given: {"helloworld" 10}, Expect: {"helloworl" 9}
+;; #3: Given: {"helloworld" 100}, Expect: {"helloworl" 9}
+;; #4: Given: {"helloworld" 0}, Expect: {"helloworld" 0}
+;; #5: Given: {"helloworld" -1}, Expect: {"helloworld" 0}
+;; 3b. TESTS
+;; Cursor is greater than 0 and less than the text's length.
+#;1 (check-expect (backspace (make-editor "helloworld" 5))
+                  (make-editor "hellworld" 4))
+;; Cursor is equal to or greater than the text's length.
+#;2 (check-expect (backspace (make-editor "helloworld" 10))
+                  (make-editor "helloworl" 9))
+#;3 (check-expect (backspace (make-editor "helloworld" 100))
+                  (make-editor "helloworl" 9))
+;; Cursor is equal to or less than zero.
+#;4 (check-expect (backspace (make-editor "helloworld" 0))
+                  (make-editor "helloworld" 0))
+#;5 (check-expect (backspace (make-editor "helloworld" -1))
+                  (make-editor "helloworld" 0))
+;; 4. TEMPLATES
+;; (define (backspace e)
+;;   (... (editor-text e) ... (editor-index e) ...))
+;; 5. CODE
+(define (backspace e)
+  (cond
+    [(<= (editor-index e) 0) (make-editor (editor-text e) 0)]
+    [(>= (editor-index e) (string-length (editor-text e)))
+     (make-editor (substring
+                   (editor-text e) 0 (- (string-length (editor-text e)) 1))
+                  (- (string-length (editor-text e)) 1))]
+    [else (make-editor (string-append
+                        (substring (before-string e) 0 (- (editor-index e) 1))
+                        (after-string e))
+                       (- (editor-index e) 1))]
+    )
+  )
 
 ;; 2a. FUNCTION SIGNATURE: Editor -> Editor
 ;; 2b. PURPOSE STATEMENT: Consumes an editor and updates the cursor position to
@@ -306,6 +353,18 @@
                   (make-editor "helloworld" 100))
 #;10 (check-expect (edit (make-editor "" 0) "\r")
                    (make-editor "" 0))
+#;11 (check-expect (edit (make-editor "helloworld" 5) "\b")
+                   (make-editor "hellworld" 4))
+#;12 (check-expect (edit (make-editor "helloworld" 0) "\b")
+                   (make-editor "helloworld" 0))
+#;13 (check-expect (edit (make-editor "helloworld" 10) "\b")
+                   (make-editor "helloworl" 9))
+#;14 (check-expect (edit (make-editor "helloworld" 100) "\b")
+                   (make-editor "helloworl" 9))
+#;15 (check-expect (edit (make-editor "" 0) "\b")
+                   (make-editor "" 0))
+#;16 (check-expect (edit (make-editor "" -1) "\b")
+                   (make-editor "" 0))
 ;; 4. TEMPLATE
 ;; (define (edit e ke)
 ;;   (... (editor-text e) ... (editor-index e) ... ke ...))
@@ -314,9 +373,9 @@
   (cond
     [(string=? "\r" ke) e]
     [(string=? "\t" ke) e]
-    #;[(string=? "\b" ke) (remove-char e)]
+    [(string=? "\b" ke) (backspace e)]
     [(string=? "left" ke) (move-cursor-left e)]
-    #;[(string=? "right" ke) (make-editor (editor-text e) (+ (editor-index e) 1))]
+    [(string=? "right" ke) (move-cursor-right e)]
     #;[(and
         (= (string-length ke) 1)
         (<= (compute-new-editor-image-length e ke) MAX_EDITOR_TEXT_IMAGE_LENGTH))
