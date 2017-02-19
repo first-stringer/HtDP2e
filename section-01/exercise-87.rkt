@@ -55,9 +55,40 @@
 
 ;; 2a. FUNCTION SIGNATURE: Editor -> Editor
 ;; 2b. PURPOSE STATEMENT: Consumes an editor and updates the cursor position to
+;; be one more than the current cursor position or the length of text, which ever
+;; is less.
+;; 2c. HEADER
+(define (move-cursor-right e) e)
+;; 3a. FUNCTIONAL EXAMPLES
+;; #1: Given: {"helloworld" 5}, Expect: {"helloworld" 6}
+;; #2: Given: {"helloworld" 10}, Expect: {"helloworld" 10}
+;; #3: Given: {"helloworld" 100}, Expect: {"helloworld" 10}
+;; #4: Given: {"helloworld" 0}, Expect: {"helloworld" 1}
+;; #5: Given: {"helloworld" -1}, Expect: {"helloworld" 1}
+;; 3b. TESTS
+;; Cursor is greater than 0 and less than the text's length.
+#;1 (check-expect (move-cursor-right (make-editor "helloworld" 5))
+                  (make-editor "helloworld" 6))
+;; Cursor is equal to or greater than the text's length.
+#;2 (check-expect (move-cursor-right (make-editor "helloworld" 10))
+                  (make-editor "helloworld" 10))
+#;3 (check-expect (move-cursor-right (make-editor "helloworld" 100))
+                  (make-editor "helloworld" 10))
+;; Cursor is equal to or less than zero.
+#;4 (check-expect (move-cursor-right (make-editor "helloworld" 0))
+                  (make-editor "helloworld" 1))
+#;5 (check-expect (move-cursor-right (make-editor "helloworld" -1))
+                  (make-editor "helloworld" 1))
+;; 4. TEMPLATES
+;; 5. CODE
+
+
+;; 2a. FUNCTION SIGNATURE: Editor -> Editor
+;; 2b. PURPOSE STATEMENT: Consumes an editor and updates the cursor position to
 ;; be one less than the current cursor position.  If the current position is
 ;; greater that the length of the editor's text, then the cursor position is set to
 ;; one less than the length of text.
+;; 2c. HEADER
 ;; (define (move-cursor-left e) e)
 ;; 3a. FUNCTIONAL EXAMPLES
 ;; #1: Given: {"helloworld" 5}, Expect: {"helloworld" 4}
