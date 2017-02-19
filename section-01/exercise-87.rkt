@@ -65,7 +65,7 @@
 ;; 2b. PURPOSE STATEMENT: Consumes an editor and removes the character at the
 ;; cursor with the 1String inserted at the index and the index incremented.
 ;; 2c. HEADER
-(define (insert e ke) e)
+;; (define (insert e ke) e)
 ;; 3a. FUNCTIONAL EXAMPLES
 ;; #1: Given: {"helloworld" 5} " ", Expect: {"hello world" 6}
 ;; #2: Given: {"helloworld" 10} " ", Expect: {"helloworld " 11}
@@ -78,7 +78,7 @@
                   (make-editor "hello world" 6))
 ;; Cursor is equal to or greater than the text's length.
 #;2 (check-expect (insert (make-editor "helloworld" 10) " ")
-                  (make-editor "helloworld" 11))
+                  (make-editor "helloworld " 11))
 #;3 (check-expect (insert (make-editor "helloworld" 100) " ")
                   (make-editor "helloworld " 11))
 ;; Cursor is equal to or less than zero.
@@ -87,7 +87,19 @@
 #;5 (check-expect (insert (make-editor "helloworld" -1) " ")
                   (make-editor " helloworld" 1))
 ;; 4. TEMPLATES
-
+;; (define (insert e ke)
+;;   (... (editor-text e) ... (editor-index e) ... ke))
+;; 5. CODE
+(define (insert e ke)
+  (cond
+    [(<= (editor-index e) 0) (make-editor (string-append ke (editor-text e)) 1)]
+    [(>= (editor-index e) (string-length (editor-text e)))
+     (make-editor (string-append (editor-text e) ke)
+                  (+ (string-length (editor-text e)) 1))]
+    [else (make-editor (string-append (before-string e) ke (after-string e))
+                       (+ (editor-index e) 1))]
+    )  
+  )
 
 
 ;; 2a. FUNCTION SIGNATURE: Editor -> Editor
