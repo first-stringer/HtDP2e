@@ -58,7 +58,7 @@
 ;; be one more than the current cursor position or the length of text, which ever
 ;; is less.
 ;; 2c. HEADER
-(define (move-cursor-right e) e)
+;; (define (move-cursor-right e) e)
 ;; 3a. FUNCTIONAL EXAMPLES
 ;; #1: Given: {"helloworld" 5}, Expect: {"helloworld" 6}
 ;; #2: Given: {"helloworld" 10}, Expect: {"helloworld" 10}
@@ -80,7 +80,17 @@
 #;5 (check-expect (move-cursor-right (make-editor "helloworld" -1))
                   (make-editor "helloworld" 1))
 ;; 4. TEMPLATES
+;; (define (move-cursor-right e)
+;;   (... (editor-text e) ... (editor-index e) ...))
 ;; 5. CODE
+(define (move-cursor-right e)
+  (cond
+    [(<= (editor-index e) 0) (make-editor (editor-text e) 1)]
+    [(>= (editor-index e) (string-length (editor-text e)))
+     (make-editor (editor-text e) (string-length (editor-text e)))]
+    [else (make-editor (editor-text e) (+ (editor-index e) 1))]
+    )
+  )
 
 
 ;; 2a. FUNCTION SIGNATURE: Editor -> Editor
