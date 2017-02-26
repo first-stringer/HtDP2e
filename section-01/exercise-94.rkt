@@ -8,23 +8,6 @@
 
 
 ;; 1a. DATA DEFINITIONS
-;; #1: A UFO is a Posn. 
-;; interpretation (make-posn x y) is the UFO's location 
-;; (using the top-down, left-to-right convention)
- 
-(define-struct tank [loc vel])
-;; #2: A Tank is a structure:
-;;   (make-tank Number Number). 
-;; interpretation (make-tank x dx) specifies the position:
-;; (x, (- HEIGHT (/ (image-height TANK) 2))) and the tank's speed: dx pixels/tick 
- 
-; #3: A Missile is a Posn. 
-; interpretation (make-posn x y) is the missile's place
-
-;; #4: A SIGS is one of: 
-;; – (make-aim UFO Tank)
-;; – (make-fired UFO Tank Missile)
-;; interpretation represents the complete state of a space invader game
 
 
 ;; 1b. CONSTANT DEFINITIONS
@@ -56,7 +39,6 @@
                (place-image UFO (/ WIDTH 2) (image-height UFO) BACKGROUND)))
 
 INITIAL_SCENE
-
 
 
 ;; 1c. FUNCTION WISH LIST
