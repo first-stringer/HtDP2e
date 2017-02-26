@@ -1,6 +1,6 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
-#reader(lib "htdp-beginner-reader.ss" "lang")((modname exercise-95) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+#reader(lib "htdp-beginner-reader.ss" "lang")((modname exercise-96) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 (require 2htdp/universe)
 (require 2htdp/image)
 
@@ -28,35 +28,46 @@
 
 
 ;; 1b. CONSTANT DEFINITIONS
-(define WIDTH 800)
-(define HEIGHT 150)
+(define WIDTH 200)
+(define HEIGHT 200)
 (define EMPTY_SCENE (empty-scene WIDTH HEIGHT))
-(define SUN (overlay (circle 30 "solid" "yellow")
-                     (circle 35 "solid" "orange")
-                     (circle 38 "solid" "red")))
+(define SUN (overlay (circle 20 "solid" "yellow")
+                     (circle 25 "solid" "orange")
+                     (circle 28 "solid" "red")))
 (define TREE (above (overlay (circle 25 "solid" "yellowgreen")
                              (circle 30 "solid" "green"))
                     (rectangle 10 20 "solid" "brown")))
-(define UFO (overlay (circle 7 "solid" "gray")
-                     (circle 10 "solid" "black")
-                     (rectangle 46 5 "solid" "red")
-                     (rectangle 50 10 "solid" "black")))
-(define TANK (above (rectangle 5 10 "solid" "black")
-                    (rectangle 25 10 "solid" "darkolivegreen")
-                    (add-line (rectangle 50 15 "solid" "darkolivegreen")
-                              8 12 42 12 
-                              (make-pen "black" 5 "solid" "round" "round")
+(define UFO (overlay (circle 5 "solid" "gray")
+                     (circle 8 "solid" "black")
+                     (rectangle 27 6 "solid" "red")
+                     (rectangle 30 8 "solid" "black")))
+(define TANK (above (rectangle 5 8 "solid" "black")
+                    (rectangle 15 6 "solid" "darkolivegreen")
+                    (add-line (rectangle 25 8 "solid" "darkolivegreen")
+                              2 5 23 5 
+                              (make-pen "black" 3 "solid" "round" "round")
                               )))
+(define MISSILE (isosceles-triangle 25 20 "solid" "red"))
 (define BACKGROUND
-  (place-image TREE (- WIDTH 100) (- HEIGHT (/ (image-height TREE) 2))
-               (place-image SUN 45 45 EMPTY_SCENE)))
+  (place-image TREE (- WIDTH 35) (- HEIGHT (/ (image-height TREE) 2))
+               (place-image SUN 35 35 EMPTY_SCENE)))
 
 (define INITIAL_SCENE
-  (place-image TANK 50 (- HEIGHT (/ (image-height TANK) 2))
+  (place-image TANK 15 (- HEIGHT (/ (image-height TANK) 2))
                (place-image UFO (/ WIDTH 2) (image-height UFO) BACKGROUND)))
 
-INITIAL_SCENE
 
+(place-image TANK 28 (- HEIGHT (/ (image-height TANK) 2))
+             (place-image UFO 20 10 BACKGROUND))
+
+(place-image TANK 28 (- HEIGHT (/ (image-height TANK) 2))
+             (place-image UFO 20 10
+                          (place-image MISSILE
+                                       28 (- HEIGHT (image-height TANK))
+                                       BACKGROUND)))
+
+(place-image TANK 100 (- HEIGHT (/ (image-height TANK) 2))
+             (place-image UFO 20 100 (place-image MISSILE 22 103 BACKGROUND)))
 
 
 ;; 1c. FUNCTION WISH LIST
