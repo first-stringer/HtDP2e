@@ -34,8 +34,11 @@
   (place-image TREE (- WIDTH 100) (- HEIGHT (/ (image-height TREE) 2))
                (place-image SUN 45 45 EMPTY_SCENE)))
 
-(place-image TANK 200 (- HEIGHT (/ (image-height TANK) 2))
-             (place-image UFO 100 100 BACKGROUND))
+(define INITIAL_SCENE
+  (place-image TANK 50 (- HEIGHT (/ (image-height TANK) 2))
+               (place-image UFO (/ WIDTH 2) (image-height UFO) BACKGROUND)))
+
+INITIAL_SCENE
 
 
 
