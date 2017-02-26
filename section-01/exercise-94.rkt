@@ -20,13 +20,22 @@
 (define TREE (above (overlay (circle 25 "solid" "yellowgreen")
                              (circle 30 "solid" "green"))
                     (rectangle 10 20 "solid" "brown")))
-(define UFO (overlay (circle 7 "solid" "red")
-                     (circle 10 "solid" "black")))
+(define UFO (overlay (circle 7 "solid" "gray")
+                     (circle 10 "solid" "black")
+                     (rectangle 46 5 "solid" "red")
+                     (rectangle 50 10 "solid" "black")))
+(define TANK (above (rectangle 5 10 "solid" "black")
+                    (rectangle 25 10 "solid" "darkolivegreen")
+                    (add-line (rectangle 50 15 "solid" "darkolivegreen")
+                              8 12 42 12 
+                              (make-pen "black" 5 "solid" "round" "round")
+                              )))
 (define BACKGROUND
   (place-image TREE (- WIDTH 100) (- HEIGHT (/ (image-height TREE) 2))
                (place-image SUN 45 45 EMPTY_SCENE)))
 
-(place-image UFO 100 100 BACKGROUND)
+(place-image TANK 200 (- HEIGHT (/ (image-height TANK) 2))
+             (place-image UFO 100 100 BACKGROUND))
 
 
 
