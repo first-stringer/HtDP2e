@@ -14,7 +14,8 @@
 ;; #2: A Tank is a structure:
 ;;   (make-tank Number Number). 
 ;; interpretation (make-tank x dx) specifies the position:
-;; (x, (- HEIGHT (/ (image-height TANK) 2))) and the tank's speed: dx pixels/tick 
+;; (x, (- HEIGHT (/ (image-height TANK) 2))) and the tank's speed: dx
+;; pixels/tick 
 (define-struct tank [loc vel])
 ; #3: A Missile is a Posn. 
 ; interpretation (make-posn x y) is the missile's place
@@ -62,7 +63,8 @@
 
 
 ;; 2a. FUNCTION SIGNATURE: SIGS -> Image
-;; 2b. PURPOSE STATEMENT: Adds TANK, UFO, and possibly MISSILE to the BACKGROUND
+;; 2b. PURPOSE STATEMENT: Adds TANK, UFO, and possibly MISSILE to the
+;; BACKGROUND
 ;; scene.
 ;; 2c. HEADER
 (define (si-render s) BACKGROUND)
@@ -77,7 +79,8 @@
               (place-image TANK 28 (- HEIGHT (/ (image-height TANK) 2))
                            (place-image UFO 20 10
                                         (place-image
-                                         MISSILE 28 (- HEIGHT (image-height TANK))
+                                         MISSILE
+                                         28 (- HEIGHT (image-height TANK))
                                          BACKGROUND))))
 (check-expect (si-render (make-fired (make-posn 20 100)
                                      (make-tank 100 3)
@@ -86,5 +89,12 @@
                            (place-image UFO 20 100
                                         (place-image MISSILE 22 103 BACKGROUND)))              )
 ;; 4. TEMPLATE
+(define (si-render s)
+  (cond
+    [(aim? s) (... (aim-tank s) ...
+                   (aim-ufo s) ...)]
+    [(fired? s) (... (fired-tank s) ...
+                     (fired-ufo s) ...
+                     (fired-missile s) ...)]))
 ;; 5. CODE
 
