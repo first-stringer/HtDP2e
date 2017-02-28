@@ -11,20 +11,19 @@
 ;; #1: A UFO is a Posn. 
 ;; interpretation (make-posn x y) is the UFO's location 
 ;; (using the top-down, left-to-right convention)
- 
-(define-struct tank [loc vel])
 ;; #2: A Tank is a structure:
 ;;   (make-tank Number Number). 
 ;; interpretation (make-tank x dx) specifies the position:
 ;; (x, (- HEIGHT (/ (image-height TANK) 2))) and the tank's speed: dx pixels/tick 
- 
+(define-struct tank [loc vel])
 ; #3: A Missile is a Posn. 
 ; interpretation (make-posn x y) is the missile's place
-
 ;; #4: A SIGS is one of: 
 ;; – (make-aim UFO Tank)
 ;; – (make-fired UFO Tank Missile)
 ;; interpretation represents the complete state of a space invader game
+(define-struct aim [ufo tank])
+(define-struct fired [ufo tank missile])
 
 
 ;; 1b. CONSTANT DEFINITIONS
@@ -51,23 +50,9 @@
 (define BACKGROUND
   (place-image TREE (- WIDTH 35) (- HEIGHT (/ (image-height TREE) 2))
                (place-image SUN 35 35 EMPTY_SCENE)))
-
 (define INITIAL_SCENE
   (place-image TANK 15 (- HEIGHT (/ (image-height TANK) 2))
                (place-image UFO (/ WIDTH 2) (image-height UFO) BACKGROUND)))
-
-
-(place-image TANK 28 (- HEIGHT (/ (image-height TANK) 2))
-             (place-image UFO 20 10 BACKGROUND))
-
-(place-image TANK 28 (- HEIGHT (/ (image-height TANK) 2))
-             (place-image UFO 20 10
-                          (place-image MISSILE
-                                       28 (- HEIGHT (image-height TANK))
-                                       BACKGROUND)))
-
-(place-image TANK 100 (- HEIGHT (/ (image-height TANK) 2))
-             (place-image UFO 20 100 (place-image MISSILE 22 103 BACKGROUND)))
 
 
 ;; 1c. FUNCTION WISH LIST
@@ -76,12 +61,30 @@
 ;; PURPOSE STATEMENT:
 
 
-;; 2a. FUNCTION SIGNATURE:
-;; 2b. PURPOSE STATEMENT:
+;; 2a. FUNCTION SIGNATURE: SIGS -> Image
+;; 2b. PURPOSE STATEMENT: Adds TANK, UFO, and possibly MISSILE to the BACKGROUND
+;; scene.
 ;; 2c. HEADER
-;; 3a. FUNCTIONAL EXAMPLES
-;; #1: Given: , Expect:
-;; 3b. TESTS
-#;1 
+(define (si-render s) BACKGROUND)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (si-render (make-aim (make-posn 20 10) (make-tank 28 -3)))
+              (place-image TANK 28 (- HEIGHT (/ (image-height TANK) 2))
+                           (place-image UFO 20 10 BACKGROUND)))
+(check-expect (si-render (make-fired
+                          (make-posn 20 10)
+                          (make-tank 28 -3)
+                          (make-posn 28 (- HEIGHT (/ (image-height TANK) 2)))))
+              (place-image TANK 28 (- HEIGHT (/ (image-height TANK) 2))
+                           (place-image UFO 20 10
+                                        (place-image
+                                         MISSILE 28 (- HEIGHT (image-height TANK))
+                                         BACKGROUND))))
+(check-expect (si-render (make-fired (make-posn 20 100)
+                                     (make-tank 100 3)
+                                     (make-posn 22 103)) )
+              (place-image TANK 100 (- HEIGHT (/ (image-height TANK) 2))
+                           (place-image UFO 20 100
+                                        (place-image MISSILE 22 103 BACKGROUND)))              )
 ;; 4. TEMPLATE
 ;; 5. CODE
+
