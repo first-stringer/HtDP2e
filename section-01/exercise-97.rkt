@@ -57,9 +57,18 @@
 
 
 ;; 1c. FUNCTION WISH LIST
-;; NAME:
-;; SIGNATURE:
-;; PURPOSE STATEMENT:
+;; NAME: tank-render
+;; SIGNATURE: Tank Image -> Image
+;; PURPOSE STATEMENT: Adds t to the given image im.
+;(define (tank-render t im) im)
+;; NAME: ufo-render 
+;; SIGNATURE: UFO Image -> Image 
+;; PURPOSE STATEMENT: Adds u to the given image im.
+;(define (ufo-render u im) im)
+;; NAME: missile-render
+;; SIGNATURE: Missile Image -> Image 
+;; PURPOSE STATEMENT: Adds m to the given image im.
+;(define (missile-render m im) im)
 
 
 ;; 2a. FUNCTION SIGNATURE: SIGS -> Image
@@ -91,10 +100,10 @@
 ;; 4. TEMPLATE
 (define (si-render s)
   (cond
-    [(aim? s) (... (aim-tank s) ...
-                   (aim-ufo s) ...)]
-    [(fired? s) (... (fired-tank s) ...
-                     (fired-ufo s) ...
-                     (fired-missile s) ...)]))
+    [(aim? s) (tank-render (aim-tank s) (ufo-render (aim-ufo s) BACKGROUND))]
+    [(fired? s) (tank-render (fired-tank s)
+                             (ufo-render (fired-ufo s)
+                                         (missile-render (fired-missile s)
+                                                         BACKGROUND)))]))
 ;; 5. CODE
 
