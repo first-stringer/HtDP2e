@@ -81,33 +81,21 @@
 (check-expect (missile-render (make-posn 0 0) BACKGROUND)
               (place-image MISSILE 0 0 BACKGROUND))
 (check-expect (missile-render (make-posn WIDTH HEIGHT) BACKGROUND)
-              (place-image
-               MISSILE WIDTH
-               (- HEIGHT (/ (image-height MISSILE) 2) (image-height TANK))
-               BACKGROUND))
+              (place-image MISSILE WIDTH (- HEIGHT (image-height TANK))
+                           BACKGROUND))
 (check-expect (missile-render
-               (make-posn
-                WIDTH
-                (- HEIGHT (/ (image-height MISSILE) 2) (image-height TANK))
-                ) BACKGROUND)
+               (make-posn WIDTH (- HEIGHT (image-height TANK))) BACKGROUND)
               (place-image
-               MISSILE WIDTH
-               (- HEIGHT (/ (image-height MISSILE) 2) (image-height TANK))
-               BACKGROUND))
+               MISSILE WIDTH (- HEIGHT (image-height TANK)) BACKGROUND))
 (check-expect (missile-render (make-posn
-                               WIDTH
-                               (+ 1 (- HEIGHT (/ (image-height MISSILE) 2)
-                                       (image-height TANK))
-                                  )) BACKGROUND)
-              (place-image
-               MISSILE WIDTH
-               (- HEIGHT (/ (image-height MISSILE) 2) (image-height TANK))
-               BACKGROUND))
+                               WIDTH (+ 1 (- HEIGHT (image-height TANK))
+                                        )) BACKGROUND)
+              (place-image MISSILE WIDTH (- HEIGHT (image-height TANK))
+                           BACKGROUND))
 ;; 4. TEMPLATE
 #;(define (missile-render m im)
     (cond
-      [(> (posn-y m)
-          (- HEIGHT (/ (image-height MISSILE) 2) (image-height TANK)))
+      [(> (posn-y m) (- HEIGHT (image-height TANK)))
        (... (posn-x m) ... (posn-y m) ... im ...)]
       [else (... (posn-x m) ... (posn-y m) ... im ...)]
       )
@@ -115,11 +103,8 @@
 ;; 5. CODE
 (define (missile-render m im)
   (cond
-    [(> (posn-y m)
-        (- HEIGHT (/ (image-height MISSILE) 2) (image-height TANK)))
-     (place-image MISSILE (posn-x m)
-                  (- HEIGHT (/ (image-height MISSILE) 2) (image-height TANK))
-                  im)]
+    [(> (posn-y m) (- HEIGHT (image-height TANK)))
+     (place-image MISSILE (posn-x m) (- HEIGHT (image-height TANK)) im)]
     [else (place-image MISSILE (posn-x m) (posn-y m) im)]
     )
   )
@@ -159,9 +144,8 @@
 (define (ufo-render u im)
   (cond
     [(> (posn-y u) (- HEIGHT (/ (image-height UFO) 2)))
-     (place-image UFO (posn-x u) (- HEIGHT (/ (image-height UFO) 2))
-                  BACKGROUND)]
-    [else (place-image UFO (posn-x u) (posn-y u) BACKGROUND)]
+     (place-image UFO (posn-x u) (- HEIGHT (/ (image-height UFO) 2)) im)]
+    [else (place-image UFO (posn-x u) (posn-y u) im)]
     ))
 
   
@@ -201,7 +185,7 @@
 ;; BACKGROUND
 ;; scene.
 ;; 2c. HEADER
-(define (si-render s) BACKGROUND)
+#;(define (si-render s) BACKGROUND)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 (check-expect (si-render (make-aim (make-posn 20 10) (make-tank 28 -3)))
               (place-image TANK 28 (- HEIGHT (/ (image-height TANK) 2))
@@ -209,8 +193,7 @@
 (check-expect (si-render (make-fired
                           (make-posn 20 10)
                           (make-tank 28 -3)
-                          (make-posn 28
-                                     (- HEIGHT (/ (image-height TANK) 2)))))
+                          (make-posn 28 (- HEIGHT (image-height TANK)))))
               (place-image TANK 28 (- HEIGHT (/ (image-height TANK) 2))
                            (place-image UFO 20 10
                                         (place-image
@@ -225,17 +208,19 @@
                                         (place-image MISSILE 22 103
                                                      BACKGROUND))))
 ;; 4. TEMPLATE
-#; (define (si-render s)
-     (cond
-       [(aim? s) (... (aim-tank s) ... (aim-ufo s) ...)]
-       [(fired? s) (... (fired-tank s) ...
-                        (fired-ufo s) ...
-                        (fired-missile s) ...)]))
-;; 5. CODE
 #;(define (si-render s)
     (cond
-      [(aim? s) (tank-render (aim-tank s) (ufo-render (aim-ufo s) BACKGROUND))]
-      [(fired? s) (tank-render (fired-tank s)
-                               (ufo-render (fired-ufo s)
-                                           (missile-render (fired-missile s)
-                                                           BACKGROUND)))]))
+      [(aim? s) (... (aim-tank s) ... (aim-ufo s) ...)]
+      [(fired? s) (... (fired-tank s) ...
+                       (fired-ufo s) ...
+                       (fired-missile s) ...)]))
+;; 5. CODE
+(define (si-render s)
+  (cond
+    [(aim? s) (tank-render (aim-tank s) (ufo-render (aim-ufo s) BACKGROUND))]
+    [(fired? s) (tank-render (fired-tank s)
+                             (ufo-render (fired-ufo s)
+                                         (missile-render (fired-missile s)
+                                                         BACKGROUND)))]
+    )
+  )
