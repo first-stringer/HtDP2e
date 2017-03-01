@@ -71,6 +71,37 @@
 ;(define (missile-render m im) im)
 
 
+;; 2a. FUNCTION SIGNATURE: Tank Image -> Image
+;; 2b. PURPOSE STATEMENT: Adds t to the given image im.
+;; 2c. HEADER
+#; (define (tank-render t im) EMPTY_SCENE)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (tank-render (make-tank (/ WIDTH 2) 3) BACKGROUND)
+              (place-image TANK
+                           (/ WIDTH 2) (- HEIGHT (/ (image-height TANK) 2))
+                           BACKGROUND))
+(check-expect (tank-render (make-tank 0 3) BACKGROUND)
+              (place-image TANK
+                           0 (- HEIGHT (/ (image-height TANK) 2))
+                           BACKGROUND))
+(check-expect (tank-render (make-tank WIDTH 3) BACKGROUND)
+              (place-image TANK
+                           WIDTH (- HEIGHT (/ (image-height TANK) 2))
+                           BACKGROUND))
+(check-expect (tank-render (make-tank
+                            (- 0 (/ (image-width TANK) 2)) 3) BACKGROUND)
+              BACKGROUND)
+(check-expect (tank-render (make-tank
+                            (+ WIDTH (/ (image-width TANK) 2)) 3) BACKGROUND)
+              BACKGROUND)
+;; 4. TEMPLATE
+#; (define (tank-render t im)
+     ( ... (tank-loc t) ... (tank-vel t) ...))
+;; 5. CODE
+(define (tank-render t im)
+  (place-image TANK (tank-loc t) (- HEIGHT (/ (image-height TANK) 2)) im))
+
+
 ;; 2a. FUNCTION SIGNATURE: SIGS -> Image
 ;; 2b. PURPOSE STATEMENT: Adds TANK, UFO, and possibly MISSILE to the
 ;; BACKGROUND
@@ -84,7 +115,8 @@
 (check-expect (si-render (make-fired
                           (make-posn 20 10)
                           (make-tank 28 -3)
-                          (make-posn 28 (- HEIGHT (/ (image-height TANK) 2)))))
+                          (make-posn 28
+                                     (- HEIGHT (/ (image-height TANK) 2)))))
               (place-image TANK 28 (- HEIGHT (/ (image-height TANK) 2))
                            (place-image UFO 20 10
                                         (place-image
@@ -96,14 +128,20 @@
                                      (make-posn 22 103)) )
               (place-image TANK 100 (- HEIGHT (/ (image-height TANK) 2))
                            (place-image UFO 20 100
-                                        (place-image MISSILE 22 103 BACKGROUND)))              )
+                                        (place-image MISSILE 22 103
+                                                     BACKGROUND))))
 ;; 4. TEMPLATE
-(define (si-render s)
-  (cond
-    [(aim? s) (tank-render (aim-tank s) (ufo-render (aim-ufo s) BACKGROUND))]
-    [(fired? s) (tank-render (fired-tank s)
-                             (ufo-render (fired-ufo s)
-                                         (missile-render (fired-missile s)
-                                                         BACKGROUND)))]))
+#; (define (si-render s)
+     (cond
+       [(aim? s) (... (aim-tank s) ... (aim-ufo s) ...)]
+       [(fired? s) (... (fired-tank s) ...
+                        (fired-ufo s) ...
+                        (fired-missile s) ...)]))
 ;; 5. CODE
-
+#;(define (si-render s)
+    (cond
+      [(aim? s) (tank-render (aim-tank s) (ufo-render (aim-ufo s) BACKGROUND))]
+      [(fired? s) (tank-render (fired-tank s)
+                               (ufo-render (fired-ufo s)
+                                           (missile-render (fired-missile s)
+                                                           BACKGROUND)))]))
