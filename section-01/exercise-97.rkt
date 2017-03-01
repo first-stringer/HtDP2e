@@ -71,6 +71,46 @@
 ;(define (missile-render m im) im)
 
 
+;; 2a. FUNCTION SIGNATURE: UFO Image -> Image
+;; 2b. PURPOSE STATEMENT: Adds u to the given image im.
+;; 2c. HEADER
+#;(define (ufo-render u im) EMPTY_SCENE)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (ufo-render (make-posn (/ WIDTH 2) (/ HEIGHT 2)) BACKGROUND)
+              (place-image UFO (/ WIDTH 2) (/ HEIGHT 2) BACKGROUND))
+(check-expect (ufo-render (make-posn 0 0) BACKGROUND)
+              (place-image UFO 0 0 BACKGROUND))
+(check-expect (ufo-render (make-posn WIDTH HEIGHT) BACKGROUND)
+              (place-image UFO WIDTH (- HEIGHT (/ (image-height UFO) 2))
+                           BACKGROUND))
+(check-expect (ufo-render (make-posn WIDTH
+                                     (- HEIGHT (/ (image-height UFO) 2)))
+                          BACKGROUND)
+              (place-image UFO WIDTH (- HEIGHT (/ (image-height UFO) 2))
+                           BACKGROUND))
+(check-expect (ufo-render (make-posn
+                           WIDTH
+                           (+ 1 (- HEIGHT (/ (image-height UFO) 2))))
+                          BACKGROUND)
+              (place-image UFO WIDTH (- HEIGHT (/ (image-height UFO) 2))
+                           BACKGROUND))
+;; 4. TEMPLATE
+#;(define (ufo-render u im)
+    (cond
+      [(> (posn-y u) (- HEIGHT (/ (image-height UFO) 2)))
+       (... (posn-x u) ... (posn-y u) ... im ...)]
+      [else (... (posn-x u) ... (posn-y u) ... im ...)]
+      ))
+;; 5. CODE
+(define (ufo-render u im)
+  (cond
+    [(> (posn-y u) (- HEIGHT (/ (image-height UFO) 2)))
+     (place-image UFO (posn-x u) (- HEIGHT (/ (image-height UFO) 2))
+                  BACKGROUND)]
+    [else (place-image UFO (posn-x u) (posn-y u) BACKGROUND)]
+    ))
+
+  
 ;; 2a. FUNCTION SIGNATURE: Tank Image -> Image
 ;; 2b. PURPOSE STATEMENT: Adds t to the given image im.
 ;; 2c. HEADER
@@ -96,7 +136,7 @@
               BACKGROUND)
 ;; 4. TEMPLATE
 #; (define (tank-render t im)
-     ( ... (tank-loc t) ... (tank-vel t) ...))
+     ( ... (tank-loc t) ... (tank-vel t) ... im ...))
 ;; 5. CODE
 (define (tank-render t im)
   (place-image TANK (tank-loc t) (- HEIGHT (/ (image-height TANK) 2)) im))
