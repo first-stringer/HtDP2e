@@ -71,6 +71,60 @@
 ;(define (missile-render m im) im)
 
 
+;; 2a. FUNCTION SIGNATURE: Missile Image -> Image
+;; 2b. PURPOSE STATEMENT: Adds u to the given image im.
+;; 2c. HEADER
+#;(define (missile-render m im) EMPTY_SCENE)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (missile-render (make-posn (/ WIDTH 2) (/ HEIGHT 2)) BACKGROUND)
+              (place-image MISSILE (/ WIDTH 2) (/ HEIGHT 2) BACKGROUND))
+(check-expect (missile-render (make-posn 0 0) BACKGROUND)
+              (place-image MISSILE 0 0 BACKGROUND))
+(check-expect (missile-render (make-posn WIDTH HEIGHT) BACKGROUND)
+              (place-image
+               MISSILE WIDTH
+               (- HEIGHT (/ (image-height MISSILE) 2) (image-height TANK))
+               BACKGROUND))
+(check-expect (missile-render
+               (make-posn
+                WIDTH
+                (- HEIGHT (/ (image-height MISSILE) 2) (image-height TANK))
+                ) BACKGROUND)
+              (place-image
+               MISSILE WIDTH
+               (- HEIGHT (/ (image-height MISSILE) 2) (image-height TANK))
+               BACKGROUND))
+(check-expect (missile-render (make-posn
+                               WIDTH
+                               (+ 1 (- HEIGHT (/ (image-height MISSILE) 2)
+                                       (image-height TANK))
+                                  )) BACKGROUND)
+              (place-image
+               MISSILE WIDTH
+               (- HEIGHT (/ (image-height MISSILE) 2) (image-height TANK))
+               BACKGROUND))
+;; 4. TEMPLATE
+#;(define (missile-render m im)
+    (cond
+      [(> (posn-y m)
+          (- HEIGHT (/ (image-height MISSILE) 2) (image-height TANK)))
+       (... (posn-x m) ... (posn-y m) ... im ...)]
+      [else (... (posn-x m) ... (posn-y m) ... im ...)]
+      )
+    )
+;; 5. CODE
+(define (missile-render m im)
+  (cond
+    [(> (posn-y m)
+        (- HEIGHT (/ (image-height MISSILE) 2) (image-height TANK)))
+     (place-image MISSILE (posn-x m)
+                  (- HEIGHT (/ (image-height MISSILE) 2) (image-height TANK))
+                  im)]
+    [else (place-image MISSILE (posn-x m) (posn-y m) im)]
+    )
+  )
+
+
 ;; 2a. FUNCTION SIGNATURE: UFO Image -> Image
 ;; 2b. PURPOSE STATEMENT: Adds u to the given image im.
 ;; 2c. HEADER
