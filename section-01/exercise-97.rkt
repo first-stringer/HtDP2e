@@ -224,3 +224,31 @@
                                                          BACKGROUND)))]
     )
   )
+
+
+(define s (make-fired (make-posn 20 100)
+                      (make-tank 100 3)
+                      (make-posn 22 103)))
+
+(equal? (tank-render
+      (fired-tank s)
+      (ufo-render (fired-ufo s)
+                  (missile-render (fired-missile s)
+                                  BACKGROUND)))
+     (ufo-render
+      (fired-ufo s)
+      (tank-render (fired-tank s)
+                   (missile-render (fired-missile s)
+                                   BACKGROUND))))
+
+(equal? (tank-render
+      (fired-tank s)
+      (ufo-render (fired-ufo s)
+                  (missile-render (fired-missile s)
+                                  BACKGROUND)))
+     (tank-render
+      (fired-tank s)
+      (ufo-render (fired-ufo s)
+                  (missile-render (fired-missile s)
+                                  BACKGROUND)))
+     )
