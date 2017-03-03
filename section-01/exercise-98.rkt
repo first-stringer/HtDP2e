@@ -4,6 +4,7 @@
 (require 2htdp/universe)
 (require 2htdp/image)
 
+
 ;; http://www.ccs.neu.edu/home/matthias/HtDP2e/part_one.html#%28part._ch~3amix%29
 
 
@@ -75,6 +76,14 @@
 ;; Missile is close enough to the UFO to hit it.
 
 
+;; 2a. FUNCTION SIGNATURE: UFO Missile -> Boolean
+;; 2b. PURPOSE STATEMENT: Consumes a UFO and a Missile and returns true if the
+;; Missile is close enough to the UFO to hit it.
+;; 2c. HEADER
+(define (missile-hit? u m) false)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+;; 4. TEMPLATE
+;; 5. CODE
 
 
 ;; 2a. FUNCTION SIGNATURE: Missile Image -> Image
@@ -240,15 +249,10 @@
 (check-expect (si-game-over (make-aim (make-posn (/ WIDTH 2) (/ HEIGHT 2))
                                       (make-tank (/ WIDTH 2) -3))) false)
 (check-expect (si-game-over
-               (make-aim (make-posn (/ WIDTH 2)
-                                    (- HEIGHT (/ (image-height UFO) 2) 1))
-                         (make-tank 10 -3)))
-              false)
-(check-expect (si-game-over
-               (make-aim (make-posn (/ WIDTH 2)
-                                    (- HEIGHT (/ (image-height UFO) 2)))
-                         (make-tank 10 -3)))
-              true)
+               (make-aim (make-posn
+                          (/ WIDTH 2)
+                          (floor (- HEIGHT (/ (image-height UFO) 2))))
+                         (make-tank 10 -3))) true)
 (check-expect (si-game-over
                (make-aim (make-posn (/ WIDTH 2)
                                     (+ 1 (- HEIGHT (/ (image-height UFO) 2))))
