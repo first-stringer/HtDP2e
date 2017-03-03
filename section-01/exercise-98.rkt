@@ -69,6 +69,12 @@
 ;; SIGNATURE: Missile Image -> Image 
 ;; PURPOSE STATEMENT: Adds m to the given image im.
 ;(define (missile-render m im) im)
+;; NAME: missile-hit?
+;; SIGNATURE: UFO Missile -> Boolean
+;; PURPOSE STATEMENT: Consumes a UFO and a Missile and returns true if the
+;; Missile is close enough to the UFO to hit it.
+
+
 
 
 ;; 2a. FUNCTION SIGNATURE: Missile Image -> Image
@@ -339,4 +345,18 @@
 (define (si-game-over s)
   (cond
     [(aim? s) (>= (posn-y (aim-ufo s)) (- HEIGHT (/ (image-height UFO) 2)))]
-    [(fired? s) false]))
+    [(fired? s)
+     (and
+      (<= (posn-y (fired-missile s))
+          (+ (posn-y (fired-ufo s))
+             (/ (image-height UFO) 2) (/ (image-height MISSILE) 2))
+          )
+      (>= (posn-y (fired-missile s))
+          (- (posn-y (fired-ufo s))
+             (/ (image-height UFO) 2) (/ (image-height MISSILE) 2))
+          )      
+      )
+     ]
+    )
+  )
+
