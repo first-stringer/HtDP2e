@@ -147,19 +147,21 @@
                                   (/ (image-height MISSILE) 2))))))))
 ;; 4. TEMPLATE
 #;(define (si-render-final s)
-  (cond
-    [(and (fired? s) (missile-hit? (fired-ufo s) (fired-missile s)))
-     (... s ...)]
-    [else (... s ...) ]
+    (cond
+      [(and (fired? s) (missile-hit? (fired-ufo s) (fired-missile s)))
+       (... s ...)]
+      [else (... s ...) ]
+      )
     )
-  )
 ;; 5. CODE
-
-
-#;(cond
-    [(aim? s) (>= (posn-y (aim-ufo s)) (- HEIGHT (/ (image-height UFO) 2)))]
-    [(fired? s) (missile-hit? (fired-ufo s) (fired-missile s))]
+(define (si-render-final s)
+    (cond
+      [(and (fired? s) (missile-hit? (fired-ufo s) (fired-missile s)))
+       (... s ...)]
+      [else (... s ...) ]
+      )
     )
+
 
 ;; 2a. FUNCTION SIGNATURE: UFO Missile -> Boolean
 ;; 2b. PURPOSE STATEMENT: Consumes a UFO and a Missile and returns true if the
