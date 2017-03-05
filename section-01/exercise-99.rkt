@@ -93,20 +93,23 @@
 ;; the TANK by TANK_SPEED and the MISSILE by MISSILE_SPEED.
 ;; (d).
 ;; 2c. HEADER
-(define (si-move-proper s d) s)
+#;(define (si-move-proper s d) s)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
-;; test for not-fired, delta 1
+;; test for not-fired, delta 1, UFO at center
 (check-expect (si-move-proper (make-aim (make-posn (/ WIDTH 2) (/ HEIGHT 2))
                                         (make-tank (/ WIDTH 2) 1)) 1)
               (make-aim (make-posn (+ (/ WIDTH 2) UFO_SPEED)
                                    (+ (/ HEIGHT 2) UFO_SPEED))
                         (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1)))
-;; test for not-fired, delta -1
+;; test for not-fired, delta -1, UFO at center
 (check-expect (si-move-proper (make-aim (make-posn (/ WIDTH 2) (/ HEIGHT 2))
                                         (make-tank (/ WIDTH 2) 1)) -1)
               (make-aim (make-posn (- (/ WIDTH 2) UFO_SPEED)
                                    (+ (/ HEIGHT 2) UFO_SPEED))
                         (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1)))
+;; test for not-fired, delta 1, UFO at right edge
+;; test for not-fired, delta -1, UFO at left edge
+;; test for not-fired, delta 1, UFO at center landed
 ;; test for fired, delta 1, UFO at center
 (check-expect (si-move-proper (make-fired
                                (make-posn (/ WIDTH 2) (/ HEIGHT 2))
@@ -146,8 +149,37 @@
                            (/ WIDTH 2)
                            (- HEIGHT (image-height TANK) MISSILE_SPEED))))
 ;; test for fired, delta -1, UFO at left edge
-;; test for fired, delta 1, UFO at center bottom
+(check-expect (si-move-proper (make-fired
+                               (make-posn 0 (/ HEIGHT 2))
+                               (make-tank (/ WIDTH 2) 1)
+                               (make-posn (/ WIDTH 2)
+                                          (- HEIGHT (image-height TANK))))
+                              -1)
+              (make-fired (make-posn 0 (+ (/ HEIGHT 2) UFO_SPEED))
+                          (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1)
+                          (make-posn
+                           (/ WIDTH 2)
+                           (- HEIGHT (image-height TANK) MISSILE_SPEED))))
+;; test for fired, delta 1, UFO at center landed
+(check-expect (si-move-proper (make-fired
+                               (make-posn (/ WIDTH 2)
+                                          (- HEIGHT (/ (image-height UFO) 2)))
+                               (make-tank (/ WIDTH 2) 1)
+                               (make-posn (/ WIDTH 2)
+                                          (- HEIGHT (image-height TANK))))
+                              1)
+              (make-fired (make-posn (/ WIDTH 2)
+                                     (- HEIGHT (/ (image-height UFO) 2)))
+                          (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1)
+                          (make-posn
+                           (/ WIDTH 2)
+                           (- HEIGHT (image-height TANK) MISSILE_SPEED))))
 ;; 4. TEMPLATE
+(define (si-move-proper s d)
+  (cond
+    [(aim? s) (... (aim-tank s) ... (aim-ufo s) ... d ...)]
+    [(fired? s) (... (fired-tank s) ... (fired-ufo s) ... d 
+                     ... (fired-missile s) ...)]))
 ;; 5. CODE
 
 
