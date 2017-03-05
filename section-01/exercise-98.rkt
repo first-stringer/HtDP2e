@@ -74,6 +74,21 @@
 ;; SIGNATURE: UFO Missile -> Boolean
 ;; PURPOSE STATEMENT: Consumes a UFO and a Missile and returns true if the
 ;; Missile is close enough to the UFO to hit it.
+;; NAME: si-render-final
+;; SIGNATURE: SIGS -> Image
+;; PURPOSE STATEMENT: Consumes a SIGS and displays "GAME OVER. YOU LOSE!" if the
+;; UFO landed else it displays "GAME OVER. YOU WIN!" if a missile hit the UFO.
+
+
+;; 2a. FUNCTION SIGNATURE:
+;; 2b. PURPOSE STATEMENT:
+;; 2c. HEADER
+;; 3a. FUNCTIONAL EXAMPLES
+;; #1: Given: , Expect:
+;; 3b. TESTS
+#;1 
+;; 4. TEMPLATE
+;; 5. CODE
 
 
 ;; 2a. FUNCTION SIGNATURE: UFO Missile -> Boolean
