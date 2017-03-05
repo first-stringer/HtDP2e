@@ -175,14 +175,19 @@
                            (/ WIDTH 2)
                            (- HEIGHT (image-height TANK) MISSILE_SPEED))))
 ;; 4. TEMPLATE
+#;(define (si-move-proper s d)
+    (cond
+      [(aim? s) (... (aim-ufo s) ... d ... (aim-tank s) ...)]
+      [(fired? s) (... (fired-ufo s) ... d ... (fired-tank s) ...
+                       (fired-missile s) ...)]))
+;; 5. CODE
 (define (si-move-proper s d)
   (cond
-    [(aim? s) (... (aim-tank s) ... (aim-ufo s) ... d ...)]
-    [(fired? s) (... (fired-tank s) ... (fired-ufo s) ... d 
-                     ... (fired-missile s) ...)]))
-;; 5. CODE
-
-
+    [(aim? s) (make-aim (move-ufo (aim-ufo s) d) (move-tank (aim-tank s)))]
+    [(fired? s) (make-fired (move-ufo (fired-ufo s) d)
+                            (move-tank (fired-tank s))
+                            (move-missile (fired-missile s))
+                          )]))
 
 
 ;; 2a. FUNCTION SIGNATURE: SIGS -> Image
