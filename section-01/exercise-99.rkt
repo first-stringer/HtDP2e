@@ -60,6 +60,9 @@
 (define GAME_OVER_TEXT_LOSING_COLOR "red")
 (define GAME_OVER_TEXT_WINNING "GAME OVER. YOU WIN!")
 (define GAME_OVER_TEXT_WINNING_COLOR "green")
+(define UFO_SPEED 2)
+(define TANK_SPEED 3)
+(define MISSILE_SPEED 5)
 
 
 ;; 1c. FUNCTION WISH LIST
@@ -83,6 +86,71 @@
 ;; SIGNATURE: SIGS -> Image
 ;; PURPOSE STATEMENT: Consumes a SIGS and displays "GAME OVER. YOU LOSE!" if the
 ;; UFO landed else it displays "GAME OVER. YOU WIN!" if a missile hit the UFO.
+
+
+;; 2a. FUNCTION SIGNATURE: SIGS Number -> SIGS 
+;; 2b. PURPOSE STATEMENT: Moves the UFO predictably by delta times UFO_SPEED and
+;; the TANK by TANK_SPEED and the MISSILE by MISSILE_SPEED.
+;; (d).
+;; 2c. HEADER
+(define (si-move-proper s d) s)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+;; test for not-fired, delta 1
+(check-expect (si-move-proper (make-aim (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                                        (make-tank (/ WIDTH 2) 1)) 1)
+              (make-aim (make-posn (+ (/ WIDTH 2) UFO_SPEED)
+                                   (+ (/ HEIGHT 2) UFO_SPEED))
+                        (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1)))
+;; test for not-fired, delta -1
+(check-expect (si-move-proper (make-aim (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                                        (make-tank (/ WIDTH 2) 1)) -1)
+              (make-aim (make-posn (- (/ WIDTH 2) UFO_SPEED)
+                                   (+ (/ HEIGHT 2) UFO_SPEED))
+                        (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1)))
+;; test for fired, delta 1, UFO at center
+(check-expect (si-move-proper (make-fired
+                               (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                               (make-tank (/ WIDTH 2) 1)
+                               (make-posn (/ WIDTH 2)
+                                          (- HEIGHT (image-height TANK))))
+                              1)
+              (make-fired (make-posn (+ (/ WIDTH 2) UFO_SPEED)
+                                     (+ (/ HEIGHT 2) UFO_SPEED))
+                          (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1)
+                          (make-posn
+                           (/ WIDTH 2)
+                           (- HEIGHT (image-height TANK) MISSILE_SPEED))))
+;; test for fired, delta -1, UFO at center
+(check-expect (si-move-proper (make-fired
+                               (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                               (make-tank (/ WIDTH 2) 1)
+                               (make-posn (/ WIDTH 2)
+                                          (- HEIGHT (image-height TANK))))
+                              -1)
+              (make-fired (make-posn (- (/ WIDTH 2) UFO_SPEED)
+                                     (+ (/ HEIGHT 2) UFO_SPEED))
+                          (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1)
+                          (make-posn
+                           (/ WIDTH 2)
+                           (- HEIGHT (image-height TANK) MISSILE_SPEED))))
+;; test for fired, delta 1, UFO at right edge
+(check-expect (si-move-proper (make-fired
+                               (make-posn WIDTH (/ HEIGHT 2))
+                               (make-tank (/ WIDTH 2) 1)
+                               (make-posn (/ WIDTH 2)
+                                          (- HEIGHT (image-height TANK))))
+                              1)
+              (make-fired (make-posn WIDTH (+ (/ HEIGHT 2) UFO_SPEED))
+                          (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1)
+                          (make-posn
+                           (/ WIDTH 2)
+                           (- HEIGHT (image-height TANK) MISSILE_SPEED))))
+;; test for fired, delta -1, UFO at left edge
+;; test for fired, delta 1, UFO at center bottom
+;; 4. TEMPLATE
+;; 5. CODE
+
+
 
 
 ;; 2a. FUNCTION SIGNATURE: SIGS -> Image
