@@ -55,6 +55,11 @@
 (define INITIAL_SCENE
   (place-image TANK 15 (- HEIGHT (/ (image-height TANK) 2))
                (place-image UFO (/ WIDTH 2) (image-height UFO) BACKGROUND)))
+(define GAME_OVER_TEXT_FONT_SIZE 12)
+(define GAME_OVER_TEXT_LOSING "GAME OVER. YOU LOSE!")
+(define GAME_OVER_TEXT_LOSING_COLOR "red")
+(define GAME_OVER_TEXT_WINNING "GAME OVER. YOU WIN!")
+(define GAME_OVER_TEXT_WINNING_COLOR "green")
 
 
 ;; 1c. FUNCTION WISH LIST
@@ -80,16 +85,74 @@
 ;; UFO landed else it displays "GAME OVER. YOU WIN!" if a missile hit the UFO.
 
 
-;; 2a. FUNCTION SIGNATURE:
-;; 2b. PURPOSE STATEMENT:
+;; 2a. FUNCTION SIGNATURE: SIGS -> Image
+;; 2b. PURPOSE STATEMENT: Consumes a SIGS and displays "GAME OVER. YOU LOSE!" if
+;; the UFO landed else it displays "GAME OVER. YOU WIN!" if a missile hit the
+;; UFO.
 ;; 2c. HEADER
-;; 3a. FUNCTIONAL EXAMPLES
-;; #1: Given: , Expect:
-;; 3b. TESTS
-#;1 
+(define (si-render-final s) EMPTY_SCENE)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+;; test no missile fired loss
+(check-expect (si-render-final (make-aim (make-posn
+                                          (/ WIDTH 4)
+                                          (- HEIGHT (/ (image-height UFO) 2)))
+                                         (make-tank (/ WIDTH 2) 3)))
+              (place-image (text GAME_OVER_TEXT_LOSING GAME_OVER_TEXT_FONT_SIZE
+                                 GAME_OVER_TEXT_LOSING_COLOR)
+                           (/ WIDTH 2) (/ HEIGHT 2)
+                           (si-render
+                            (make-aim
+                             (make-posn (/ WIDTH 4)
+                                        (- HEIGHT (/ (image-height UFO) 2)))
+                             (make-tank (/ WIDTH 2) 3)))))
+;; test missile hit win
+(check-expect (si-render-final
+               (make-fired
+                (make-posn (/ WIDTH 2) (/ HEIGHT 2)) (make-tank (/ WIDTH 2) 3)
+                (make-posn (/ WIDTH 2)
+                           (floor (+ (/ HEIGHT 2) (/ (image-height UFO) 2)
+                                     (/ (image-height MISSILE) 2))))))
+              (place-image (text GAME_OVER_TEXT_WINNING GAME_OVER_TEXT_FONT_SIZE
+                                 GAME_OVER_TEXT_WINNING_COLOR)
+                           (/ WIDTH 2) (/ HEIGHT 2)
+                           (si-render
+                            (make-fired
+                             (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                             (make-tank (/ WIDTH 2) 3)
+                             (make-posn
+                              (/ WIDTH 2)
+                              (floor
+                               (+ (/ HEIGHT 2) (/ (image-height UFO) 2)
+                                  (/ (image-height MISSILE) 2))))))))
+;; test missile fired loss
+(check-expect (si-render-final
+               (make-fired
+                (make-posn (/ WIDTH 4) (- HEIGHT (/ (image-height UFO) 2)))
+                (make-tank (/ WIDTH 2) 3)
+                (make-posn (/ WIDTH 2)
+                           (floor (+ (/ HEIGHT 2) (/ (image-height UFO) 2)
+                                     (/ (image-height MISSILE) 2))))))
+              (place-image (text GAME_OVER_TEXT_LOSING GAME_OVER_TEXT_FONT_SIZE
+                                 GAME_OVER_TEXT_LOSING_COLOR)
+                           (/ WIDTH 2) (/ HEIGHT 2)
+                           (si-render
+                            (make-fired
+                             (make-posn (/ WIDTH 4)
+                                        (- HEIGHT (/ (image-height UFO) 2)))
+                             (make-tank (/ WIDTH 2) 3)
+                             (make-posn
+                              (/ WIDTH 2)
+                              (floor
+                               (+ (/ HEIGHT 2) (/ (image-height UFO) 2)
+                                  (/ (image-height MISSILE) 2))))))))
 ;; 4. TEMPLATE
 ;; 5. CODE
 
+
+#;(cond
+    [(aim? s) (>= (posn-y (aim-ufo s)) (- HEIGHT (/ (image-height UFO) 2)))]
+    [(fired? s) (missile-hit? (fired-ufo s) (fired-missile s))]
+    )
 
 ;; 2a. FUNCTION SIGNATURE: UFO Missile -> Boolean
 ;; 2b. PURPOSE STATEMENT: Consumes a UFO and a Missile and returns true if the
