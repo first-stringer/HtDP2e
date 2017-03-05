@@ -90,7 +90,7 @@
 ;; the UFO landed else it displays "GAME OVER. YOU WIN!" if a missile hit the
 ;; UFO.
 ;; 2c. HEADER
-(define (si-render-final s) EMPTY_SCENE)
+#;(define (si-render-final s) EMPTY_SCENE)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 ;; test no missile fired loss
 (check-expect (si-render-final (make-aim (make-posn
@@ -146,6 +146,13 @@
                                (+ (/ HEIGHT 2) (/ (image-height UFO) 2)
                                   (/ (image-height MISSILE) 2))))))))
 ;; 4. TEMPLATE
+#;(define (si-render-final s)
+  (cond
+    [(and (fired? s) (missile-hit? (fired-ufo s) (fired-missile s)))
+     (... s ...)]
+    [else (... s ...) ]
+    )
+  )
 ;; 5. CODE
 
 
