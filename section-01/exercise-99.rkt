@@ -98,8 +98,82 @@
 ;; velocity.
 ;; NAME: move-missile
 ;; SIGNATURE: Missile -> Missile
-;; PURPOSE STATEMENT: Updats the missile's y-crd by subtracting MISSILE_SPEED
+;; PURPOSE STATEMENT: Updates the missile's y-crd by subtracting MISSILE_SPEED
 ;; from it.
+
+
+;; 2a. FUNCTION SIGNATURE: Missile -> Missile
+;; 2b. PURPOSE STATEMENT: Updates the missile's y-crd by subtracting
+;; MISSILE_SPEED from it.
+;; 2c. HEADER
+#;(define (move-missile m) m)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (move-missile (make-posn (/ WIDTH 2) (/ HEIGHT 2)))
+              (make-posn (/ WIDTH 2) (- (/ HEIGHT 2) MISSILE_SPEED)))
+;; 4. TEMPLATE
+#;(define (move-missile m)
+    (... (posn-x m) ... (posn-y m) ... MISSILE_SPEED ...))
+;; 5. CODE
+(define (move-missile m)
+  (make-posn (posn-x m) (- (posn-y m) MISSILE_SPEED)))
+
+
+;; 2a. FUNCTION SIGNATURE: Tank -> Tank
+;; 2b. PURPOSE STATEMENT: Updates the tanks's x-crd by TANK_SPEED times the
+;; tank's velocity. The tank's x-crd is not updated to fall below 0 nor to exceed
+;; WIDTH.
+;; 2c. HEADER
+#;(define (move-tank t) t)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+;; move right
+(check-expect (move-tank (make-tank (/ WIDTH 2) 1))
+              (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1))
+;; move left
+(check-expect (move-tank (make-tank (/ WIDTH 2) -1))
+              (make-tank (- (/ WIDTH 2) TANK_SPEED) -1))
+;; no move left because at left edge
+(check-expect (move-tank (make-tank (/ (image-width TANK) 2) -1))
+              (make-tank (/ (image-width TANK) 2) -1))
+;; only move left to the very edge
+(check-expect (move-tank (make-tank (add1 (/ (image-width TANK) 2)) -1))
+              (make-tank (/ (image-width TANK) 2) -1))
+;; no move right because at the right edge
+(check-expect (move-tank (make-tank (- WIDTH (/ (image-width TANK) 2)) 1))
+              (make-tank (- WIDTH (/ (image-width TANK) 2)) 1))
+;; only move right to the very edge
+(check-expect (move-tank (make-tank (- WIDTH (/ (image-width TANK) 2) 1) 1))
+              (make-tank (- WIDTH (/ (image-width TANK) 2)) 1))
+;; 4. TEMPLATE
+#;(define (move-tank t)
+    (... (tank-loc t) ... TANK_SPEED ... (tank-vel t) ...))
+;; 5. CODE
+(define (move-tank t)
+  (cond
+    [(>= (+ (tank-loc t) (* TANK_SPEED (tank-vel t)))
+         (- WIDTH (/ (image-width TANK) 2)))
+     (make-tank (- WIDTH (/ (image-width TANK) 2)) (tank-vel t))]
+    [(<= (+ (tank-loc t) (* TANK_SPEED (tank-vel t)))
+         (/ (image-width TANK) 2))
+     (make-tank (/ (image-width TANK) 2) (tank-vel t))]
+    [else (make-tank (+ (tank-loc t) (* TANK_SPEED (tank-vel t))) (tank-vel t))]
+    )
+  )
+
+
+;; 2a. FUNCTION SIGNATURE: UFO Number -> UFO
+;; 2b. PURPOSE STATEMENT: Consumes a UFO and a number.  Updates the UFO's y-crd
+;; by UFO_SPEED and the UFO's x-crd by UFO_SPEED times Number (delta).  If UFO is
+;; at either edge the x-crd is not updated. If the UFO has landed the UFO is not
+;; updated.
+;; 2c. HEADER
+(define (move-ufo u d) u)
+;; 3a. FUNCTIONAL EXAMPLES
+;; #1: Given: , Expect:
+;; 3b. TESTS
+#;1 
+;; 4. TEMPLATE
+;; 5. CODE
+
 
 
 ;; 2a. FUNCTION SIGNATURE: SIGS Number -> SIGS 
@@ -107,7 +181,7 @@
 ;; the TANK by TANK_SPEED and the MISSILE by MISSILE_SPEED.
 ;; (d).
 ;; 2c. HEADER
-#;(define (si-move-proper s d) s)
+(define (si-move-proper s d) s)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 ;; test for not-fired, delta 1, UFO at center
 (check-expect (si-move-proper (make-aim (make-posn (/ WIDTH 2) (/ HEIGHT 2))
@@ -195,13 +269,13 @@
       [(fired? s) (... (fired-ufo s) ... d ... (fired-tank s) ...
                        (fired-missile s) ...)]))
 ;; 5. CODE
-(define (si-move-proper s d)
-  (cond
-    [(aim? s) (make-aim (move-ufo (aim-ufo s) d) (move-tank (aim-tank s)))]
-    [(fired? s) (make-fired (move-ufo (fired-ufo s) d)
-                            (move-tank (fired-tank s))
-                            (move-missile (fired-missile s))
-                            )]))
+#; (define (si-move-proper s d)
+     (cond
+       [(aim? s) (make-aim (move-ufo (aim-ufo s) d) (move-tank (aim-tank s)))]
+       [(fired? s) (make-fired (move-ufo (fired-ufo s) d)
+                               (move-tank (fired-tank s))
+                               (move-missile (fired-missile s))
+                               )]))
 
 
 ;; 2a. FUNCTION SIGNATURE: SIGS -> Image
