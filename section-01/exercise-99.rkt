@@ -166,7 +166,7 @@
 ;; at either edge the x-crd is not updated. If the UFO has landed the UFO is not
 ;; updated.
 ;; 2c. HEADER
-(define (move-ufo u d) u)
+#;(define (move-ufo u d) u)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 ;; move right
 (check-expect (move-ufo (make-posn (/ WIDTH 2) (/ HEIGHT 2)) 1)
@@ -193,17 +193,29 @@
               (make-posn (/ (image-width UFO) 2) (+ UFO_SPEED (/ HEIGHT 2))))
 ;; no move right when at right edge
 (check-expect (move-ufo (make-posn (- WIDTH (/ (image-width UFO) 2))
-                                   (/ HEIGHT 2)) -1)
+                                   (/ HEIGHT 2)) 1)
               (make-posn (- WIDTH (/ (image-width UFO) 2))
                          (+ UFO_SPEED (/ HEIGHT 2))))
 ;; no move beyond right edge
 (check-expect (move-ufo (make-posn (- WIDTH (/ (image-width UFO) 2) 1)
-                                   (/ HEIGHT 2)) -1)
+                                   (/ HEIGHT 2)) 1)
               (make-posn (- WIDTH (/ (image-width UFO) 2))
                          (+ UFO_SPEED (/ HEIGHT 2))))
 ;; 4. TEMPLATE
+#;(define (move-ufo u d)
+    (... (posn-x u) ... (posn-y u) ... d ...))
 ;; 5. CODE
-
+(define (move-ufo u d)
+  (cond
+    [(>= (+ (posn-y u) UFO_SPEED) (- HEIGHT (/ (image-height UFO) 2)))
+     (make-posn (posn-x u) (- HEIGHT (/ (image-height UFO) 2)))]
+    [(<= (+ (posn-x u) (* d UFO_SPEED)) (/ (image-width UFO) 2))
+     (make-posn (/ (image-width UFO) 2) (+ (posn-y u) UFO_SPEED))]
+    [(>= (+ (posn-x u) (* d UFO_SPEED)) (- WIDTH (/ (image-width UFO) 2)))
+     (make-posn (- WIDTH (/ (image-width UFO) 2)) (+ (posn-y u) UFO_SPEED))]
+    [else (make-posn (+ (posn-x u) (* d UFO_SPEED)) (+ UFO_SPEED (posn-y u)))]
+    )
+  )
 
 
 ;; 2a. FUNCTION SIGNATURE: SIGS Number -> SIGS 
