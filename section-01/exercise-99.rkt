@@ -223,7 +223,7 @@
 ;; the TANK by TANK_SPEED and the MISSILE by MISSILE_SPEED.
 ;; (d).
 ;; 2c. HEADER
-(define (si-move-proper s d) s)
+#;(define (si-move-proper s d) s)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 ;; test for not-fired, delta 1, UFO at center
 (check-expect (si-move-proper (make-aim (make-posn (/ WIDTH 2) (/ HEIGHT 2))
@@ -311,13 +311,13 @@
       [(fired? s) (... (fired-ufo s) ... d ... (fired-tank s) ...
                        (fired-missile s) ...)]))
 ;; 5. CODE
-#; (define (si-move-proper s d)
-     (cond
-       [(aim? s) (make-aim (move-ufo (aim-ufo s) d) (move-tank (aim-tank s)))]
-       [(fired? s) (make-fired (move-ufo (fired-ufo s) d)
-                               (move-tank (fired-tank s))
-                               (move-missile (fired-missile s))
-                               )]))
+(define (si-move-proper s d)
+  (cond
+    [(aim? s) (make-aim (move-ufo (aim-ufo s) d) (move-tank (aim-tank s)))]
+    [(fired? s) (make-fired (move-ufo (fired-ufo s) d)
+                            (move-tank (fired-tank s))
+                            (move-missile (fired-missile s))
+                            )]))
 
 
 ;; 2a. FUNCTION SIGNATURE: SIGS -> Image
