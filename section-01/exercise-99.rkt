@@ -167,10 +167,40 @@
 ;; updated.
 ;; 2c. HEADER
 (define (move-ufo u d) u)
-;; 3a. FUNCTIONAL EXAMPLES
-;; #1: Given: , Expect:
-;; 3b. TESTS
-#;1 
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+;; move right
+(check-expect (move-ufo (make-posn (/ WIDTH 2) (/ HEIGHT 2)) 1)
+              (make-posn (+ (/ WIDTH 2) (* 1 UFO_SPEED))
+                         (+ UFO_SPEED (/ HEIGHT 2))))
+;; move left
+(check-expect (move-ufo (make-posn (/ WIDTH 2) (/ HEIGHT 2)) -1)
+              (make-posn (+ (/ WIDTH 2) (* -1 UFO_SPEED))
+                         (+ UFO_SPEED (/ HEIGHT 2))))
+;; no move when landed
+(check-expect (move-ufo (make-posn (/ WIDTH 2)
+                                   (- HEIGHT (/ (image-height UFO) 2))) 1)
+              (make-posn (/ WIDTH 2) (- HEIGHT (/ (image-height UFO) 2))))
+;; no move right or left when landing
+(check-expect (move-ufo (make-posn (/ WIDTH 2)
+                                   (- HEIGHT (/ (image-height UFO) 2) 1)) 1)
+              (make-posn (/ WIDTH 2) (- HEIGHT (/ (image-height UFO) 2))))
+;; no move left when at left edge
+(check-expect (move-ufo (make-posn (/ (image-width UFO) 2) (/ HEIGHT 2)) -1)
+              (make-posn (/ (image-width UFO) 2) (+ UFO_SPEED (/ HEIGHT 2))))
+;; no move beyond left edge
+(check-expect (move-ufo (make-posn (add1 (/ (image-width UFO) 2))
+                                   (/ HEIGHT 2)) -1)
+              (make-posn (/ (image-width UFO) 2) (+ UFO_SPEED (/ HEIGHT 2))))
+;; no move right when at right edge
+(check-expect (move-ufo (make-posn (- WIDTH (/ (image-width UFO) 2))
+                                   (/ HEIGHT 2)) -1)
+              (make-posn (- WIDTH (/ (image-width UFO) 2))
+                         (+ UFO_SPEED (/ HEIGHT 2))))
+;; no move beyond right edge
+(check-expect (move-ufo (make-posn (- WIDTH (/ (image-width UFO) 2) 1)
+                                   (/ HEIGHT 2)) -1)
+              (make-posn (- WIDTH (/ (image-width UFO) 2))
+                         (+ UFO_SPEED (/ HEIGHT 2))))
 ;; 4. TEMPLATE
 ;; 5. CODE
 
