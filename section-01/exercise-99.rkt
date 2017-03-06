@@ -86,6 +86,20 @@
 ;; SIGNATURE: SIGS -> Image
 ;; PURPOSE STATEMENT: Consumes a SIGS and displays "GAME OVER. YOU LOSE!" if the
 ;; UFO landed else it displays "GAME OVER. YOU WIN!" if a missile hit the UFO.
+;; NAME: move-ufo
+;; SIGNATURE: UFO Number -> UFO
+;; PURPOSE STATEMENT: Consumes a UFO and a number.  Updates the UFO's y-crd by
+;; UFO_SPEED and the UFO's x-crd by UFO_SPEED times Number (delta).  If UFO is at
+;; either edge the x-crd is not updated. If the UFO has landed the UFO is not
+;; updated.
+;; NAME: move-tank
+;; SIGNATURE: Tank -> Tank
+;; PURPOSE STATEMENT: Updates the tanks's x-crd by TANK_SPEED times the tank's
+;; velocity.
+;; NAME: move-missile
+;; SIGNATURE: Missile -> Missile
+;; PURPOSE STATEMENT: Updats the missile's y-crd by subtracting MISSILE_SPEED
+;; from it.
 
 
 ;; 2a. FUNCTION SIGNATURE: SIGS Number -> SIGS 
@@ -187,7 +201,7 @@
     [(fired? s) (make-fired (move-ufo (fired-ufo s) d)
                             (move-tank (fired-tank s))
                             (move-missile (fired-missile s))
-                          )]))
+                            )]))
 
 
 ;; 2a. FUNCTION SIGNATURE: SIGS -> Image
