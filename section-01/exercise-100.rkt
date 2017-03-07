@@ -759,13 +759,27 @@
 ;; 2c. HEADER
 (define (si-control s ke) s)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
+;; change tank direction when not yet fired (aim)
+;; change tank direction when fired (fired)
+;; fire missile (aim)
+;; 4. TEMPLATE
+(define (si-control s ke)
+  (cond
+    [(and (aim? s) (or (eq? ke "left") (eq? ke "right"))) (... s ...)] 
+    [(and (fired? s) (or (eq? ke "left") (eq? ke "right"))) (... s ...)] 
+    [(and (aim? s) (eq? ke "space")) (... s ...)] 
+    [else (... s ...)] 
+    )
+  )
+;; 5. CODE
+
+
+
 ;; move left when not near left edge
 ;; move left when near left edge
 ;; move right when not near right edge
 ;; move right when near right edge
 ;; space bar when missile not yet fired
 ;; space bar when missile already fired
-;; 4. TEMPLATE
-;; 5. CODE
 
 
