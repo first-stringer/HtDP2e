@@ -854,7 +854,19 @@
     )
   )
 
-;; space bar when missile not yet fired
-;; space bar when missile already fired
+
+;; 2a. FUNCTION SIGNATURE: Tank -> Missile
+;; 2b. PURPOSE STATEMENT: Consumes a Tank and returns a fired Missile.
+;; 2c. HEADER
+#;(define (fire-missile t) (make-posn 0 0))
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (fire-missile (make-tank (/ WIDTH 2) 1))
+              (make-posn (/ WIDTH 2) (/ (image-height TANK) 2)))
+;; 4. TEMPLATE
+#;(define (fire-missile t)
+  (... (tank-loc t) ... (tank-vel t) ...))
+;; 5. CODE
+(define (fire-missile t)
+  (make-posn (tank-loc t) (/ (image-height TANK) 2)))
 
 
