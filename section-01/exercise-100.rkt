@@ -841,16 +841,16 @@
               (make-tank (/ WIDTH 2) 1))
 ;; 4. TEMPLATE
 #;(define (change-tank-dir t ke)
-  (cond
-    [(eq? ke "left") (... (tank-loc t) ... (tank-vel t) ...)]
-    [(eq? ke "right") (... (tank-loc t) ... (tank-vel t) ...)]
+    (cond
+      [(eq? ke "left") (... (tank-loc t) ... (tank-vel t) ...)]
+      [(eq? ke "right") (... (tank-loc t) ... (tank-vel t) ...)]
+      )
     )
-  )
 ;; 5. CODE
 (define (change-tank-dir t ke)
   (cond
-    [(eq? ke "left") (... (tank-loc t) ... (tank-vel t) ...)]
-    [(eq? ke "right") (... (tank-loc t) ... (tank-vel t) ...)]
+    [(eq? ke "left") (make-tank (tank-loc t) -1)]
+    [(eq? ke "right") (make-tank (tank-loc t) 1)]
     )
   )
 
