@@ -268,24 +268,26 @@
                            (- HEIGHT (image-height TANK) MISSILE_SPEED))))
 ;; test for fired, delta 1, UFO at right edge
 (check-expect (si-move-proper (make-fired
-                               (make-posn WIDTH (/ HEIGHT 2))
+                               (make-posn (- WIDTH (/ (image-width UFO) 2))
+                                          (/ HEIGHT 2))
                                (make-tank (/ WIDTH 2) 1)
                                (make-posn (/ WIDTH 2)
                                           (- HEIGHT (image-height TANK))))
                               1)
-              (make-fired (make-posn WIDTH (+ (/ HEIGHT 2) UFO_SPEED))
+              (make-fired (make-posn (- WIDTH (/ (image-width UFO) 2))
+                                     (+ (/ HEIGHT 2) UFO_SPEED))
                           (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1)
                           (make-posn
                            (/ WIDTH 2)
                            (- HEIGHT (image-height TANK) MISSILE_SPEED))))
 ;; test for fired, delta -1, UFO at left edge
 (check-expect (si-move-proper (make-fired
-                               (make-posn 0 (/ HEIGHT 2))
+                               (make-posn (/ (image-width UFO) 2) (/ HEIGHT 2))
                                (make-tank (/ WIDTH 2) 1)
                                (make-posn (/ WIDTH 2)
                                           (- HEIGHT (image-height TANK))))
                               -1)
-              (make-fired (make-posn 0 (+ (/ HEIGHT 2) UFO_SPEED))
+              (make-fired (make-posn (/ (image-width UFO) 2) (+ (/ HEIGHT 2) UFO_SPEED))
                           (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1)
                           (make-posn
                            (/ WIDTH 2)
