@@ -100,6 +100,28 @@
 ;; SIGNATURE: Missile -> Missile
 ;; PURPOSE STATEMENT: Updates the missile's y-crd by subtracting MISSILE_SPEED
 ;; from it.
+;; NAME: random-positive-or-negative-one
+;; SIGNATURE: -> Number (-1 or 1)
+;; PURPOSE STATEMENT: Ramdomly returns a -1 or 1.
+
+
+;; 2a. FUNCTION SIGNATURE: -> Number (-1 or 1)
+;; 2b. PURPOSE STATEMENT: Ramdomly returns a -1 or 1.
+;; 2c. HEADER
+#;(define random-positive-or-negative-one 1)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+;; define t helper function for tests
+(define (t n) (or (eq? n -1) (eq? n 1)))
+(check-satisfied random-positive-or-negative-one t)
+(check-satisfied random-positive-or-negative-one t)
+(check-satisfied random-positive-or-negative-one t)
+(check-satisfied random-positive-or-negative-one t)
+;; 4. TEMPLATE
+#;(define random-positive-or-negative-one
+    (random ...))
+;; 5. CODE
+(define random-positive-or-negative-one
+  (if (eq? (random 2) 1) 1 -1))
 
 
 ;; 2a. FUNCTION SIGNATURE: Missile -> Missile
@@ -707,4 +729,23 @@
     [(fired? s) (missile-hit? (fired-ufo s) (fired-missile s))]
     )
   )
+
+
+;; 2a. FUNCTION SIGNATURE: SIGS -> SIGS
+;; 2b. PURPOSE STATEMENT: This function is called for every clock tick to
+;; determine to which position the objects move now. Accordingly it consumes an
+;; element of SIGS and produces another one. Moving the tank and the missile
+;; (if any) is relatively straightforward. They move in straight lines at a
+;; constant speed. Moving the UFO calls for small random jumps to the left or the
+;; right. 
+;; 2c. HEADER
+#;(define (si-move s) s)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+;; NA due to random function use.
+;; 4. TEMPLATE
+#;(define (si-move s)
+    (si-move-proper ... s ... (random ...)))
+;; 5. CODE
+(define (si-move s)
+  (si-move-proper s random-positive-or-negative-one))
 
