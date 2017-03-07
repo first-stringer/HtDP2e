@@ -749,3 +749,23 @@
 (define (si-move s)
   (si-move-proper s random-positive-or-negative-one))
 
+
+;; 2a. FUNCTION SIGNATURE: SIGS KeyEvent -> SIGS
+;; 2b. PURPOSE STATEMENT: The key event handler. It consumes a game state and a
+;; KeyEvent and produces a new game state. It reacts to three different keys: 1)
+;; pressing the left arrow ensures that the tank moves left; 2) pressing the
+;; right arrow ensures that the tank moves right; and 3) pressing the space bar
+;; fires the missile if it hasn’t been launched yet.
+;; 2c. HEADER
+(define (si-control s ke) s)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+;; move left when not near left edge
+;; move left when near left edge
+;; move right when not near right edge
+;; move right when near right edge
+;; space bar when missile not yet fired
+;; space bar when missile already fired
+;; 4. TEMPLATE
+;; 5. CODE
+
+
