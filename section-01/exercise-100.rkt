@@ -759,26 +759,101 @@
 ;; 2c. HEADER
 (define (si-control s ke) s)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
-;; change tank direction when not yet fired (aim)
-;; change tank direction when fired (fired)
+;; change tank direction (left) when not yet fired (aim)
+(check-expect (si-control (make-aim (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                                    (make-tank (/ WIDTH 2) 1)) "left")
+              (make-aim (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                        (make-tank (/ WIDTH 2) -1))) 
+;; change tank direction (right) when not yet fired (aim)
+(check-expect (si-control (make-aim (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                                    (make-tank (/ WIDTH 2) -1)) "right")
+              (make-aim (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                        (make-tank (/ WIDTH 2) 1)))
+;; change tank direction (left) when fired (fired)
+(check-expect (si-control (make-fired (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                                      (make-tank (/ WIDTH 2) 1)
+                                      (make-posn
+                                       (/ WIDTH 2)
+                                       (- HEIGHT (/ (image-height TANK) 2))))
+                          "left")
+              (make-fired (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                          (make-tank (/ WIDTH 2) -1)
+                          (make-posn
+                           (/ WIDTH 2)
+                           (- HEIGHT (/ (image-height TANK) 2)))))
+;; change tank direction (right) when fired (fired)
+(check-expect (si-control (make-fired (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                                      (make-tank (/ WIDTH 2) -1)
+                                      (make-posn
+                                       (/ WIDTH 2)
+                                       (- HEIGHT (/ (image-height TANK) 2))))
+                          "right")
+              (make-fired (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                          (make-tank (/ WIDTH 2) 1)
+                          (make-posn
+                           (/ WIDTH 2)
+                           (- HEIGHT (/ (image-height TANK) 2)))))
 ;; fire missile (aim)
+(check-expect (si-control (make-aim (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                                    (make-tank (/ WIDTH 2) 1)) "space")
+              (make-fired (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                          (make-tank (/ WIDTH 2) 1)
+                          (make-posn
+                           (/ WIDTH 2)
+                           (- HEIGHT (/ (image-height TANK) 2)))))
 ;; 4. TEMPLATE
-(define (si-control s ke)
+#;(define (si-control s ke)
+    (cond
+      [(and (aim? s) (or (eq? ke "left") (eq? ke "right"))) (... s ...)] 
+      [(and (fired? s) (or (eq? ke "left") (eq? ke "right"))) (... s ...)] 
+      [(and (aim? s) (eq? ke "space")) (... s ...)] 
+      [else (... s ...)] 
+      )
+    )
+;; 5. CODE
+#;(define (si-control s ke)
+    (cond
+      [(and (aim? s) (or (eq? ke "left") (eq? ke "right"))) (... s ...)] 
+      [(and (fired? s) (or (eq? ke "left") (eq? ke "right"))) (... s ...)] 
+      [(and (aim? s) (eq? ke "space")) (... s ...)] 
+      [else s] 
+      )
+    )
+
+
+;; 2a. FUNCTION SIGNATURE: Tank KeyEvent -> Tank
+;; 2b. PURPOSE STATEMENT: Consumes a Tank and KeyEvent and changes the direction
+;; of the tank based on the keyevent.
+;; 2c. HEADER
+#;(define (change-tank-dir t ke) t)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+;; move left when heading right
+(check-expect (change-tank-dir (make-tank (/ WIDTH 2) 1) "left")
+              (make-tank (/ WIDTH 2) -1))
+;; move left when already heading left
+(check-expect (change-tank-dir (make-tank (/ WIDTH 2) -1) "left")
+              (make-tank (/ WIDTH 2) -1))
+;; move right when heading left
+(check-expect (change-tank-dir (make-tank (/ WIDTH 2) -1) "right")
+              (make-tank (/ WIDTH 2) 1))
+;; move right when already heading right
+(check-expect (change-tank-dir (make-tank (/ WIDTH 2) 1) "right")
+              (make-tank (/ WIDTH 2) 1))
+;; 4. TEMPLATE
+#;(define (change-tank-dir t ke)
   (cond
-    [(and (aim? s) (or (eq? ke "left") (eq? ke "right"))) (... s ...)] 
-    [(and (fired? s) (or (eq? ke "left") (eq? ke "right"))) (... s ...)] 
-    [(and (aim? s) (eq? ke "space")) (... s ...)] 
-    [else (... s ...)] 
+    [(eq? ke "left") (... (tank-loc t) ... (tank-vel t) ...)]
+    [(eq? ke "right") (... (tank-loc t) ... (tank-vel t) ...)]
     )
   )
 ;; 5. CODE
+(define (change-tank-dir t ke)
+  (cond
+    [(eq? ke "left") (... (tank-loc t) ... (tank-vel t) ...)]
+    [(eq? ke "right") (... (tank-loc t) ... (tank-vel t) ...)]
+    )
+  )
 
-
-
-;; move left when not near left edge
-;; move left when near left edge
-;; move right when not near right edge
-;; move right when near right edge
 ;; space bar when missile not yet fired
 ;; space bar when missile already fired
 
