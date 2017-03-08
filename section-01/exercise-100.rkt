@@ -705,6 +705,17 @@
     (floor
      (+ (/ HEIGHT 2) (/ (image-height UFO) 2) (/ (image-height MISSILE) 2))))))
  true)
+;; test fire and miss scenario
+(check-expect
+ (si-game-over?
+  (make-fired
+   (make-posn (/ WIDTH 4) (floor (- HEIGHT (/ (image-height UFO) 2))))
+   (make-tank (/ WIDTH 2) 3)
+   (make-posn
+    (/ WIDTH 2)
+    (floor
+     (+ (/ HEIGHT 2) (/ (image-height UFO) 2) (/ (image-height MISSILE) 2))))))
+ true)
 (check-expect
  (si-game-over?
   (make-fired
@@ -726,7 +737,9 @@
 (define (si-game-over? s)
   (cond
     [(aim? s) (>= (posn-y (aim-ufo s)) (- HEIGHT (/ (image-height UFO) 2)))]
-    [(fired? s) (missile-hit? (fired-ufo s) (fired-missile s))]
+    [(fired? s)
+     (or (missile-hit? (fired-ufo s) (fired-missile s))
+         (>= (posn-y (fired-ufo s)) (- HEIGHT (/ (image-height UFO) 2))))]
     )
   )
 
