@@ -108,20 +108,20 @@
 ;; 2a. FUNCTION SIGNATURE: -> Number (-1 or 1)
 ;; 2b. PURPOSE STATEMENT: Ramdomly returns a -1 or 1.
 ;; 2c. HEADER
-#;(define random-positive-or-negative-one 1)
+#;(define (random-positive-or-negative-one n) 0)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 ;; define t helper function for tests
 (define (t n) (or (eq? n -1) (eq? n 1)))
-(check-satisfied random-positive-or-negative-one t)
-(check-satisfied random-positive-or-negative-one t)
-(check-satisfied random-positive-or-negative-one t)
-(check-satisfied random-positive-or-negative-one t)
+(check-satisfied (random-positive-or-negative-one 2) t)
+(check-satisfied (random-positive-or-negative-one 2) t)
+(check-satisfied (random-positive-or-negative-one 2) t)
+(check-satisfied (random-positive-or-negative-one 2) t)
 ;; 4. TEMPLATE
-#;(define random-positive-or-negative-one
-    (random ...))
+#;(define (random-positive-or-negative-one n)
+    ( ... n ... random ...))
 ;; 5. CODE
-(define random-positive-or-negative-one
-  (if (eq? (random 2) 1) 1 -1))
+(define (random-positive-or-negative-one n)
+  (if (eq? (random n) 1) 1 -1))
 
 
 ;; 2a. FUNCTION SIGNATURE: Missile -> Missile
@@ -747,7 +747,7 @@
     (si-move-proper ... s ... (random ...)))
 ;; 5. CODE
 (define (si-move s)
-  (si-move-proper s random-positive-or-negative-one))
+  (si-move-proper s (random-positive-or-negative-one 2)))
 
 
 ;; 2a. FUNCTION SIGNATURE: SIGS KeyEvent -> SIGS
@@ -795,7 +795,7 @@
                            (- HEIGHT (/ (image-height TANK) 2)))))
 ;; fire missile (aim)
 (check-expect (si-control (make-aim (make-posn (/ WIDTH 2) (/ HEIGHT 2))
-                                    (make-tank (/ WIDTH 2) 1)) "space")
+                                    (make-tank (/ WIDTH 2) 1)) " ")
               (make-fired (make-posn (/ WIDTH 2) (/ HEIGHT 2))
                           (make-tank (/ WIDTH 2) 1)
                           (make-posn
@@ -804,21 +804,21 @@
 ;; 4. TEMPLATE
 #;(define (si-control s ke)
     (cond
-      [(and (aim? s) (or (eq? ke "left") (eq? ke "right"))) (... s ...)] 
-      [(and (fired? s) (or (eq? ke "left") (eq? ke "right"))) (... s ...)] 
-      [(and (aim? s) (eq? ke "space")) (... s ...)] 
+      [(and (aim? s) (or (key=? ke "left") (key=? ke "right"))) (... s ...)] 
+      [(and (fired? s) (or (key=? ke "left") (key=? ke "right"))) (... s ...)] 
+      [(and (aim? s) (key=? ke " ")) (... s ...)] 
       [else (... s ...)] 
       )
     )
 ;; 5. CODE
 (define (si-control s ke)
   (cond
-    [(and (aim? s) (or (eq? ke "left") (eq? ke "right")))
+    [(and (aim? s) (or (key=? ke "left") (key=? ke "right")))
      (make-aim (aim-ufo s) (change-tank-dir (aim-tank s) ke))] 
-    [(and (fired? s) (or (eq? ke "left") (eq? ke "right")))
+    [(and (fired? s) (or (key=? ke "left") (key=? ke "right")))
      (make-fired (fired-ufo s) (change-tank-dir (fired-tank s) ke)
                  (fired-missile s))] 
-    [(and (aim? s) (eq? ke "space"))
+    [(and (aim? s) (key=? ke " "))
      (make-fired (aim-ufo s) (aim-tank s) (fire-missile (aim-tank s)))] 
     [else s] 
     )
@@ -846,15 +846,15 @@
 ;; 4. TEMPLATE
 #;(define (change-tank-dir t ke)
     (cond
-      [(eq? ke "left") (... (tank-loc t) ... (tank-vel t) ...)]
-      [(eq? ke "right") (... (tank-loc t) ... (tank-vel t) ...)]
+      [(key=? ke "left") (... (tank-loc t) ... (tank-vel t) ...)]
+      [(key=? ke "right") (... (tank-loc t) ... (tank-vel t) ...)]
       )
     )
 ;; 5. CODE
 (define (change-tank-dir t ke)
   (cond
-    [(eq? ke "left") (make-tank (tank-loc t) -1)]
-    [(eq? ke "right") (make-tank (tank-loc t) 1)]
+    [(key=? ke "left") (make-tank (tank-loc t) -1)]
+    [(key=? ke "right") (make-tank (tank-loc t) 1)]
     )
   )
 
@@ -891,9 +891,13 @@
 ;; 5. CODE
 (define (space-invader s)
   (big-bang s
-            (on-tick si-move)
+            (on-tick si-move 1/10)
             (to-draw si-render)
             (on-key si-control)
             (stop-when si-game-over? si-render-final)
             ))
+
+
+(space-invader (make-aim (make-posn (/ WIDTH 2) (image-height UFO))
+                         (make-tank 15 1)))
 
