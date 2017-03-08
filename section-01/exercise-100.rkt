@@ -681,23 +681,23 @@
 ;; 2b. PURPOSE STATEMENT: Consumes a SIGS and returns true if the UFO lands or
 ;; if the missile hits the UFO.
 ;; 2c. HEADER
-#;(define (si-game-over s) false)
+#;(define (si-game-over? s) false)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
-(check-expect (si-game-over (make-aim (make-posn (/ WIDTH 2) (/ HEIGHT 2))
-                                      (make-tank (/ WIDTH 2) -3))) false)
-(check-expect (si-game-over
+(check-expect (si-game-over? (make-aim (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                                       (make-tank (/ WIDTH 2) -3))) false)
+(check-expect (si-game-over?
                (make-aim (make-posn
                           (/ WIDTH 2)
                           (floor (- HEIGHT (/ (image-height UFO) 2))))
                          (make-tank 10 -3))) true)
 (check-expect
- (si-game-over 
+ (si-game-over? 
   (make-fired
    (make-posn (/ WIDTH 2) (/ HEIGHT 2)) (make-tank (/ WIDTH 2) 3)
    (make-posn  (/ WIDTH 2) (/ HEIGHT 2))))
  true)
 (check-expect
- (si-game-over
+ (si-game-over?
   (make-fired
    (make-posn (/ WIDTH 2) (/ HEIGHT 2)) (make-tank (/ WIDTH 2) 3)
    (make-posn
@@ -706,7 +706,7 @@
      (+ (/ HEIGHT 2) (/ (image-height UFO) 2) (/ (image-height MISSILE) 2))))))
  true)
 (check-expect
- (si-game-over
+ (si-game-over?
   (make-fired
    (make-posn (/ WIDTH 2) (/ HEIGHT 2)) (make-tank (/ WIDTH 2) 3)
    (make-posn
@@ -716,14 +716,14 @@
                    (/ (image-height MISSILE) 2)))))))
  false)
 ;; 4. TEMPLATE
-#;(define (si-game-over s)
+#;(define (si-game-over? s)
     (cond
       [(aim? s) (... (aim-tank s) ... (aim-ufo s) ...)]
       [(fired? s) (... (fired-tank s) ...
                        (fired-ufo s) ...
                        (fired-missile s) ...)]))
 ;; 5. CODE
-(define (si-game-over s)
+(define (si-game-over? s)
   (cond
     [(aim? s) (>= (posn-y (aim-ufo s)) (- HEIGHT (/ (image-height UFO) 2)))]
     [(fired? s) (missile-hit? (fired-ufo s) (fired-missile s))]
@@ -873,4 +873,20 @@
 (define (fire-missile t)
   (make-posn (tank-loc t) (- HEIGHT (/ (image-height TANK) 2))))
 
+
+;; 2a. FUNCTION SIGNATURE: SIGS -> SIGS
+;; 2b. PURPOSE STATEMENT: Initiates the Space Invader game in an aim state with
+;; UFO in the top middle and tank on the left.
+;; 2c. HEADER
+#;(define (space-invader s) s)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS: NA
+;; 4. TEMPLATE
+#;(define (space-invader s)
+    (big-bang s
+              (on-tick ...)
+              (to-draw ...)
+              (on-key ...)
+              (stop-when ...)
+              ))
+;; 5. CODE
 
