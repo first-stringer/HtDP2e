@@ -889,4 +889,11 @@
               (stop-when ...)
               ))
 ;; 5. CODE
+(define (space-invader s)
+  (big-bang s
+            (on-tick si-move)
+            (to-draw si-render)
+            (on-key si-control)
+            (stop-when si-game-over? si-render-final)
+            ))
 
