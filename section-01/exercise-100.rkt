@@ -891,10 +891,10 @@
 ;; 2b. PURPOSE STATEMENT: Initiates the Space Invader game in an aim state with
 ;; UFO in the top middle and tank on the left.
 ;; 2c. HEADER
-#;(define (space-invader s) s)
+#;(define (si-main s) s)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS: NA
 ;; 4. TEMPLATE
-#;(define (space-invader s)
+#;(define (si-main s)
     (big-bang s
               (on-tick ...)
               (to-draw ...)
@@ -902,7 +902,7 @@
               (stop-when ...)
               ))
 ;; 5. CODE
-(define (space-invader s)
+(define (si-main s)
   (big-bang s
             (on-tick si-move 1/10)
             (to-draw si-render)
@@ -911,6 +911,6 @@
             ))
 
 
-(space-invader (make-aim (make-posn (/ WIDTH 2) (image-height UFO))
-                         (make-tank 15 1)))
+(si-main (make-aim (make-posn (/ WIDTH 2) (image-height UFO))
+                   (make-tank 15 1)))
 
