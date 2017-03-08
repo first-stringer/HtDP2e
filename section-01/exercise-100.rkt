@@ -757,7 +757,7 @@
 ;; right arrow ensures that the tank moves right; and 3) pressing the space bar
 ;; fires the missile if it hasn’t been launched yet.
 ;; 2c. HEADER
-(define (si-control s ke) s)
+#;(define (si-control s ke) s)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 ;; change tank direction (left) when not yet fired (aim)
 (check-expect (si-control (make-aim (make-posn (/ WIDTH 2) (/ HEIGHT 2))
@@ -811,14 +811,18 @@
       )
     )
 ;; 5. CODE
-#;(define (si-control s ke)
-    (cond
-      [(and (aim? s) (or (eq? ke "left") (eq? ke "right"))) (... s ...)] 
-      [(and (fired? s) (or (eq? ke "left") (eq? ke "right"))) (... s ...)] 
-      [(and (aim? s) (eq? ke "space")) (... s ...)] 
-      [else s] 
-      )
+(define (si-control s ke)
+  (cond
+    [(and (aim? s) (or (eq? ke "left") (eq? ke "right")))
+     (make-aim (aim-ufo s) (change-tank-dir (aim-tank s) ke))] 
+    [(and (fired? s) (or (eq? ke "left") (eq? ke "right")))
+     (make-fired (fired-ufo s) (change-tank-dir (fired-tank s) ke)
+                 (fired-missile s))] 
+    [(and (aim? s) (eq? ke "space"))
+     (make-fired (aim-ufo s) (aim-tank s) (fire-missile (aim-tank s)))] 
+    [else s] 
     )
+  )
 
 
 ;; 2a. FUNCTION SIGNATURE: Tank KeyEvent -> Tank
@@ -861,12 +865,12 @@
 #;(define (fire-missile t) (make-posn 0 0))
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 (check-expect (fire-missile (make-tank (/ WIDTH 2) 1))
-              (make-posn (/ WIDTH 2) (/ (image-height TANK) 2)))
+              (make-posn (/ WIDTH 2) (- HEIGHT (/ (image-height TANK) 2))))
 ;; 4. TEMPLATE
 #;(define (fire-missile t)
-  (... (tank-loc t) ... (tank-vel t) ...))
+    (... (tank-loc t) ... (tank-vel t) ...))
 ;; 5. CODE
 (define (fire-missile t)
-  (make-posn (tank-loc t) (/ (image-height TANK) 2)))
+  (make-posn (tank-loc t) (- HEIGHT (/ (image-height TANK) 2))))
 
 
