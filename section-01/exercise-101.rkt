@@ -940,19 +940,7 @@
               (missile-render
                (make-posn (/ WIDTH 2) (/ HEIGHT 2)) INITIAL_SCENE))
 ;; 4. TEMPLATE
-#;(define (missile-render.v2 m s)
-    (cond
-      [(posn? m) (... m ... s ...)]
-      [else (... m ... s ...)]
-      )
-    )
 ;; 5. CODE
-(define (missile-render.v2 m s)
-  (cond
-    [(posn? m) (missile-render m s)]
-    [else s]
-    )
-  )
 
 
 ;; 2a. FUNCTION SIGNATURE: SIGS.v2 -> Image 
