@@ -982,6 +982,8 @@
                                         (place-image MISSILE 22 103
                                                      BACKGROUND))))
 ;; 4. TEMPLATE
+#;(define (si-render.v2 s)
+    (... (sigs-tank s) ... (sigs-ufo s) ... (sigs-missile s) ... ))
 ;; 5. CODE
 #;(define (si-render.v2 s)
     (tank-render (sigs-tank s)
