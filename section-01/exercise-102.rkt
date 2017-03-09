@@ -958,7 +958,7 @@
 ;; 2a. FUNCTION SIGNATURE: SIGS.v2 -> Image 
 ;; 2b. PURPOSE STATEMENT: Renders the given game state on top of BACKGROUND.
 ;; 2c. HEADER
-(define (si-render.v2 s) BACKGROUND)
+#;(define (si-render.v2 s) BACKGROUND)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 (check-expect (si-render.v2
                (make-sigs (make-posn 20 10) (make-tank 28 -3) #false))
@@ -985,8 +985,8 @@
 #;(define (si-render.v2 s)
     (... (sigs-tank s) ... (sigs-ufo s) ... (sigs-missile s) ... ))
 ;; 5. CODE
-#;(define (si-render.v2 s)
-    (tank-render (sigs-tank s)
-                 (ufo-render (sigs-ufo s)
-                             (missile-render.v2 (sigs-missile s) BACKGROUND))))
+(define (si-render.v2 s)
+  (tank-render (sigs-tank s)
+               (ufo-render (sigs-ufo s)
+                           (missile-render.v2 (sigs-missile s) BACKGROUND))))
 
