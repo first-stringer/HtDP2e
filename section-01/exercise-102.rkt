@@ -991,6 +991,117 @@
                            (missile-render.v2 (sigs-missile s) BACKGROUND))))
 
 
+;; 2a. FUNCTION SIGNATURE: UFO Missile -> Boolean
+;; 2b. PURPOSE STATEMENT: Consumes a UFO and a Missile and returns true if the
+;; Missile is close enough to the UFO to hit it.
+;; 2c. HEADER
+#;(define (missile-hit.v2? u m) false)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+;; easy case
+(check-expect (missile-hit.v2? (make-posn 100 100) (make-posn 100 100)) true)
+;; check verticals
+;; bottom checks
+(check-expect (missile-hit.v2?
+               (make-posn 100 100)
+               (make-posn 100 (+ 100 (floor (+ (/ (image-height UFO) 2)
+                                               (/ (image-height MISSILE) 2))))))
+              true)
+(check-expect (missile-hit.v2?
+               (make-posn 100 100)
+               (make-posn 100 (+ 101 (floor (+ (/ (image-height UFO) 2)
+                                               (/ (image-height MISSILE) 2))))))
+              false)
+(check-expect (missile-hit.v2?
+               (make-posn 100 100)
+               (make-posn 100 (+ 99 (floor (+ (/ (image-height UFO) 2)
+                                              (/ (image-height MISSILE) 2))))))
+              true)
+;; top checks
+(check-expect (missile-hit.v2?
+               (make-posn 100 100)
+               (make-posn 100 (- 100 (floor (+ (/ (image-height UFO) 2)
+                                               (/ (image-height MISSILE) 2))))))
+              true)
+(check-expect (missile-hit.v2?
+               (make-posn 100 100)
+               (make-posn 100 (- 99 (floor (+ (/ (image-height UFO) 2)
+                                              (/ (image-height MISSILE) 2))))))
+              false)
+(check-expect (missile-hit.v2?
+               (make-posn 100 100)
+               (make-posn 100 (- 101 (floor (+ (/ (image-height UFO) 2)
+                                               (/ (image-height MISSILE) 2))))))
+              true)
+;; check horizontals
+;; check left side
+(check-expect (missile-hit.v2?
+               (make-posn 100 100)
+               (make-posn (- 100 (floor (+ (/ (image-width UFO) 2)
+                                           (/ (image-width MISSILE) 2))))
+                          100))
+              true)
+(check-expect (missile-hit.v2?
+               (make-posn 100 100)
+               (make-posn (- 99 (floor (+ (/ (image-width UFO) 2)
+                                          (/ (image-width MISSILE) 2))))
+                          100))
+              false)
+(check-expect (missile-hit.v2?
+               (make-posn 100 100)
+               (make-posn (- 101 (floor (+ (/ (image-width UFO) 2)
+                                           (/ (image-width MISSILE) 2))))
+                          100))
+              true)
+;; check right side
+(check-expect (missile-hit.v2?
+               (make-posn 100 100)
+               (make-posn (+ 100 (floor (+ (/ (image-width UFO) 2)
+                                           (/ (image-width MISSILE) 2))))
+                          100))
+              true)
+(check-expect (missile-hit.v2?
+               (make-posn 100 100)
+               (make-posn (+ 101 (floor (+ (/ (image-width UFO) 2)
+                                           (/ (image-width MISSILE) 2))))
+                          100))
+              false)
+(check-expect (missile-hit.v2?
+               (make-posn 100 100)
+               (make-posn (+ 99 (floor (+ (/ (image-width UFO) 2)
+                                          (/ (image-width MISSILE) 2))))
+                          100))
+              true)
+;; 4. TEMPLATE
+#;(define (missile-hit.v2? u m)
+    (cond
+      [(boolean? m)
+       (... (posn-x u) ... (posn-y u) ... (posn-x m) ... (posn-y m) ...)]
+      [(posn? m)
+       (... (posn-x u) ... (posn-y u) ... (posn-x m) ... (posn-y m) ...)]
+      )
+    )
+;; 5. CODE
+(define (missile-hit.v2? u m)
+  (cond
+    [(boolean? m) #false]
+    [(posn? m)
+     (and (<= (posn-y m) (+ (posn-y u)
+                            (floor (+ (/ (image-height UFO) 2)
+                                      (/ (image-height MISSILE) 2)))))
+          (>= (posn-y m) (- (posn-y u)
+                            (floor (+ (/ (image-height UFO) 2)
+                                      (/ (image-height MISSILE) 2)))))
+          (>= (posn-x m) (- (posn-x u)
+                            (floor (+ (/ (image-width UFO) 2)
+                                      (/ (image-width MISSILE) 2)))))
+          (<= (posn-x m) (+ (posn-x u)
+                            (floor (+ (/ (image-width UFO) 2)
+                                      (/ (image-width MISSILE) 2))))) 
+          )]
+    )
+  )
+
+
 ;; 2a. FUNCTION SIGNATURE: SIGS -> Image
 ;; 2b. PURPOSE STATEMENT: Consumes a SIGS.v2 and displays "GAME OVER. YOU LOSE!"
 ;; if the UFO landed else it displays "GAME OVER. YOU WIN!" if a missile hit the
@@ -1014,10 +1125,11 @@
 ;; test missile hit win
 (check-expect (si-render-final.v2
                (make-sigs
-                (make-posn (/ WIDTH 2) (/ HEIGHT 2)) (make-tank (/ WIDTH 2) 3)
+                (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                (make-tank (/ WIDTH 2) 3)
                 (make-posn (/ WIDTH 2)
                            (floor (+ (/ HEIGHT 2) (/ (image-height UFO) 2)
-                                     (/ (image-height MISSILE) 2)))) #false))
+                                     (/ (image-height MISSILE) 2))))))
               (place-image (text GAME_OVER_TEXT_WINNING GAME_OVER_TEXT_FONT_SIZE
                                  GAME_OVER_TEXT_WINNING_COLOR)
                            (/ WIDTH 2) (/ HEIGHT 2)
@@ -1042,7 +1154,7 @@
                                  GAME_OVER_TEXT_LOSING_COLOR)
                            (/ WIDTH 2) (/ HEIGHT 2)
                            (si-render.v2
-                            (make-fired
+                            (make-sigs
                              (make-posn (/ WIDTH 4)
                                         (- HEIGHT (/ (image-height UFO) 2)))
                              (make-tank (/ WIDTH 2) 3)
