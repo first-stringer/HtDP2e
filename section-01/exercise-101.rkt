@@ -26,6 +26,16 @@
 ;; interpretation represents the complete state of a space invader game
 (define-struct aim [ufo tank])
 (define-struct fired [ufo tank missile])
+; #4: A SIGS.v2 (short for SIGS version 2) is a structure:
+;   (make-sigs UFO Tank MissileOrNot)
+; interpretation represents the complete state of a
+; space invader game
+(define-struct sigs [ufo tank missile])
+; #5: A MissileOrNot is one of: 
+; – #false
+; – Posn
+; interpretation#false means the missile is in the tank;
+; Posn says the missile is at that location.
 
 
 ;; 1b. CONSTANT DEFINITIONS
@@ -911,6 +921,51 @@
             ))
 
 
-(si-main (make-aim (make-posn (/ WIDTH 2) (image-height UFO))
-                   (make-tank 15 1)))
+#;(si-main (make-aim (make-posn (/ WIDTH 2) (image-height UFO))
+                     (make-tank 15 1)))
+
+
+
+;; 2a. FUNCTION SIGNATURE: MissileOrNot Image -> Image 
+;; 2b. PURPOSE STATEMENT: Adds an image of missile m to scene s. 
+;; 2c. HEADER
+#;(define (missile-render.v2 m s) EMPTY_SCENE)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (missile-render.v2 #false BACKGROUND) BACKGROUND)
+(check-expect (missile-render.v2 #false INITIAL_SCENE) INITIAL_SCENE)
+(check-expect (missile-render.v2 (make-posn (/ WIDTH 2) (/ HEIGHT 2)) BACKGROUND)
+              (missile-render (make-posn (/ WIDTH 2) (/ HEIGHT 2)) BACKGROUND))
+(check-expect (missile-render.v2
+               (make-posn (/ WIDTH 2) (/ HEIGHT 2)) INITIAL_SCENE)
+              (missile-render
+               (make-posn (/ WIDTH 2) (/ HEIGHT 2)) INITIAL_SCENE))
+;; 4. TEMPLATE
+#;(define (missile-render.v2 m s)
+    (cond
+      [(posn? m) (... m ... s ...)]
+      [else (... m ... s ...)]
+      )
+    )
+;; 5. CODE
+(define (missile-render.v2 m s)
+  (cond
+    [(posn? m) (missile-render m s)]
+    [else s]
+    )
+  )
+
+
+;; 2a. FUNCTION SIGNATURE: SIGS.v2 -> Image 
+;; 2b. PURPOSE STATEMENT: Renders the given game state on top of BACKGROUND.
+;; 2c. HEADER
+(define (si-render.v2 s) BACKGROUND)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+;; 4. TEMPLATE
+;; 5. CODE
+#;(define (si-render.v2 s)
+    (tank-render
+     (sigs-tank s)
+     (ufo-render (sigs-ufo s)
+                 (missile-render.v2 (sigs-missile s)
+                                    BACKGROUND))))
 
