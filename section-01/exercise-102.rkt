@@ -990,3 +990,85 @@
                (ufo-render (sigs-ufo s)
                            (missile-render.v2 (sigs-missile s) BACKGROUND))))
 
+
+;; 2a. FUNCTION SIGNATURE: SIGS -> Image
+;; 2b. PURPOSE STATEMENT: Consumes a SIGS.v2 and displays "GAME OVER. YOU LOSE!"
+;; if the UFO landed else it displays "GAME OVER. YOU WIN!" if a missile hit the
+;; UFO.
+;; 2c. HEADER
+#;(define (si-render-final.v2 s) EMPTY_SCENE)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+;; test no missile fired loss
+(check-expect (si-render-final.v2
+               (make-sigs (make-posn (/ WIDTH 4)
+                                     (- HEIGHT (/ (image-height UFO) 2)))
+                          (make-tank (/ WIDTH 2) 3) #false))
+              (place-image (text GAME_OVER_TEXT_LOSING GAME_OVER_TEXT_FONT_SIZE
+                                 GAME_OVER_TEXT_LOSING_COLOR)
+                           (/ WIDTH 2) (/ HEIGHT 2)
+                           (si-render.v2
+                            (make-sigs
+                             (make-posn (/ WIDTH 4)
+                                        (- HEIGHT (/ (image-height UFO) 2)))
+                             (make-tank (/ WIDTH 2) 3) #false))))
+;; test missile hit win
+(check-expect (si-render-final.v2
+               (make-sigs
+                (make-posn (/ WIDTH 2) (/ HEIGHT 2)) (make-tank (/ WIDTH 2) 3)
+                (make-posn (/ WIDTH 2)
+                           (floor (+ (/ HEIGHT 2) (/ (image-height UFO) 2)
+                                     (/ (image-height MISSILE) 2)))) #false))
+              (place-image (text GAME_OVER_TEXT_WINNING GAME_OVER_TEXT_FONT_SIZE
+                                 GAME_OVER_TEXT_WINNING_COLOR)
+                           (/ WIDTH 2) (/ HEIGHT 2)
+                           (si-render.v2
+                            (make-sigs
+                             (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                             (make-tank (/ WIDTH 2) 3)
+                             (make-posn
+                              (/ WIDTH 2)
+                              (floor
+                               (+ (/ HEIGHT 2) (/ (image-height UFO) 2)
+                                  (/ (image-height MISSILE) 2))))))))
+;; test missile fired loss
+(check-expect (si-render-final.v2
+               (make-sigs
+                (make-posn (/ WIDTH 4) (- HEIGHT (/ (image-height UFO) 2)))
+                (make-tank (/ WIDTH 2) 3)
+                (make-posn (/ WIDTH 2)
+                           (floor (+ (/ HEIGHT 2) (/ (image-height UFO) 2)
+                                     (/ (image-height MISSILE) 2))))))
+              (place-image (text GAME_OVER_TEXT_LOSING GAME_OVER_TEXT_FONT_SIZE
+                                 GAME_OVER_TEXT_LOSING_COLOR)
+                           (/ WIDTH 2) (/ HEIGHT 2)
+                           (si-render.v2
+                            (make-fired
+                             (make-posn (/ WIDTH 4)
+                                        (- HEIGHT (/ (image-height UFO) 2)))
+                             (make-tank (/ WIDTH 2) 3)
+                             (make-posn
+                              (/ WIDTH 2)
+                              (floor
+                               (+ (/ HEIGHT 2) (/ (image-height UFO) 2)
+                                  (/ (image-height MISSILE) 2))))))))
+;; 4. TEMPLATE
+#;(define (si-render-final.v2 s)
+    (cond
+      [(missile-hit.v2? (sigs-ufo s) (sigs-missile s)) (... s ...)]
+      [else (... s ...)]
+      )
+    )
+;; 5. CODE
+(define (si-render-final.v2 s)
+  (cond
+    [(missile-hit.v2? (sigs-ufo s) (sigs-missile s))
+     (place-image (text GAME_OVER_TEXT_WINNING GAME_OVER_TEXT_FONT_SIZE
+                        GAME_OVER_TEXT_WINNING_COLOR)
+                  (/ WIDTH 2) (/ HEIGHT 2)
+                  (si-render.v2 s))]
+    [else (place-image (text GAME_OVER_TEXT_LOSING GAME_OVER_TEXT_FONT_SIZE
+                             GAME_OVER_TEXT_LOSING_COLOR)
+                       (/ WIDTH 2) (/ HEIGHT 2)
+                       (si-render.v2 s))]
+    )
+  )
