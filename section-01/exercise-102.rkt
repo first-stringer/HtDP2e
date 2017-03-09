@@ -929,7 +929,7 @@
 ;; 2a. FUNCTION SIGNATURE: MissileOrNot Image -> Image 
 ;; 2b. PURPOSE STATEMENT: Adds an image of missile m to scene s. 
 ;; 2c. HEADER
-(define (missile-render.v2 m s) EMPTY_SCENE)
+#;(define (missile-render.v2 m s) EMPTY_SCENE)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 (check-expect (missile-render.v2 #false BACKGROUND) BACKGROUND)
 (check-expect (missile-render.v2 #false INITIAL_SCENE) INITIAL_SCENE)
@@ -943,8 +943,16 @@
 #;(define (missile-render.v2 m s)
     (cond
       [(boolean? m) ...]
-      [(posn? m) (... (posn-x m) ... (posn-y m) ...)]))
+      [(posn? m) (... (posn-x m) ... (posn-y m) ...)]
+      )
+    )
 ;; 5. CODE
+(define (missile-render.v2 m s)
+  (cond
+    [(boolean? m) s]
+    [(posn? m) (place-image MISSILE (posn-x m) (posn-y m) s)]
+    )
+  )
 
 
 ;; 2a. FUNCTION SIGNATURE: SIGS.v2 -> Image 
