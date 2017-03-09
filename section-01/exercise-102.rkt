@@ -960,12 +960,31 @@
 ;; 2c. HEADER
 (define (si-render.v2 s) BACKGROUND)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (si-render.v2
+               (make-sigs (make-posn 20 10) (make-tank 28 -3) #false))
+              (place-image TANK 28 (- HEIGHT (/ (image-height TANK) 2))
+                           (place-image UFO 20 10 BACKGROUND)))
+(check-expect (si-render.v2 (make-sigs
+                             (make-posn 20 10)
+                             (make-tank 28 -3)
+                             (make-posn 28 (- HEIGHT (image-height TANK)))))
+              (place-image TANK 28 (- HEIGHT (/ (image-height TANK) 2))
+                           (place-image UFO 20 10
+                                        (place-image
+                                         MISSILE
+                                         28 (- HEIGHT (image-height TANK))
+                                         BACKGROUND))))
+(check-expect (si-render.v2 (make-sigs (make-posn 20 100)
+                                       (make-tank 100 3)
+                                       (make-posn 22 103)))
+              (place-image TANK 100 (- HEIGHT (/ (image-height TANK) 2))
+                           (place-image UFO 20 100
+                                        (place-image MISSILE 22 103
+                                                     BACKGROUND))))
 ;; 4. TEMPLATE
 ;; 5. CODE
 #;(define (si-render.v2 s)
-    (tank-render
-     (sigs-tank s)
-     (ufo-render (sigs-ufo s)
-                 (missile-render.v2 (sigs-missile s)
-                                    BACKGROUND))))
+    (tank-render (sigs-tank s)
+                 (ufo-render (sigs-ufo s)
+                             (missile-render.v2 (sigs-missile s) BACKGROUND))))
 
