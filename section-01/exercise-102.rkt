@@ -1190,6 +1190,67 @@
 
 
 
+
+;; 2a. FUNCTION SIGNATURE: SIGS.v2 -> Boolean
+;; 2b. PURPOSE STATEMENT: Consumes a SIGS.v2 and returns true if the UFO lands
+;; or if the missile hits the UFO.
+;; 2c. HEADER
+#;(define (si-game-over.v2? s) false)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (si-game-over.v2? (make-sigs (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                                           (make-tank (/ WIDTH 2) -3) #false))
+              #false)
+(check-expect (si-game-over.v2?
+               (make-sigs (make-posn
+                           (/ WIDTH 2)
+                           (floor (- HEIGHT (/ (image-height UFO) 2))))
+                          (make-tank 10 -3) #false)) #true)
+(check-expect
+ (si-game-over.v2? 
+  (make-sigs
+   (make-posn (/ WIDTH 2) (/ HEIGHT 2)) (make-tank (/ WIDTH 2) 3)
+   (make-posn  (/ WIDTH 2) (/ HEIGHT 2)) #false))
+ #true)
+(check-expect
+ (si-game-over.v2?
+  (make-sigs
+   (make-posn (/ WIDTH 2) (/ HEIGHT 2)) (make-tank (/ WIDTH 2) 3)
+   (make-posn
+    (/ WIDTH 2)
+    (floor
+     (+ (/ HEIGHT 2) (/ (image-height UFO) 2) (/ (image-height MISSILE) 2))))))
+ #true)
+;; test fire and miss scenario
+(check-expect
+ (si-game-over.v2?
+  (make-sigs
+   (make-posn (/ WIDTH 4) (floor (- HEIGHT (/ (image-height UFO) 2))))
+   (make-tank (/ WIDTH 2) 3)
+   (make-posn
+    (/ WIDTH 2)
+    (floor
+     (+ (/ HEIGHT 2) (/ (image-height UFO) 2) (/ (image-height MISSILE) 2))))))
+ #true)
+(check-expect
+ (si-game-over.v2?
+  (make-sigs
+   (make-posn (/ WIDTH 2) (/ HEIGHT 2)) (make-tank (/ WIDTH 2) 3)
+   (make-posn
+    (/ WIDTH 2)
+    (+ 1 (floor (+ (/ HEIGHT 2)
+                   (/ (image-height UFO) 2)
+                   (/ (image-height MISSILE) 2)))))))
+ #false)
+;; 4. TEMPLATE
+#;(define (si-game-over.v2? s)
+    (... (sigs-ufo s) ... (sigs-tank s) ... (sigs-missile s) ...))
+;; 5. CODE
+(define (si-game-over.v2? s)
+  (or (missile-hit.v2? (sigs-ufo s) (sigs-missile s))
+      (>= (posn-y (sigs-ufo s)) (- HEIGHT (/ (image-height UFO) 2))))
+  )
+
+
 ;; 2a. FUNCTION SIGNATURE: SIGS.v2 KeyEvent -> SIGS.v2
 ;; 2b. PURPOSE STATEMENT: The key event handler. It consumes a game state and a
 ;; KeyEvent and produces a new game state. It reacts to three different keys: 1)
