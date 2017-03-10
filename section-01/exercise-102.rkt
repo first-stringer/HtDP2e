@@ -1186,6 +1186,137 @@
   )
 
 
+
+
+
+
+
+
+;; 2a. FUNCTION SIGNATURE: SIGS.v2 Number -> SIGS.v2 
+;; 2b. PURPOSE STATEMENT: Moves the UFO predictably by delta times UFO_SPEED and
+;; the TANK by TANK_SPEED and the MISSILE by MISSILE_SPEED (d).
+;; 2c. HEADER
+#;(define (si-move-proper.v2 s d) s)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+;; test for not-fired, delta 1, UFO at center
+(check-expect (si-move-proper.v2 (make-sigs (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                                            (make-tank (/ WIDTH 2) 1) #false) 1)
+              (make-sigs (make-posn (+ (/ WIDTH 2) UFO_SPEED)
+                                    (+ (/ HEIGHT 2) UFO_SPEED))
+                         (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1) #false))
+;; test for not-fired, delta -1, UFO at center
+(check-expect (si-move-proper.v2 (make-sigs (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                                            (make-tank (/ WIDTH 2) 1) #false) -1)
+              (make-sigs (make-posn (- (/ WIDTH 2) UFO_SPEED)
+                                    (+ (/ HEIGHT 2) UFO_SPEED))
+                         (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1) #false))
+;; test for not-fired, delta 1, UFO at right edge
+;; test for not-fired, delta -1, UFO at left edge
+;; test for not-fired, delta 1, UFO at center landed
+;; test for fired, delta 1, UFO at center
+(check-expect (si-move-proper.v2 (make-sigs
+                                  (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                                  (make-tank (/ WIDTH 2) 1)
+                                  (make-posn (/ WIDTH 2)
+                                             (- HEIGHT (image-height TANK))))
+                                 1)
+              (make-sigs (make-posn (+ (/ WIDTH 2) UFO_SPEED)
+                                    (+ (/ HEIGHT 2) UFO_SPEED))
+                         (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1)
+                         (make-posn
+                          (/ WIDTH 2)
+                          (- HEIGHT (image-height TANK) MISSILE_SPEED))))
+;; test for fired, delta -1, UFO at center
+(check-expect (si-move-proper.v2 (make-sigs
+                                  (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                                  (make-tank (/ WIDTH 2) 1)
+                                  (make-posn (/ WIDTH 2)
+                                             (- HEIGHT (image-height TANK))))
+                                 -1)
+              (make-sigs (make-posn (- (/ WIDTH 2) UFO_SPEED)
+                                    (+ (/ HEIGHT 2) UFO_SPEED))
+                         (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1)
+                         (make-posn
+                          (/ WIDTH 2)
+                          (- HEIGHT (image-height TANK) MISSILE_SPEED))))
+;; test for fired, delta 1, UFO at right edge
+(check-expect (si-move-proper.v2 (make-sigs
+                                  (make-posn (- WIDTH (/ (image-width UFO) 2))
+                                             (/ HEIGHT 2))
+                                  (make-tank (/ WIDTH 2) 1)
+                                  (make-posn (/ WIDTH 2)
+                                             (- HEIGHT (image-height TANK))))
+                                 1)
+              (make-sigs (make-posn (- WIDTH (/ (image-width UFO) 2))
+                                    (+ (/ HEIGHT 2) UFO_SPEED))
+                         (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1)
+                         (make-posn
+                          (/ WIDTH 2)
+                          (- HEIGHT (image-height TANK) MISSILE_SPEED))))
+;; test for fired, delta -1, UFO at left edge
+(check-expect (si-move-proper.v2 (make-sigs
+                                  (make-posn (/ (image-width UFO) 2) (/ HEIGHT 2))
+                                  (make-tank (/ WIDTH 2) 1)
+                                  (make-posn (/ WIDTH 2)
+                                             (- HEIGHT (image-height TANK))))
+                                 -1)
+              (make-sigs
+               (make-posn (/ (image-width UFO) 2) (+ (/ HEIGHT 2) UFO_SPEED))
+               (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1)
+               (make-posn
+                (/ WIDTH 2)
+                (- HEIGHT (image-height TANK) MISSILE_SPEED))))
+;; test for fired, delta 1, UFO at center landed
+(check-expect (si-move-proper.v2 (make-sigs
+                                  (make-posn (/ WIDTH 2)
+                                             (- HEIGHT (/ (image-height UFO) 2)))
+                                  (make-tank (/ WIDTH 2) 1)
+                                  (make-posn (/ WIDTH 2)
+                                             (- HEIGHT (image-height TANK))))
+                                 1)
+              (make-sigs (make-posn (/ WIDTH 2)
+                                    (- HEIGHT (/ (image-height UFO) 2)))
+                         (make-tank (+ (/ WIDTH 2) TANK_SPEED) 1)
+                         (make-posn
+                          (/ WIDTH 2)
+                          (- HEIGHT (image-height TANK) MISSILE_SPEED))))
+;; 4. TEMPLATE
+#;(define (si-move-proper.v2 s d)
+    (... (sigs-ufo s) ... d ... (sigs-tank s) ... (sigs-missile s) ...)
+    )
+;; 5. CODE
+(define (si-move-proper.v2 s d)
+  (make-sigs (move-ufo (sigs-ufo s) d)
+             (move-tank (sigs-tank s))
+             (move-missile.v2 (sigs-missile s))
+             )
+  )
+
+
+
+
+
+
+
+;; 2a. FUNCTION SIGNATURE: SIGS -> SIGS
+;; 2b. PURPOSE STATEMENT: This function is called for every clock tick to
+;; determine to which position the objects move now. Accordingly it consumes an
+;; element of SIGS and produces another one. Moving the tank and the missile
+;; (if any) is relatively straightforward. They move in straight lines at a
+;; constant speed. Moving the UFO calls for small random jumps to the left or the
+;; right. 
+;; 2c. HEADER
+#;(define (si-move.v2 s) s)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+;; NA due to random function use.
+;; 4. TEMPLATE
+#;(define (si-move.v2 s)
+    (si-move-proper.v2 ... s ... (random ...)))
+;; 5. CODE
+(define (si-move.v2 s)
+  (si-move-proper.v2 s (random-positive-or-negative-one 2)))
+
+
 ;; 2a. FUNCTION SIGNATURE: SIGS -> SIGS
 ;; 2b. PURPOSE STATEMENT: Initiates the Space Invader game with UFO in the top
 ;; middle and tank on the left.
@@ -1203,7 +1334,7 @@
 ;; 5. CODE
 (define (si-main.v2 s)
   (big-bang s
-            (on-tick si-move 1/10)
+            (on-tick si-move.v2 1/10)
             (to-draw si-render.v2)
             (on-key si-control)
             (stop-when si-game-over? si-render-final.v2)
