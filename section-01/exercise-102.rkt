@@ -1184,3 +1184,32 @@
                        (si-render.v2 s))]
     )
   )
+
+
+;; 2a. FUNCTION SIGNATURE: SIGS -> SIGS
+;; 2b. PURPOSE STATEMENT: Initiates the Space Invader game with UFO in the top
+;; middle and tank on the left.
+;; 2c. HEADER
+#;(define (si-main.v2 s) s)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS: NA
+;; 4. TEMPLATE
+#;(define (si-main.v2 s)
+    (big-bang s
+              (on-tick ...)
+              (to-draw ...)
+              (on-key ...)
+              (stop-when ...)
+              ))
+;; 5. CODE
+(define (si-main.v2 s)
+  (big-bang s
+            (on-tick si-move 1/10)
+            (to-draw si-render.v2)
+            (on-key si-control)
+            (stop-when si-game-over? si-render-final.v2)
+            ))
+
+
+#;(si-main.v2 (make-sigs (make-posn (/ WIDTH 2) (image-height UFO))
+                         (make-tank 15 1) #false))
+
