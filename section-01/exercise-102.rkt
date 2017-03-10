@@ -1190,6 +1190,103 @@
 
 
 
+;; 2a. FUNCTION SIGNATURE: SIGS.v2 KeyEvent -> SIGS.v2
+;; 2b. PURPOSE STATEMENT: The key event handler. It consumes a game state and a
+;; KeyEvent and produces a new game state. It reacts to three different keys: 1)
+;; pressing the left arrow ensures that the tank moves left; 2) pressing the
+;; right arrow ensures that the tank moves right; and 3) pressing the space bar
+;; fires the missile if it hasn’t been launched yet.
+;; 2c. HEADER
+#;(define (si-control.v2 s ke) s)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+;; change tank direction (left) when not yet fired (aim)
+(check-expect (si-control.v2
+               (make-sigs (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                          (make-tank (/ WIDTH 2) 1) #false) "left")
+              (make-sigs (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                         (make-tank (/ WIDTH 2) -1) #false)) 
+;; change tank direction (right) when not yet fired (aim)
+(check-expect (si-control.v2 (make-sigs (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                                        (make-tank (/ WIDTH 2) -1) #false) "right")
+              (make-sigs (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                         (make-tank (/ WIDTH 2) 1) #false))
+;; change tank direction (left) when fired (fired)
+(check-expect (si-control.v2 (make-sigs (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                                        (make-tank (/ WIDTH 2) 1)
+                                        (make-posn
+                                         (/ WIDTH 2)
+                                         (- HEIGHT (/ (image-height TANK) 2))))
+                             "left")
+              (make-sigs (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                         (make-tank (/ WIDTH 2) -1)
+                         (make-posn
+                          (/ WIDTH 2)
+                          (- HEIGHT (/ (image-height TANK) 2)))))
+;; change tank direction (right) when fired (fired)
+(check-expect (si-control.v2 (make-sigs (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                                        (make-tank (/ WIDTH 2) -1)
+                                        (make-posn
+                                         (/ WIDTH 2)
+                                         (- HEIGHT (/ (image-height TANK) 2))))
+                             "right")
+              (make-sigs (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                         (make-tank (/ WIDTH 2) 1)
+                         (make-posn
+                          (/ WIDTH 2)
+                          (- HEIGHT (/ (image-height TANK) 2)))))
+;; fire missile (aim)
+(check-expect (si-control.v2 (make-sigs (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                                        (make-tank (/ WIDTH 2) 1) #false) " ")
+              (make-sigs (make-posn (/ WIDTH 2) (/ HEIGHT 2))
+                         (make-tank (/ WIDTH 2) 1)
+                         (make-posn
+                          (/ WIDTH 2)
+                          (- HEIGHT (/ (image-height TANK) 2)))))
+;; 4. TEMPLATE
+#;(define (si-control.v2 s ke)
+    (cond
+      [(or (key=? ke "left") (key=? ke "right")) (... s ... ke ...)] 
+      [(and (boolean? (sigs-missile s)) (key=? ke " ")) (... s ...)] 
+      [else (... s ...)] 
+      )
+    )
+;; 5. CODE
+(define (si-control.v2 s ke)
+  (cond
+    [(or (key=? ke "left") (key=? ke "right"))
+     (make-sigs (sigs-ufo s)
+                (change-tank-dir (sigs-tank s) ke)
+                (sigs-missile s))] 
+    [(and (boolean? (sigs-missile s)) (key=? ke " "))
+     (make-sigs (sigs-ufo s) (sigs-tank s) (fire-missile (sigs-tank s)))] 
+    [else s] 
+    )
+  )
+
+
+;; 2a. FUNCTION SIGNATURE: Missile -> Missile
+;; 2b. PURPOSE STATEMENT: If the missile has been fired, updates the missile's
+;; y-crd by subtracting MISSILE_SPEED from it, else returns false.
+;; 2c. HEADER
+#;(define (move-missile.v2 m) m)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (move-missile.v2 #false) #false)
+(check-expect (move-missile.v2 (make-posn (/ WIDTH 2) (/ HEIGHT 2)))
+              (make-posn (/ WIDTH 2) (- (/ HEIGHT 2) MISSILE_SPEED)))
+;; 4. TEMPLATE
+#;(define (move-missile.v2 m)
+    (cond
+      [(Boolean? m) (... (posn-x m) ... (posn-y m) ... MISSILE_SPEED ...)]
+      [(posn? m) (... (posn-x m) ... (posn-y m) ... MISSILE_SPEED ...)]
+      )
+    )
+;; 5. CODE
+(define (move-missile.v2 m)
+  (cond
+    [(boolean? m) #false]
+    [(posn? m) (make-posn (posn-x m) (- (posn-y m) MISSILE_SPEED))]
+    )  
+  )
 
 
 ;; 2a. FUNCTION SIGNATURE: SIGS.v2 Number -> SIGS.v2 
@@ -1293,11 +1390,6 @@
   )
 
 
-
-
-
-
-
 ;; 2a. FUNCTION SIGNATURE: SIGS -> SIGS
 ;; 2b. PURPOSE STATEMENT: This function is called for every clock tick to
 ;; determine to which position the objects move now. Accordingly it consumes an
@@ -1336,7 +1428,7 @@
   (big-bang s
             (on-tick si-move.v2 1/10)
             (to-draw si-render.v2)
-            (on-key si-control)
+            (on-key si-control.v2)
             (stop-when si-game-over? si-render-final.v2)
             ))
 
