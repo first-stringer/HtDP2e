@@ -21,4 +21,12 @@
 ;; height (h) of the animal.
 (define armadillo [length width height])
 
-
+;; TEMPLATE
+#;(define (za-consumer za)
+    (cond
+      [(spider? za) ...]
+      [(boaconstictor? za) ...]
+      [(armadillo? za) ...]
+      [(number? za) ...]
+      )
+    )
