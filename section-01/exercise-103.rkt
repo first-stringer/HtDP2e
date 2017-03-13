@@ -9,19 +9,30 @@
 ;; #2: A Spider is a structure: (make-spider Number Number).
 ;; Interpretation: (make-spider rl s) specifies the number of remaining legs (rl)
 ;; the spider has and the amount of space (s) the spider requires for transport.
-(define spider [remaining-legs space])
+(define-struct spider [remaining-legs space])
 ;; #3: An Elephant is a Number.
 ;; Interpretation: the amount of space (s) the elephant requires for transport.
 ;; #4: A BoaConstrictor is a structure: (make-boaconstrictor Number Number).
 ;; Interpretation: (make-boaconstrictor l g) specifies the length (l) and girth
 ;; (g) of the snake.
-(define BoaConstrictor [length girth])
+(define-struct boaconstrictor [length girth])
 ;; #5: An Armadillo is a structure: (make-armadillo Number Number Number).
 ;; Interpretation: (make-armadillo l w h) specifies the length (l), width (w), and
 ;; height (h) of the animal.
-(define armadillo [length width height])
+(define-struct armadillo [length width height])
 
-;; TEMPLATE
+
+;; 2a. FUNCTION SIGNATURE: ZooAnimal Number -> Boolean
+;; 2b. PURPOSE STATEMENT: Consumes a zoo animal (za) and the volume of a cage (v).
+;; It determines whether the cage is large enough for the animal.
+;; 2c. HEADER
+(define (fits? za v) #false)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (fits? (make-spider 8 10) 11) #true) 
+(check-expect (fits? 1000 (* 11 11 11)) #true) ; elephant
+(check-expect (fits? (make-boaconstrictor 108 6) 700) #true) 
+(check-expect (fits? (make-armadillo 18 10 12) 2500) #true) 
+;; 4. TEMPLATE
 #;(define (za-consumer za)
     (cond
       [(spider? za) ...]
@@ -30,3 +41,6 @@
       [(number? za) ...]
       )
     )
+;; 5. CODE
+
+
