@@ -8,6 +8,12 @@
 ;; Intepretation: (make-vehicle np lp mpg) specifies the number of comfortable
 ;; passengers that can be transported (np), the license plate identifier (lp), and
 ;; the fuel efficiency in miles per gallon (mpg).
-(define-struct vehicle [number-passengers license-plate miles-per-gallon])
+(define-struct vehicle [numberpassengers licenseplate milespergallon])
 
+
+;; 4. TEMPLATE
+(define (vehicle-consumer v)
+  (... (vehicle-numberpassengers v) ...
+       (vehicle-licenseplate v) ...
+       (vehicle-milespergallon v) ... ))
 
