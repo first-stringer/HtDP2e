@@ -39,6 +39,23 @@
 ;; determines whether the cage is large enough for the armadillo.
 
 
+;; 2a. FUNCTION SIGNATURE: Number Number -> Boolean
+;; 2b. PURPOSE STATEMENT: Consumes an Elephant (e) and the volument of a cage (v)
+;; and determines whether the cage is large enough for the elephant.
+;; 2c. HEADER
+#;(define (elephant-fits? e v) #false)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (elephant-fits? 1000 999) #false) 
+(check-expect (elephant-fits? 1000 1000) #true) 
+(check-expect (elephant-fits? 1000 1001) #true) 
+;; 4. TEMPLATE
+#;(define (elephant-fits? e v)
+    (... e ... v ...))
+;; 5. CODE
+(define (elephant-fits? e v)
+  (<= e v))
+
+
 ;; 2a. FUNCTION SIGNATURE: Spider Number -> Boolean
 ;; 2b. PURPOSE STATEMENT: Consumes a Spider (s) and the volument of a cage (v) and
 ;; determines whether the cage is large enough for the spider.
@@ -62,7 +79,7 @@
 (define (fits? za v) #false)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 (check-expect (fits? (make-spider 8 10) 11) #true) 
-(check-expect (fits? 1000 (* 11 11 11)) #true) ; elephant
+(check-expect (fits? 1000 1001) #true) ; elephant
 (check-expect (fits? (make-boaconstrictor 108 6) 700) #true) 
 (check-expect (fits? (make-armadillo 18 10 12) 2500) #true) 
 ;; 4. TEMPLATE
@@ -76,11 +93,11 @@
     )
 ;; 5. CODE
 #;(define (fits? za v)
-  (cond
-    [(spider? za) (spider-fits? za v)]
-    [(number? za) (elephant-fits? za v)]
-    [(boaconstrictor? za) (boaconstrictor-fits? za v)]
-    [(armadillo? za) (armadillo-fits? za v)]
+    (cond
+      [(spider? za) (spider-fits? za v)]
+      [(number? za) (elephant-fits? za v)]
+      [(boaconstrictor? za) (boaconstrictor-fits? za v)]
+      [(armadillo? za) (armadillo-fits? za v)]
+      )
     )
-  )
 
