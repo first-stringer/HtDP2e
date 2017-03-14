@@ -9,11 +9,13 @@
 ;; passengers that can be transported (np), the license plate identifier (lp), and
 ;; the fuel efficiency in miles per gallon (mpg).
 (define-struct vehicle [numberpassengers licenseplate milespergallon])
+(make-vehicle 4 "ABC123" 25) ;; data example
+(make-vehicle 8 "XYZ456" 10) ;; data example
 
 
 ;; 4. TEMPLATE
-(define (vehicle-consumer v)
-  (... (vehicle-numberpassengers v) ...
-       (vehicle-licenseplate v) ...
-       (vehicle-milespergallon v) ... ))
+#;(define (vehicle-consumer v)
+    (... (vehicle-numberpassengers v) ...
+         (vehicle-licenseplate v) ...
+         (vehicle-milespergallon v) ... ))
 
