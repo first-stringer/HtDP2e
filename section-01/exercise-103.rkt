@@ -21,29 +21,45 @@
 ;; height (h) of the animal.
 (define-struct armadillo [length width height])
 ;; 1c. FUNCTION WISH LIST
-;; NAME: spider-fits
+;; NAME: spider-fits?
 ;; SIGNATURE: Spider Number -> Boolean
 ;; PURPOSE STATEMENT: Consumes a Spider (s) and the volument of a cage (v) and
 ;; determines whether the cage is large enough for the spider.
-;; NAME: elephant-fits
+;; NAME: elephant-fits?
 ;; SIGNATURE: Number Number -> Boolean
 ;; PURPOSE STATEMENT: Consumes an Elephant (e) and the volument of a cage (v) and
 ;; determines whether the cage is large enough for the elephant.
-;; NAME: boaconstrictor-fits
+;; NAME: boaconstrictor-fits?
 ;; SIGNATURE: BoaConstrictor Number -> Boolean
 ;; PURPOSE STATEMENT: Consumes a BoaConstrictor (bc) and the volument of a cage
 ;; (v) and determines whether the cage is large enough for the boa constrictor.
-;; NAME: armadillo-fits
+;; NAME: armadillo-fits?
 ;; SIGNATURE: Armadillo Number -> Boolean
 ;; PURPOSE STATEMENT: Consumes an Armadillo (a) and the volument of a cage (v) and
 ;; determines whether the cage is large enough for the armadillo.
+
+
+;; 2a. FUNCTION SIGNATURE: Spider Number -> Boolean
+;; 2b. PURPOSE STATEMENT: Consumes a Spider (s) and the volument of a cage (v) and
+;; determines whether the cage is large enough for the spider.
+;; 2c. HEADER
+#;(define (spider-fits? s v) #false)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (spider-fits? (make-spider 7 10) 11) #true) 
+(check-expect (spider-fits? (make-spider 7 10) 9) #false) 
+;; 4. TEMPLATE
+#;(define (spider-fits? s v)
+    (... (spider-remaininglegs s) ... (spider-space s) ... v ...))
+;; 5. CODE
+(define (spider-fits? s v)
+  (<= (spider-space s) v))
 
 
 ;; 2a. FUNCTION SIGNATURE: ZooAnimal Number -> Boolean
 ;; 2b. PURPOSE STATEMENT: Consumes a zoo animal (za) and the volume of a cage (v).
 ;; It determines whether the cage is large enough for the animal.
 ;; 2c. HEADER
-#;(define (fits? za v) #false)
+(define (fits? za v) #false)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 (check-expect (fits? (make-spider 8 10) 11) #true) 
 (check-expect (fits? 1000 (* 11 11 11)) #true) ; elephant
@@ -59,7 +75,7 @@
       )
     )
 ;; 5. CODE
-(define (fits? za v)
+#;(define (fits? za v)
   (cond
     [(spider? za) (spider-fits? za v)]
     [(number? za) (elephant-fits? za v)]
