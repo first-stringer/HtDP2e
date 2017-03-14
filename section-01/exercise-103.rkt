@@ -112,7 +112,7 @@
 ;; 2b. PURPOSE STATEMENT: Consumes a zoo animal (za) and the volume of a cage (v).
 ;; It determines whether the cage is large enough for the animal.
 ;; 2c. HEADER
-(define (fits? za v) #false)
+#;(define (fits? za v) #false)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 (check-expect (fits? (make-spider 8 10) 11) #true) 
 (check-expect (fits? 1000 1001) #true) ; elephant
@@ -128,12 +128,12 @@
       )
     )
 ;; 5. CODE
-#;(define (fits? za v)
-    (cond
-      [(spider? za) (spider-fits? za v)]
-      [(number? za) (elephant-fits? za v)]
-      [(boaconstrictor? za) (boaconstrictor-fits? za v)]
-      [(armadillo? za) (armadillo-fits? za v)]
-      )
+(define (fits? za v)
+  (cond
+    [(spider? za) (spider-fits? za v)]
+    [(number? za) (elephant-fits? za v)]
+    [(boaconstrictor? za) (boaconstrictor-fits? za v)]
+    [(armadillo? za) (armadillo-fits? za v)]
     )
+  )
 
