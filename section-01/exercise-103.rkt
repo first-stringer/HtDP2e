@@ -39,6 +39,24 @@
 ;; determines whether the cage is large enough for the armadillo.
 
 
+;; 2a. FUNCTION SIGNATURE: BoaConstrictor Number -> Boolean
+;; 2b. PURPOSE STATEMENT: Consumes a BoaConstrictor (bc) and the volument of a
+;; cage (v) and determines whether the cage is large enough for the boa
+;; constrictor.
+;; 2c. HEADER
+#;(define (boaconstrictor-fits? bc v) #false)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (boaconstrictor-fits? (make-boaconstrictor 108 6) 647) #false)
+(check-expect (boaconstrictor-fits? (make-boaconstrictor 108 6) 648) #true)
+(check-expect (boaconstrictor-fits? (make-boaconstrictor 108 6) 649) #true)
+;; 4. TEMPLATE
+#;(define (boaconstrictor-fits? bc v)
+    (... (boaconstrictor-length bc) ... (boaconstrictor-girth bc) ... v ...))
+;; 5. CODE
+(define (boaconstrictor-fits? bc v)
+  (<= (* (boaconstrictor-length bc) (boaconstrictor-girth bc)) v))
+
+
 ;; 2a. FUNCTION SIGNATURE: Number Number -> Boolean
 ;; 2b. PURPOSE STATEMENT: Consumes an Elephant (e) and the volument of a cage (v)
 ;; and determines whether the cage is large enough for the elephant.
