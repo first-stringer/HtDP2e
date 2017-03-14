@@ -21,9 +21,22 @@
 ;; height (h) of the animal.
 (define-struct armadillo [length width height])
 ;; 1c. FUNCTION WISH LIST
-;; NAME:
-;; SIGNATURE:
-;; PURPOSE STATEMENT:
+;; NAME: spider-fits
+;; SIGNATURE: Spider Number -> Boolean
+;; PURPOSE STATEMENT: Consumes a Spider (s) and the volument of a cage (v) and
+;; determines whether the cage is large enough for the spider.
+;; NAME: elephant-fits
+;; SIGNATURE: Number Number -> Boolean
+;; PURPOSE STATEMENT: Consumes an Elephant (e) and the volument of a cage (v) and
+;; determines whether the cage is large enough for the elephant.
+;; NAME: boaconstrictor-fits
+;; SIGNATURE: BoaConstrictor Number -> Boolean
+;; PURPOSE STATEMENT: Consumes a BoaConstrictor (bc) and the volument of a cage
+;; (v) and determines whether the cage is large enough for the boa constrictor.
+;; NAME: armadillo-fits
+;; SIGNATURE: Armadillo Number -> Boolean
+;; PURPOSE STATEMENT: Consumes an Armadillo (a) and the volument of a cage (v) and
+;; determines whether the cage is large enough for the armadillo.
 
 
 ;; 2a. FUNCTION SIGNATURE: ZooAnimal Number -> Boolean
@@ -40,9 +53,9 @@
 #;(define (fits? za v)
     (cond
       [(spider? za) ...]
+      [(number? za) ...]
       [(boaconstictor? za) ...]
       [(armadillo? za) ...]
-      [(number? za) ...]
       )
     )
 ;; 5. CODE
