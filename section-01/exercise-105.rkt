@@ -17,7 +17,9 @@
 ;; – a PositiveNumber 
 ;; interpretation on the x axis, distance from left
 10 ; data example
+(place-image (circle 2 "solid" "red") 10 0 (rectangle 100 100 "solid" "white"))
 90 ; data example
+(place-image (circle 2 "solid" "red") 90 0 (rectangle 100 100 "solid" "white"))
 ;; – a Posn
 ;; interpretation an ordinary Cartesian point
 (make-posn 10 -10)
