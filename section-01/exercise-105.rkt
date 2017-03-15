@@ -22,6 +22,8 @@
 (place-image (circle 2 "solid" "red") 90 0 (rectangle 100 100 "solid" "white"))
 ;; – a Posn
 ;; interpretation an ordinary Cartesian point
-(make-posn 10 -10)
-(make-posn 100 -100)
+(make-posn 10 -10) ; data example
+(place-image (circle 2 "solid" "red") 10 10 (rectangle 100 100 "solid" "white"))
+(make-posn 90 -90) ; data example
+(place-image (circle 2 "solid" "red") 90 90 (rectangle 100 100 "solid" "white"))
 
