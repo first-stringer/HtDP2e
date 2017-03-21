@@ -36,16 +36,46 @@
 
 
 
-;; 2a. FUNCTION SIGNATURE:
-;; 2b. PURPOSE STATEMENT:
+;; 2a. FUNCTION SIGNATURE: ExpectsToSee KeyboardEvent -> ExpectsToSee
+;; 2b. PURPOSE STATEMENT: Returns the next ExpectsToSee state based on the
+;; consumes ExpectsToSee state and KeyboardEvent.
 ;; 2c. HEADER
+#; (define (handle-ke ets ke) ets)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (handle-ke AA "a") BB)
+(check-expect (handle-ke AA " ") ER)
+(check-expect (handle-ke BB "b") BB)
+(check-expect (handle-ke BB "c") BB)
+(check-expect (handle-ke BB "d") DD)
+(check-expect (handle-ke BB " ") ER)
+(check-expect (handle-ke DD " ") DD)
+(check-expect (handle-ke ER " ") ER)
 ;; 4. TEMPLATE
+#; (define (handle-ke ets ke)
+     (cond
+       [(and (eq? ets AA) (key=? ke "a")) ...]
+       [(and (eq? ets BB) (key=? ke "b")) ...]
+       [(and (eq? ets BB) (key=? ke "c")) ...]
+       [(and (eq? ets BB) (key=? ke "d")) ...]
+       [(eq? ets DD) ...]
+       [else ...] 
+       )
+     )
 ;; 5. CODE
+(define (handle-ke ets ke)
+  (cond
+    [(and (eq? ets AA) (key=? ke "a")) BB]
+    [(and (eq? ets BB) (key=? ke "b")) BB]
+    [(and (eq? ets BB) (key=? ke "c")) BB]
+    [(and (eq? ets BB) (key=? ke "d")) DD]
+    [(eq? ets DD) DD]
+    [else ER] 
+    )
+  )
 
 
 ;; 2a. FUNCTION SIGNATURE: ExpectsToSee -> Boolean
-;; 2b. PURPOSE STATEMENT: Returns to true when ExpectsToSee is DD, false
+;; 2b. PURPOSE STATEMENT: Returns to true when ExpectsToSee is DD or ER, false
 ;; otherwise.
 ;; 2c. HEADER
 #; (define (stop? ets) #false)
@@ -53,7 +83,7 @@
 (check-expect (stop? AA) #false)
 (check-expect (stop? BB) #false)
 (check-expect (stop? DD) #true)
-(check-expect (stop? ER) #false)
+(check-expect (stop? ER) #true)
 ;; 4. TEMPLATE
 #; (define (stop? ets)
      (cond
@@ -67,6 +97,7 @@
 (define (stop? ets)
   (cond
     [(eq? ets DD) #true]
+    [(eq? ets ER) #true]
     [else #false]
     )
   )
