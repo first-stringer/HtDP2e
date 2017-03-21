@@ -35,7 +35,6 @@
 ;; PURPOSE STATEMENT:
 
 
-
 ;; 2a. FUNCTION SIGNATURE: ExpectsToSee KeyboardEvent -> ExpectsToSee
 ;; 2b. PURPOSE STATEMENT: Returns the next ExpectsToSee state based on the
 ;; consumes ExpectsToSee state and KeyboardEvent.
@@ -146,13 +145,13 @@
                (stop-when ...)
                ))
 ;; 5. CODE
-#;(define (pattern-matcher-program ets)
-    (big-bang ets
-              (to-draw render)
-              (on-key handle-ke)
-              (stop-when stop?)
-              ))
+(define (pattern-matcher-program ets)
+  (big-bang ets
+            (to-draw render)
+            (on-key handle-ke)
+            (stop-when stop? render)
+            ))
 
 
-;(pattern-matcher-program AA)
+(pattern-matcher-program AA)
 
