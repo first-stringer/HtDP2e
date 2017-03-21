@@ -56,15 +56,30 @@
 ;; 2b. PURPOSE STATEMENT: Returns the correct rectangule image for the consumes
 ;; ExpectsToSee state.
 ;; 2c. HEADER
-(define (render ets) WHITE_RECTANGLE)
+#; (define (render ets) WHITE_RECTANGLE)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 (check-expect (render AA) WHITE_RECTANGLE)
 (check-expect (render BB) YELLOW_RECTANGLE)
 (check-expect (render DD) GREEN_RECTANGLE)
 (check-expect (render ER) RED_RECTANGLE)
 ;; 4. TEMPLATE
+#; (define (render ets)
+     (cond
+       [(eq? ets AA) ...]
+       [(eq? ets BB) ...]
+       [(eq? ets DD) ...]
+       [(eq? ets ER) ...]
+       )
+     )
 ;; 5. CODE
-
+(define (render ets)
+  (cond
+    [(eq? ets AA) WHITE_RECTANGLE]
+    [(eq? ets BB) YELLOW_RECTANGLE]
+    [(eq? ets DD) GREEN_RECTANGLE]
+    [(eq? ets ER) RED_RECTANGLE]
+    )
+  )
 
 ;; 2a. FUNCTION SIGNATURE: ExpectsToSee -> ExpectsToSee
 ;; 2b. PURPOSE STATEMENT: Initiates the Pattern Matcher Program with the initial
