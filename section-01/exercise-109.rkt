@@ -44,12 +44,32 @@
 ;; 5. CODE
 
 
-;; 2a. FUNCTION SIGNATURE:
-;; 2b. PURPOSE STATEMENT:
+;; 2a. FUNCTION SIGNATURE: ExpectsToSee -> Boolean
+;; 2b. PURPOSE STATEMENT: Returns to true when ExpectsToSee is DD, false
+;; otherwise.
 ;; 2c. HEADER
+#; (define (stop? ets) #false)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (stop? AA) #false)
+(check-expect (stop? BB) #false)
+(check-expect (stop? DD) #true)
+(check-expect (stop? ER) #false)
 ;; 4. TEMPLATE
+#; (define (stop? ets)
+     (cond
+       [(eq? ets AA) ...]
+       [(eq? ets BB) ...]
+       [(eq? ets DD) ...]
+       [(eq? ets ER) ...]
+       )
+     )
 ;; 5. CODE
+(define (stop? ets)
+  (cond
+    [(eq? ets DD) #true]
+    [else #false]
+    )
+  )
 
 
 ;; 2a. FUNCTION SIGNATURE: ExpectsToSee -> Image
