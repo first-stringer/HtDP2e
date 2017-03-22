@@ -7,8 +7,18 @@
 ;; A SIGS is one of: 
 ;; – (make-aim UFO Tank)
 ;; – (make-fired UFO Tank Missile)
-;; interpretation represents the complete state of a 
-;; space invader game
+;; interpretation represents the complete state of a space invader game
+
+
+;; Any -> Boolean
+;; is s an element of the SIGS collection
+(define (sigs? s)
+  (cond
+    [(aim? s) #true] 
+    [(fired? s) #true]
+    [else #false]
+    )
+  )
 
 
 ;; A Coordinate is one of: 
@@ -20,7 +30,29 @@
 ;; interpretation an ordinary Cartesian point
 
 
+;; Any -> Boolean
+;; is c an element of the Coordinate collection
+(define (coordinate? c)
+  (cond
+    [(number? c) #true]
+    [(posn? c) #true]
+    [else #false]
+    )
+  )
+
+
 ;; A VAnimal is either
 ;; – a VCat
 ;; – a VCham
+
+
+;; Any -> Boolean
+;; is va an element of the VAnimal collection
+(define (vanimal? va)
+  (cond
+    [(vcat? va) #true]
+    [(vcham? va) #true]
+    [else #false]
+    )
+  )
 
