@@ -5,7 +5,17 @@
 
 
 (define-struct vec [x y])
-; A vec is
-;   (make-vec PositiveNumber PositiveNumber)
-; interpretation represents a velocity vector
+;; A vec is
+;;   (make-vec PositiveNumber PositiveNumber)
+;; interpretation represents a velocity vector
+
+
+;; Any Any -> vec
+;; constructs and returns a velocity vector if both x and y are positive numbers
+(define (checked-make-vec x y)
+  (cond
+    [(and (number? x) (number? y) (positive? x) (positive? y)) (make-vec x y)]
+    [else (error "make-vec: two positive numbers expected")]
+    )
+  )
 
