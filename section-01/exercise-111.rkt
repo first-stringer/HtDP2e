@@ -19,3 +19,9 @@
     )
   )
 
+
+(checked-make-vec 1 1)
+
+
+(checked-make-vec 1 -1)
+
