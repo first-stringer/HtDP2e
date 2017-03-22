@@ -17,3 +17,9 @@
     [(and (number? v) (positive? v)) (area-of-disk v)]
     [else (error "area-of-disk: positive number expected")]))
 
+
+(checked-area-of-disk 10)
+
+
+(checked-area-of-disk -10)
+
