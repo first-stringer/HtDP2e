@@ -80,5 +80,27 @@
   )
 
 
+;; An Editor is a structure:
+;;   (make-editor String Number)
+;; interpretation (make-editor s i) describes an editor whose visible text is
+;; s with the cursor displayed after position i and before position i+1 in s
+;; where 0 indicates the cursor is before the first character in s
+(define-struct editor [text index])
 
+
+;; Any -> Boolean
+;; is e composed of a String and a Number
+(define (editor? e)
+  (and (String? (editor-text e) (Number? editor-index e))
+    )
+  )
+
+
+(define (run s)
+  (big-bang (make-editor s (string-length s))
+            [to-draw render]
+            [on-key edit]
+            [check-with editor?]
+            )
+  )
 
