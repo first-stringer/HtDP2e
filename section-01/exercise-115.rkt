@@ -3,19 +3,38 @@
 #reader(lib "htdp-beginner-reader.ss" "lang")((modname exercise-115) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 ;; http://www.ccs.neu.edu/home/matthias/HtDP2e/part_one.html#%28part._sec~3aequality1%29
 
-(define MESSAGE "traffic light expected, given: some other value")
- 
-; Any Any -> Boolean
-; are the two values elements of TrafficLight and, 
-; if so, are they equal
- 
+(define MESSAGE1 "traffic light expected, given some other value (a-value)")
+(define MESSAGE2 "traffic light expected, given some other value (another-value)")
+
+;; Any -> Boolean
+;; is the given value an element of TrafficLight
+(define (light? x)
+  (cond
+    [(string? x) (or (string=? "red" x)
+                     (string=? "green" x)
+                     (string=? "yellow" x))]
+    [else #false]
+    )
+  )
+
+
+;; Any Any -> Boolean
+;; are the two values elements of TrafficLight and, 
+;; if so, are they equal
+
 (check-expect (light=? "red" "red") #true)
 (check-expect (light=? "red" "green") #false)
 (check-expect (light=? "green" "green") #true)
 (check-expect (light=? "yellow" "yellow") #true)
+
+(check-error (light=? 1 "red") MESSAGE1)
+(check-error (light=? "red" 1) MESSAGE2)
  
 (define (light=? a-value another-value)
-  (if (and (light? a-value) (light? another-value))
-      (string=? a-value another-value)
-      (error MESSAGE)))
+  (cond
+    [(not (light? a-value)) (error MESSAGE1)]
+    [(not (light? another-value)) (error MESSAGE2)]
+    [else (string=? a-value another-value)]
+    )
+  )
 
