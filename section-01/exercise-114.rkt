@@ -21,24 +21,14 @@
   )
 
 
-;; A Coordinate is one of: 
-;; – a NegativeNumber 
-;; interpretation on the y axis, distance from top
-;; – a PositiveNumber 
-;; interpretation on the x axis, distance from left
-;; – a Posn
-;; interpretation an ordinary Cartesian point
-
-
-;; Any -> Boolean
-;; is c an element of the Coordinate collection
-(define (coordinate? c)
-  (cond
-    [(number? c) #true]
-    [(posn? c) #true]
-    [else #false]
-    )
-  )
+(define (si-main.v2 s)
+  (big-bang s
+            [on-tick si-move.v2 1/10]
+            [to-draw si-render.v2]
+            [on-key si-control.v2]
+            [stop-when si-game-over.v2? si-render-final.v2]
+            [check-with sigs?]
+            ))
 
 
 ;; A VAnimal is either
@@ -55,4 +45,20 @@
     [else #false]
     )
   )
+
+
+(define (cat-cham-prog va)
+  (big-bang va
+            [on-tick tock]
+            [to-draw render]
+            [on-key handle-ke]
+            [stop-when stop?]
+            [check-with vanimal?]
+            ))
+
+
+
+
+
+
 
