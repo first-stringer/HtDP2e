@@ -57,7 +57,27 @@
             ))
 
 
+;; An Editor is a structure:
+;;   (make-editor String String)
+;; interpretation (make-editor pre post) describes an editor whose visible text is
+;; (string-append pre post) with the cursor displayed between pre and post 
+(define-struct editor [pre post])
 
+;; Any -> Boolean
+;; is e composed of two Strings
+(define (editor? e)
+  (and (String? (editor-pre e) (String? editor-post e))
+    )
+  )
+
+
+(define (run s)
+  (big-bang (make-editor s "")
+            [to-draw render]
+            [on-key edit]
+            [check-with editor?]
+            )
+  )
 
 
 
