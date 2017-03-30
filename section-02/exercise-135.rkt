@@ -42,14 +42,8 @@
   )
 
 
-(define alon1 (cons "Fagan"
-                    (cons "Findler"
-                          (cons "Fisler"
-                                (cons "Flanagan"
-                                      (cons "Flatt"
-                                            (cons "Felleisen"
-                                                  (cons "Friedman" '()))))))))
+(contains-flatt? (cons "Flatt" (cons "C" '())))
 
 
-(contains-flatt? alon1)
+(contains-flatt? (cons "B" (cons "C" '())))
 
