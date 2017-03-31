@@ -25,13 +25,17 @@
 (check-expect (sum (cons 1 '())) 1)
 (check-expect (sum (cons 2 (cons 1 '()))) 3)
 ;; 4. TEMPLATE
+#; (define (sum loa)
+     (cond
+       [(empty? loa) ...]
+       [else (... (first loa) ... (sum (rest loa)) ...)]
+       )
+     )
+;; 5. CODE
 (define (sum loa)
   (cond
-    [(empty? loa) ...]
-    [else (... (first loa) ... (sum (rest loa)) ...)]
+    [(empty? loa) 0]
+    [else (+ (first loa) (sum (rest loa)))]
     )
   )
-;; 5. CODE
-
-
 
