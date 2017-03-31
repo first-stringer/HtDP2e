@@ -3,3 +3,5 @@
 #reader(lib "htdp-beginner-reader.ss" "lang")((modname exercise-137) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 ;; http://www.ccs.neu.edu/home/matthias/HtDP2e/part_two.html#%28part._sec~3afinger-lists%29
 
+;; They are both processing lists of Strings.
+
