@@ -28,7 +28,7 @@
 (define (sum loa)
   (cond
     [(empty? loa) ...]
-    [else (... (first loa) ... (rest loa) ...)]
+    [else (... (first loa) ... (sum (rest loa)) ...)]
     )
   )
 ;; 5. CODE
