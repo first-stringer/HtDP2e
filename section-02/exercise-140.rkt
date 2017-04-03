@@ -35,3 +35,30 @@
     )
   )
 
+
+;; 2a. FUNCTION SIGNATURE: List-of-booleans -> Boolean
+;; 2b. PURPOSE STATEMENT: Consumes a list of Boolean values and determines
+;; whether at least one item on the list is #true.
+;; 2c. HEADER
+#; (define (one-true lob) #false)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (one-true '()) #false)
+(check-expect (one-true (cons #true '())) #true)
+(check-expect (one-true (cons #true (cons #true '()))) #true)
+(check-expect (one-true (cons #false '())) #false)
+(check-expect (one-true (cons #true (cons #false'()))) #true)
+;; 4. TEMPLATE
+#; (define (one-true lob)
+     (cond
+       [(empty? lob) ...]
+       [else (... (first lob) ... (rest lob) ...)]
+       )
+     )
+;; 5. CODE
+(define (one-true lob)
+  (cond
+    [(empty? lob) #false]
+    [else (or (first lob) (one-true (rest lob)))]
+    )
+  )
+
