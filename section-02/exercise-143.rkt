@@ -26,6 +26,18 @@
 
 
 ;; 2a. FUNCTION SIGNATURE: List-of-temperatures -> Number 
+;; 2b. PURPOSE STATEMENT: Counts the temperatures on the given list.
+;; 2c. HEADER
+#; (define (how-many alot) 0)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (how-many '()) 0)
+(check-expect (how-many (cons 1 '())) 1)
+(check-expect (how-many (cons 1 (cons 2 '()))) 2)
+;; 4. TEMPLATE
+;; 5. CODE
+
+
+;; 2a. FUNCTION SIGNATURE: List-of-temperatures -> Number 
 ;; 2b. PURPOSE STATEMENT: Adds up the temperatures on the given list.
 ;; 2c. HEADER
 #; (define (sum alot) 0)
@@ -48,18 +60,6 @@
   (cond
     [(empty? alot) 0]
     [else (+ (first alot) (sum (rest alot)))]))
-
-
-
-;; 2a. FUNCTION SIGNATURE:
-;; 2b. PURPOSE STATEMENT:
-;; 2c. HEADER
-;; 3a. FUNCTIONAL EXAMPLES
-;; #1: Given: , Expect:
-;; 3b. TESTS
-#;1 
-;; 4. TEMPLATE
-;; 5. CODE
 
 
 ;; 2a. FUNCTION SIGNATURE: List-of-temperatures -> Number
