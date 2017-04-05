@@ -12,6 +12,7 @@
 
 
 ;; 1b. CONSTANT DEFINITIONS
+(define ERROR_MESSAGE "Cannot compute the average of an empty list!")
 
 
 ;; 1c. FUNCTION WISH LIST
@@ -90,3 +91,28 @@
 ;; 5. CODE
 (define (average alot)
   (/ (sum alot) (how-many alot)))
+
+
+;; 2a. FUNCTION SIGNATURE: List-of-temperatures -> Number
+;; 2b. PURPOSE STATEMENT: Computes the average temperature and produces an
+;; informative error message when it is applied to '().
+;; 2c. HEADER
+#; (define (checked-average alot) 0)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (checked-average (cons 1 (cons 2 (cons 3 '())))) 2)
+(check-error (checked-average '()) ERROR_MESSAGE)
+;; 4. TEMPLATE
+#; (define (checked-average alot)
+     (cond
+       [(empty? alot) ...]
+       [else (... (first alot) ... (rest alot) ...)]
+       )
+     )
+;; 5. CODE
+(define (checked-average alot)
+  (cond
+    [(empty? alot) (error ERROR_MESSAGE)]
+    [else (average alot)]
+    )
+  )
+
