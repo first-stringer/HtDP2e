@@ -34,7 +34,19 @@
 (check-expect (how-many (cons 1 '())) 1)
 (check-expect (how-many (cons 1 (cons 2 '()))) 2)
 ;; 4. TEMPLATE
+#; (define (how-many alot)
+     (cond
+       [(empty? alot) ...]
+       [else (... (first alot) ... (rest alot) ...)]
+       )
+     )
 ;; 5. CODE
+(define (how-many alot)
+  (cond
+    [(empty? alot) 0]
+    [else (add1 (how-many (rest alot)))]
+    )
+  )
 
 
 ;; 2a. FUNCTION SIGNATURE: List-of-temperatures -> Number 
