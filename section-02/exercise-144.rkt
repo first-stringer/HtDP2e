@@ -3,3 +3,6 @@
 #reader(lib "htdp-beginner-reader.ss" "lang")((modname exercise-144) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 ;; http://www.ccs.neu.edu/home/matthias/HtDP2e/part_two.html#%28part._sec~3alists~3ane%29
 
+;; Yes, they will work because NEList-of-temperatures is a subset of
+;; List-of-temperatures.
+
