@@ -37,5 +37,29 @@
   )
 
 
-
+;; 2a. FUNCTION SIGNATURE: NEList-of-Booleans -> Boolean
+;; 2b. PURPOSE STATEMENT: Consumes a list of Boolean values containing at least
+;; one item and determines whether at least one item on the list is #true.
+;; 2c. HEADER
+#; (define (one-true ne-l) #false)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (one-true (cons #true '())) #true)
+(check-expect (one-true (cons #true (cons #true '()))) #true)
+(check-expect (one-true (cons #false '())) #false)
+(check-expect (one-true (cons #true (cons #false'()))) #true)
+(check-expect (one-true (cons #false (cons #false'()))) #false)
+;; 4. TEMPLATE
+#; (define (one-true ne-l)
+     (cond
+       [(empty? (first ne-l)) ...]
+       [else (... (first ne-l) ... (rest ne-l) ...)]
+       )
+     )
+;; 5. CODE
+(define (one-true ne-l)
+  (cond
+    [(empty? (rest ne-l)) (first ne-l)]
+    [else (or (first ne-l) (one-true (rest ne-l)))]
+    )
+  )
 
