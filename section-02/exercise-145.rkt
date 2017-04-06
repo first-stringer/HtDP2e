@@ -14,12 +14,23 @@
 ;; 2b. PURPOSE STATEMENT: Consumes a NEList-of-temperatures. It produces #true if
 ;; the temperatures are sorted in descending order, otherwise it produces #false.
 ;; 2c. HEADER
-(define (sorted>? alot) #false)
+#; (define (sorted>? alot) #false)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
-(check-expect (sorted>? '()) #true)
 (check-expect (sorted>? (cons 0 '())) #true)
 (check-expect (sorted>? (cons 1 (cons 0 '()))) #true)
 (check-expect (sorted>? (cons 0 (cons 1 '()))) #false)
 ;; 4. TEMPLATE
+#; (define (sorted>? alot)
+     (cond
+       [(empty? (rest alot)) ...]
+       [else (... (first alot) ... (rest alot) ...)]
+       )
+     )
 ;; 5. CODE
+(define (sorted>? alot)
+  (cond
+    [(empty? (rest alot)) #true]
+    [else (and (> (first alot) (first (rest alot))) (sorted>? (rest alot)))]
+    )
+  )
 
