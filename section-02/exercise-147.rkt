@@ -10,3 +10,32 @@
 ;; – (cons Boolean NEList-of-Booleans)
 ;; interpretation non-empty lists of Booleans
 
+
+;; 2a. FUNCTION SIGNATURE: NEList-of-Booleans -> Boolean
+;; 2b. PURPOSE STATEMENT: Consumes a list of Boolean values containing at least
+;; one item and determines whether all of them are #true.
+;; 2c. HEADER
+#; (define (all-true ne-l) #false)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (all-true (cons #true '())) #true)
+(check-expect (all-true (cons #true (cons #true '()))) #true)
+(check-expect (all-true (cons #false'())) #false)
+(check-expect (all-true (cons #true (cons #false'()))) #false)
+;; 4. TEMPLATE
+#; (define (all-true ne-l)
+     (cond
+       [(empty? (rest ne-l)) ...]
+       [else (... (first ne-l) ... (rest ne-l) ...)]
+       )
+     )
+;; 5. CODE
+(define (all-true ne-l)
+  (cond
+    [(empty? (rest ne-l)) (first ne-l)]
+    [else (and (first ne-l) (all-true (rest ne-l)))]
+    )
+  )
+
+
+
+
