@@ -11,6 +11,37 @@
 ;; interpretation non-empty lists of Celsius temperatures 
 
 
+;; 2a. FUNCTION SIGNATURE:
+;; 2b. PURPOSE STATEMENT:
+;; 2c. HEADER
+;; 3a. FUNCTIONAL EXAMPLES
+;; #1: Given: , Expect:
+;; 3b. TESTS
+#;1 
+;; 4. TEMPLATE
+;; 5. CODE
+
+
+;; 2a. FUNCTION SIGNATURE: NEList-of-temperatures -> Number
+;; 2b. PURPOSE STATEMENT: Computes the sum of the given temperatures.
+;; 2c. HEADER
+#; (define (sum ne-l) 0)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (sum (cons 1 (cons 2 (cons 3 '())))) 6)
+;; 4. TEMPLATE
+#; (define (sum ne-l)
+     (cond
+       [(empty? (rest ne-l)) ...]
+       [else ...]))
+;; 5. CODE
+(define (sum ne-l)
+  (cond
+    [(empty? (rest ne-l)) (first ne-l)]
+    [else (+ (first ne-l) (sum ne-l))]
+    )
+  )
+
+
 ;; 2a. FUNCTION SIGNATURE: NEList-of-temperatures -> Number
 ;; 2b. PURPOSE STATEMENT: Computes the average temperature.
 ;; 2c. HEADER
