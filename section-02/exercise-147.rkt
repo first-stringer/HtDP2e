@@ -51,7 +51,7 @@
 ;; 4. TEMPLATE
 #; (define (one-true ne-l)
      (cond
-       [(empty? (first ne-l)) ...]
+       [(empty? (rest ne-l)) ...]
        [else (... (first ne-l) ... (rest ne-l) ...)]
        )
      )
