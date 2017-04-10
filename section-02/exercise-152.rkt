@@ -35,6 +35,12 @@
        )
      )
 ;; 5. CODE
+(define (col n i)
+     (cond
+       [(zero? n) empty-image] 
+       [else (above i (col (sub1 n) i))]
+       )
+     )
 
 
 ;; 2a. FUNCTION SIGNATURE:
