@@ -27,4 +27,10 @@
        )
      )
 ;; 5. CODE
+(define (multiply n x)
+  (cond
+    [(zero? n) 0]
+    [else (+ x (multiply (sub1 n) x))]
+    )
+  )
 
