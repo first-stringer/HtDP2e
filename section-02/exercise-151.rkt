@@ -34,3 +34,9 @@
     )
   )
 
+
+(multiply 3 1)
+
+
+;; 1 multiplied by 3 is 1 plus 1 plus 1, or 1 added to itself three times.
+
