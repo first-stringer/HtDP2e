@@ -14,9 +14,21 @@
 ;; 2a. FUNCTION SIGNATURE: N -> Number
 ;; 2b. PURPOSE STATEMENT: Computes (+ n pi) without using +.
 ;; 2c. HEADER
-(define (add-to-pi n) pi)
+#; (define (add-to-pi n) pi)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 (check-within (add-to-pi 3) (+ 3 pi) 0.001)
 ;; 4. TEMPLATE
+#; (define (add-to-pi n)
+     (cond
+       [(zero? n) ...]
+       [else (... n ... (add-to-pi ...) ...)]
+       )
+     )
 ;; 5. CODE
+(define (add-to-pi n)
+  (cond
+    [(zero? n) pi]
+    [else (add1 (add-to-pi (sub1 n)))]
+    )
+  )
 
