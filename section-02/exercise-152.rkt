@@ -36,20 +36,34 @@
      )
 ;; 5. CODE
 (define (col n i)
+  (cond
+    [(zero? n) empty-image] 
+    [else (above i (col (sub1 n) i))]
+    )
+  )
+
+
+;; 2a. FUNCTION SIGNATURE: Number Image -> Image
+;; 2b. PURPOSE STATEMENT: Consumes a natural number n and an image img. It
+;; produces a row—a horizontal arrangement—of n copies of img.
+;; 2c. HEADER
+#; (define (row n i) empty-image)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (row 0 TEST_IMAGE) empty-image)
+(check-expect (row 1 TEST_IMAGE) TEST_IMAGE)
+(check-expect (row 2 TEST_IMAGE) (beside TEST_IMAGE TEST_IMAGE))
+;; 4. TEMPLATE
+#; (define (row n i)
      (cond
-       [(zero? n) empty-image] 
-       [else (above i (col (sub1 n) i))]
+       [(zero? n) ...]
+       [else (row ... n ... i ... )]
        )
      )
-
-
-;; 2a. FUNCTION SIGNATURE:
-;; 2b. PURPOSE STATEMENT:
-;; 2c. HEADER
-;; 3a. FUNCTIONAL EXAMPLES
-;; #1: Given: , Expect:
-;; 3b. TESTS
-#;1 
-;; 4. TEMPLATE
 ;; 5. CODE
+(define (row n i)
+  (cond
+    [(zero? n) empty-image] 
+    [else (beside i (row (sub1 n) i))]
+    )
+  )
 
