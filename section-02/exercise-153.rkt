@@ -20,6 +20,8 @@
 (define SCENE_WIDTH 80)
 (define SCENE_HEIGHT 180)
 (define EMPTY_SCENE (empty-scene SCENE_WIDTH SCENE_HEIGHT))
+(define BALLOON_SIZE 3)
+(define BALLOON (circle BALLOON_SIZE "solid" "red"))
 
 
 ;; 2a. FUNCTION SIGNATURE: Number Image -> Image
@@ -71,9 +73,38 @@
     )
   )
 
+
 (define CLASSROOM (place-image (col 18 (row 8 SEAT)) (/ SCENE_WIDTH 2)
                                (/ SCENE_HEIGHT 2) EMPTY_SCENE))
-CLASSROOM
 
 
+;; 2a. FUNCTION SIGNATURE: List-of-posns -> Image
+;; 2b. PURPOSE STATEMENT: Consumes a list of Posn whose coordinates fit into the
+;; dimensions of the lecture hall. It produces an image of the lecture hall with
+;; red dots added as specified by the Posns.
+;; 2c. HEADER
+#; (define (add-balloons lops) EMPTY_SCENE)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (add-balloons '()) CLASSROOM)
+(check-expect (add-balloons (cons (make-posn 40 90) '() ))
+              (place-image BALLOON 40 90 CLASSROOM))
+(check-expect
+ (add-balloons (cons (make-posn 20 45) (cons (make-posn 40 90) '())))
+ (place-image BALLOON 20 45 (place-image BALLOON 40 90 CLASSROOM)))
+;; 4. TEMPLATE
+#; (define (add-balloons lops)
+     (cond
+       [(empty? lops) ...]
+       [else
+        (... place-image ... (first lops) ... add-balloons ... (rest lops) ...)]
+       )
+     )
+;; 5. CODE
+(define (add-balloons lops)
+  (cond
+    [(empty? lops) CLASSROOM]
+    [else (place-image BALLOON (posn-x (first lops)) (posn-y (first lops))
+                       (add-balloons (rest lops)))]
+    )
+  )
 
