@@ -108,3 +108,21 @@
     )
   )
 
+
+;; first example
+(add-balloons '())
+
+;; second example
+(add-balloons (cons (make-posn 67 29) (cons (make-posn 21 33) '())))
+
+;;third example
+(add-balloons (list (make-posn 0 0)
+                    (make-posn 10 20)
+                    (make-posn 20 40)
+                    (make-posn 30 60)
+                    (make-posn 40 80)
+                    (make-posn 50 100)
+                    (make-posn 60 120)
+                    (make-posn 70 140)
+                    ))
+
