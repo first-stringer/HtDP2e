@@ -15,7 +15,11 @@
 
 
 ;; 1b. CONSTANT DEFINITIONS
-(define TEST_IMAGE (square 10 "solid" "red"))
+(define SEAT_SIZE 10)
+(define SEAT (square SEAT_SIZE "outline" "black"))
+(define SCENE_WIDTH 80)
+(define SCENE_HEIGHT 180)
+(define EMPTY_SCENE (empty-scene SCENE_WIDTH SCENE_HEIGHT))
 
 
 ;; 2a. FUNCTION SIGNATURE: Number Image -> Image
@@ -24,9 +28,9 @@
 ;; 2c. HEADER
 #; (define (col n i) empty-image)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
-(check-expect (col 0 TEST_IMAGE) empty-image)
-(check-expect (col 1 TEST_IMAGE) TEST_IMAGE)
-(check-expect (col 2 TEST_IMAGE) (above TEST_IMAGE TEST_IMAGE))
+(check-expect (col 0 SEAT) empty-image)
+(check-expect (col 1 SEAT) SEAT)
+(check-expect (col 2 SEAT) (above SEAT SEAT))
 ;; 4. TEMPLATE
 #; (define (col n i)
      (cond
@@ -49,9 +53,9 @@
 ;; 2c. HEADER
 #; (define (row n i) empty-image)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
-(check-expect (row 0 TEST_IMAGE) empty-image)
-(check-expect (row 1 TEST_IMAGE) TEST_IMAGE)
-(check-expect (row 2 TEST_IMAGE) (beside TEST_IMAGE TEST_IMAGE))
+(check-expect (row 0 SEAT) empty-image)
+(check-expect (row 1 SEAT) SEAT)
+(check-expect (row 2 SEAT) (beside SEAT SEAT))
 ;; 4. TEMPLATE
 #; (define (row n i)
      (cond
@@ -66,4 +70,10 @@
     [else (beside i (row (sub1 n) i))]
     )
   )
+
+(define CLASSROOM (place-image (col 18 (row 8 SEAT)) (/ SCENE_WIDTH 2)
+                               (/ SCENE_HEIGHT 2) EMPTY_SCENE))
+CLASSROOM
+
+
 
