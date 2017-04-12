@@ -15,7 +15,7 @@
 ;; 2b. PURPOSE STATEMENT: Consumes an RD and produces the (color of the)
 ;; innermost doll. 
 ;; 2c. HEADER
-(define (inner an-rd) "")
+#; (define (inner an-rd) "")
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 (check-expect (inner "red") "red")
 (check-expect (inner (make-layer "green" "red")) "red")
@@ -28,4 +28,10 @@
        )
      )
 ;; 5. CODE
+(define (inner an-rd)
+  (cond
+    [(string? an-rd) an-rd]
+    [else (inner (layer-doll an-rd))]
+    )
+  )
 
