@@ -11,13 +11,6 @@
 (define-struct layer [color doll])
 
 
-;; 1b. CONSTANT DEFINITIONS
-;; 1c. FUNCTION WISH LIST
-;; NAME:
-;; SIGNATURE:
-;; PURPOSE STATEMENT:
-
-
 ;; 2a. FUNCTION SIGNATURE: RD -> Number
 ;; 2b. PURPOSE STATEMENT: How many dolls are part of an-rd.
 ;; 2c. HEADER
@@ -40,4 +33,18 @@
     [else (add1 (depth (layer-doll an-rd)))]
     )
   )
+
+
+;; 2a. FUNCTION SIGNATURE: RD -> String
+;; 2b. PURPOSE STATEMENT: Consumes a Russian doll and produces a string of all
+;; colors, separate by a comma and a space.
+;; 2c. HEADER
+(define (colors an-rd) "")
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (colors "red") "red")
+(check-expect (colors (make-layer "green" "red")) "green, red")
+(check-expect (colors (make-layer "yellow" (make-layer "green" "red")))
+              "yellow, green, red")
+;; 4. TEMPLATE
+;; 5. CODE
 
