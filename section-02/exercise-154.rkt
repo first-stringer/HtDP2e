@@ -46,5 +46,11 @@
 (check-expect (colors (make-layer "yellow" (make-layer "green" "red")))
               "yellow, green, red")
 ;; 4. TEMPLATE
+#; (define (colors an-rd)
+     (cond
+       [(string? an-rd) ...]
+       [else (... (layer-color an-rd) ... (color (layer-doll an-rd)) ...)]
+       )
+     )
 ;; 5. CODE
 
