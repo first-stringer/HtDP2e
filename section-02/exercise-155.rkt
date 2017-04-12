@@ -11,13 +11,21 @@
 (define-struct layer [color doll])
 
 
-;; 2a. FUNCTION SIGNATURE:
-;; 2b. PURPOSE STATEMENT:
+;; 2a. FUNCTION SIGNATURE: RD -> String
+;; 2b. PURPOSE STATEMENT: Consumes an RD and produces the (color of the)
+;; innermost doll. 
 ;; 2c. HEADER
-;; 3a. FUNCTIONAL EXAMPLES
-;; #1: Given: , Expect:
-;; 3b. TESTS
-#;1 
+(define (inner an-rd) "")
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (inner "red") "red")
+(check-expect (inner (make-layer "green" "red")) "red")
+(check-expect (inner (make-layer "yellow" (make-layer "green" "red"))) "red")
 ;; 4. TEMPLATE
+#; (define (inner an-rd)
+     (cond
+       [(string? an-rd) ...]
+       [else (... (layer-color an-rd) ... (inner (layer-doll an-rd)) ...)]
+       )
+     )
 ;; 5. CODE
 
