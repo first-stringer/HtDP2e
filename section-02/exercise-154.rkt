@@ -39,7 +39,7 @@
 ;; 2b. PURPOSE STATEMENT: Consumes a Russian doll and produces a string of all
 ;; colors, separate by a comma and a space.
 ;; 2c. HEADER
-(define (colors an-rd) "")
+#; (define (colors an-rd) "")
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 (check-expect (colors "red") "red")
 (check-expect (colors (make-layer "green" "red")) "green, red")
@@ -49,8 +49,14 @@
 #; (define (colors an-rd)
      (cond
        [(string? an-rd) ...]
-       [else (... (layer-color an-rd) ... (color (layer-doll an-rd)) ...)]
+       [else (... (layer-color an-rd) ... (colors (layer-doll an-rd)) ...)]
        )
      )
 ;; 5. CODE
+(define (colors an-rd)
+  (cond
+    [(string? an-rd) an-rd]
+    [else (string-append (layer-color an-rd) ", " (colors (layer-doll an-rd)))]
+    )
+  )
 
