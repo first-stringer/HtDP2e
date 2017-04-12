@@ -21,7 +21,7 @@
 ;; 2a. FUNCTION SIGNATURE: RD -> Number
 ;; 2b. PURPOSE STATEMENT: How many dolls are part of an-rd.
 ;; 2c. HEADER
-(define (depth an-rd) -1)
+#; (define (depth an-rd) -1)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 (check-expect (depth "red") 1)
 (check-expect (depth (make-layer "green" "red")) 2)
@@ -34,4 +34,10 @@
        )
      )
 ;; 5. CODE
+(define (depth an-rd)
+  (cond
+    [(string? an-rd) 1]
+    [else (add1 (depth (layer-doll an-rd)))]
+    )
+  )
 
