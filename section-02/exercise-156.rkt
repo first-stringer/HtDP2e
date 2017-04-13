@@ -1,6 +1,10 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
 #reader(lib "htdp-beginner-reader.ss" "lang")((modname exercise-156) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+(require 2htdp/universe)
+(require 2htdp/image)
+
+
 ;; http://www.ccs.neu.edu/home/matthias/HtDP2e/part_two.html#%28part._sec~3alist-world%29
 
 
@@ -43,12 +47,23 @@
 ;; bar.
 
 
-;; 2a. FUNCTION SIGNATURE:
-;; 2b. PURPOSE STATEMENT:
+;; 2a. FUNCTION SIGNATURE: ShotWorld -> Image
+;; 2b. PURPOSE STATEMENT: Adds the image of a shot for each y on w at (XSHOTS,y}
+;; to the background image.
 ;; 2c. HEADER
-;; 3a. FUNCTIONAL EXAMPLES
-;; #1: Given: , Expect:
-;; 3b. TESTS
-#;1 
+(define (to-image w) BACKGROUND)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (to-image '()) BACKGROUND)
+(check-expect (to-image (cons 9 '())) (place-image SHOT XSHOTS 9 BACKGROUND))
+(check-expect (to-image (cons 40 (cons 9 '())))
+              (place-image SHOT XSHOTS 40
+                           (place-image SHOT XSHOTS 9 BACKGROUND)))
 ;; 4. TEMPLATE
+#; (define (to-image w)
+     (cond
+       [(empty? w) ...]
+       [else (... (first w) ... (to-image (rest w)))]
+       )
+     )
 ;; 5. CODE
+
