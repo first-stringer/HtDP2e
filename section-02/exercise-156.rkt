@@ -51,7 +51,7 @@
 ;; 2b. PURPOSE STATEMENT: Adds the image of a shot for each y on w at (XSHOTS,y}
 ;; to the background image.
 ;; 2c. HEADER
-(define (to-image w) BACKGROUND)
+#; (define (to-image w) BACKGROUND)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 (check-expect (to-image '()) BACKGROUND)
 (check-expect (to-image (cons 9 '())) (place-image SHOT XSHOTS 9 BACKGROUND))
@@ -66,4 +66,10 @@
        )
      )
 ;; 5. CODE
+(define (to-image w)
+     (cond
+       [(empty? w) BACKGROUND]
+       [else (place-image SHOT XSHOTS (first w) (to-image (rest w)))]
+       )
+     )
 
