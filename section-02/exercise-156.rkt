@@ -47,6 +47,30 @@
 ;; bar.
 
 
+;; 2a. FUNCTION SIGNATURE: SIGNATURE: ShotWorld -> ShotWorld
+;; 2b. PURPOSE STATEMENT: Moves each shot on w up by one pixel.
+;; 2c. HEADER
+#; (define (tock w) w)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (tock '()) '())
+(check-expect (tock (cons 9 '())) (cons 10 '()))
+(check-expect (tock (cons 40 (cons 9 '()))) (cons 41 (cons 10 '())))
+;; 4. TEMPLATE
+#; (define (tock w)
+     (cond
+       [(empty? w) ...]
+       [else (... (first w) ... (tock (rest w)) ...)]
+       )
+     )
+;; 5. CODE
+(define (tock w)
+  (cond
+    [(empty? w) '()]
+    [else (cons (add1 (first w)) (tock (rest w)))]
+    )
+  )
+
+
 ;; 2a. FUNCTION SIGNATURE: ShotWorld -> Image
 ;; 2b. PURPOSE STATEMENT: Adds the image of a shot for each y on w at (XSHOTS,y}
 ;; to the background image.
@@ -62,14 +86,14 @@
 #; (define (to-image w)
      (cond
        [(empty? w) ...]
-       [else (... (first w) ... (to-image (rest w)))]
+       [else (... (first w) ... (to-image (rest w)) ...)]
        )
      )
 ;; 5. CODE
 (define (to-image w)
-     (cond
-       [(empty? w) BACKGROUND]
-       [else (place-image SHOT XSHOTS (first w) (to-image (rest w)))]
-       )
-     )
+  (cond
+    [(empty? w) BACKGROUND]
+    [else (place-image SHOT XSHOTS (first w) (to-image (rest w)))]
+    )
+  )
 
