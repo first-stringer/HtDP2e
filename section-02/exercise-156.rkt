@@ -47,6 +47,22 @@
 ;; bar.
 
 
+;; 2a. FUNCTION SIGNATURE: ShotWorld KeyEvent -> ShotWorld 
+;; 2b. PURPOSE STATEMENT: Adds a shot to the world if the player pressed the
+;; space bar.
+;; 2c. HEADER
+(define (keyh w ke) w)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS
+(check-expect (keyh '() " ") (cons HEIGHT '()))
+(check-expect (keyh (cons (/ HEIGHT 2) '()) " ")
+              (cons HEIGHT (cons (/ HEIGHT 2) '())))
+(check-expect (keyh '() "*") '())
+(check-expect (keyh (cons (/ HEIGHT 2) '()) "*")
+              (cons (/ HEIGHT 2) '()))
+;; 4. TEMPLATE
+;; 5. CODE
+
+
 ;; 2a. FUNCTION SIGNATURE: SIGNATURE: ShotWorld -> ShotWorld
 ;; 2b. PURPOSE STATEMENT: Moves each shot on w up by one pixel.
 ;; 2c. HEADER
