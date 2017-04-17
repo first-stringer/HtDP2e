@@ -51,7 +51,7 @@
 ;; 2b. PURPOSE STATEMENT: Adds a shot to the world if the player pressed the
 ;; space bar.
 ;; 2c. HEADER
-(define (keyh w ke) w)
+#; (define (keyh w ke) w)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 (check-expect (keyh '() " ") (cons HEIGHT '()))
 (check-expect (keyh (cons (/ HEIGHT 2) '()) " ")
@@ -69,6 +69,9 @@
        )
      )
 ;; 5. CODE
+(define (keyh w ke)
+  (if (key=? ke " ") (cons HEIGHT w) w)
+  )
 
 
 ;; 2a. FUNCTION SIGNATURE: SIGNATURE: ShotWorld -> ShotWorld
