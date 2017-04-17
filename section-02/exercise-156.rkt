@@ -80,8 +80,8 @@
 #; (define (tock w) w)
 ;; 3a. FUNCTIONAL EXAMPLES & TESTS
 (check-expect (tock '()) '())
-(check-expect (tock (cons 9 '())) (cons 10 '()))
-(check-expect (tock (cons 40 (cons 9 '()))) (cons 41 (cons 10 '())))
+(check-expect (tock (cons 10 '())) (cons 9 '()))
+(check-expect (tock (cons 41 (cons 10 '()))) (cons 40 (cons 9 '())))
 ;; 4. TEMPLATE
 #; (define (tock w)
      (cond
@@ -93,7 +93,7 @@
 (define (tock w)
   (cond
     [(empty? w) '()]
-    [else (cons (add1 (first w)) (tock (rest w)))]
+    [else (cons (sub1 (first w)) (tock (rest w)))]
     )
   )
 
@@ -123,4 +123,33 @@
     [else (place-image SHOT XSHOTS (first w) (to-image (rest w)))]
     )
   )
+
+
+;; 2a. FUNCTION SIGNATURE: ShotWorld -> ShotWorld 
+;; 2b. PURPOSE STATEMENT: Initiates ShotWorld with a no-shots-fired state.
+;; 2c. HEADER
+#; (define (main w0) w0)
+;; 3a. FUNCTIONAL EXAMPLES & TESTS: NA
+;; 4. TEMPLATE
+#; (define (main w0)
+     (big-bang w0
+               [on-tick ...]
+               [on-key ...]
+               [to-draw ...]
+               )
+     )
+;; 5. CODE
+(define (main w0)
+  (big-bang w0
+            [on-tick tock]
+            [on-key keyh]
+            [to-draw to-image]
+            )
+  )
+
+
+(main '())
+
+
+;; Main initiates the ShotWorld program with a no-shots-fired state.
 
