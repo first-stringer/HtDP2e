@@ -60,6 +60,14 @@
 (check-expect (keyh (cons (/ HEIGHT 2) '()) "*")
               (cons (/ HEIGHT 2) '()))
 ;; 4. TEMPLATE
+#; (define (keyh w ke)
+     (cond
+       [(and (key=? ke " ") (empty? w)) ...] 
+       [(and (key=? ke " ") (not (empty? w)))
+        (... (first w) ... (keyh (rest w) ke) ...)]
+       [else ...] 
+       )
+     )
 ;; 5. CODE
 
 
